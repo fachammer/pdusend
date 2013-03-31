@@ -4,14 +4,23 @@
 package at.fabianachammer.nsend;
 
 /**
+ * Klasse zum Senden von beliebigen PDUs.
+ * 
  * @author fabian
- *
+ * 
  */
 public class NSender {
 
-	public native void send(int interfaceIndex, byte[] data);
-	
-	static{
+	static {
 		System.loadLibrary("libnsender");
 	}
+
+	/**
+	 * Methode, die einen beliebigen Byte-Array über eine bestimmte
+	 * Netzwerkschnittstelle (NIC) verschickt.
+	 * 
+	 * @param interfaceIndex ID des NIC, der die Daten versenden soll
+	 * @param data Daten, die gesendet werden sollen
+	 */
+	private native void send(int interfaceIndex, byte[] data);
 }

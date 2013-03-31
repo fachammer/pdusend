@@ -1,7 +1,5 @@
 /**
- * 
- */
-/**
+ * Haupt-Package der nsend-Anwendung.
  * @author fabian
  *
  */
