@@ -1,0 +1,16 @@
+apply plugin: "java"
+apply plugin: "eclipse"
+
+repositories{ mavenCentral() }
+
+dependencies{
+	testCompile group: "junit", name: "junit", version: "4.+"
+}
+
+sourceCompatibility = 1.7
+version = "0.1"
+jar{
+	manifest{
+		attributes "Implementation-Title": "nsend", "Implementation-Version": version
+	}
+}
