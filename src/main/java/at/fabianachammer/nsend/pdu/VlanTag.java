@@ -68,16 +68,16 @@ public class VlanTag implements ProtocolDataUnit {
 	public final byte[] toBytes() {
 		byte[] vlanTag = new byte[VLAN_TAG_SIZE];
 		byte[] bytes = BitOperator.split(tagProtocol.getIdentifier());
-		vlanTag[0] = bytes[1];
-		vlanTag[1] = bytes[0];
+
+		System.arraycopy(bytes, 0, vlanTag, 0, bytes.length);
 
 		byte thirdHighHalfByte =
 				(byte) ((priorityCodePoint << 1) + (canonicalFormat ? 0 : 1) << (Byte.SIZE / 2));
 
 		byte[] vid = BitOperator.split(vlanIdentifier);
 
-		vlanTag[2] = (byte) (thirdHighHalfByte + vid[1]);
-		vlanTag[3] = vid[0];
+		vlanTag[2] = (byte) (thirdHighHalfByte + vid[0]);
+		vlanTag[3] = vid[1];
 
 		return vlanTag;
 	}
