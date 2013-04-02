@@ -1,6 +1,7 @@
 package at.fabianachammer.nsend.pdu;
 
 import at.fabianachammer.nsend.pdu.util.BitOperator;
+import at.fabianachammer.nsend.pdu.util.PrimitiveArrayList;
 
 /**
  * Represents a VLAN Tag which contains information regarding VLANs inside a
@@ -65,21 +66,21 @@ public class VlanTag implements ProtocolDataUnit {
 	private short vlanIdentifier;
 
 	@Override
-	public final byte[] toBytes() {
-		byte[] vlanTag = new byte[VLAN_TAG_SIZE];
-		byte[] bytes = BitOperator.split(tagProtocol.getIdentifier());
-
-		System.arraycopy(bytes, 0, vlanTag, 0, bytes.length);
+	public final Byte[] toBytes() {
+		
+		PrimitiveArrayList<Byte> byteList = new PrimitiveArrayList<Byte>();
+		
+		byteList.addArray(BitOperator.split(tagProtocol.getIdentifier()));
 
 		byte thirdHighHalfByte =
 				(byte) ((priorityCodePoint << 1) + (canonicalFormat ? 0 : 1) << (Byte.SIZE / 2));
 
-		byte[] vid = BitOperator.split(vlanIdentifier);
+		Byte[] vid = BitOperator.split(vlanIdentifier);
 
-		vlanTag[2] = (byte) (thirdHighHalfByte + vid[0]);
-		vlanTag[3] = vid[1];
+		byteList.add((byte) (thirdHighHalfByte + vid[0]));
+		byteList.add(vid[1]);
 
-		return vlanTag;
+		return byteList.toArray(new Byte[0]);
 	}
 
 	/**

@@ -56,7 +56,7 @@ public final class ByteConverter {
 	 * @return hexadecimal representation of the byte
 	 */
 	private static String convertByteToHexString(final byte fullByte) {
-		byte[] halfBytes = BitOperator.split(fullByte);
+		Byte[] halfBytes = BitOperator.split(fullByte);
 
 		return convertHalfByteToHexString(halfBytes[0])
 				+ convertHalfByteToHexString(halfBytes[1]);

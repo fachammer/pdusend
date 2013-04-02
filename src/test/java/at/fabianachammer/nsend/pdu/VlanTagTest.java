@@ -3,7 +3,7 @@
  */
 package at.fabianachammer.nsend.pdu;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
 
 import org.junit.Test;
 
@@ -24,12 +24,13 @@ public class VlanTagTest {
 		tag.setTagProtocol(TagProtocol.IEEE_802_1Q);
 		tag.setPriorityCodePoint((byte) 4);
 		tag.setCanonicalFormat(true);
-		tag.setVlanIdentifier((short) 4000);
+		final short vlanId = 4000;
+		tag.setVlanIdentifier(vlanId);
 
-		final byte[] expected =
-				new byte[] { (byte) 0x81, 0, (byte) 0b10001111,
+		final Byte[] expected =
+				new Byte[] { (byte) 0x81, 0, (byte) 0b10001111,
 						(byte) 0b10100000 };
-		byte[] actual = tag.toBytes();
+		Byte[] actual = tag.toBytes();
 
 		assertArrayEquals(expected, actual);
 	}

@@ -11,9 +11,16 @@ package at.fabianachammer.nsend.pdu;
  */
 public class RawDataUnit implements ProtocolDataUnit {
 
-	private byte[] data;
+	/**
+	 * The data this PDU contains.
+	 */
+	private Byte[] data;
 
-	public RawDataUnit(byte[] data) {
+	/**
+	 * Creates a new RawDataUnit with the specified data.
+	 * @param data raw byte data this data unit should have
+	 */
+	public RawDataUnit(final Byte[] data) {
 		this.data = data;
 	}
 
@@ -23,14 +30,14 @@ public class RawDataUnit implements ProtocolDataUnit {
 	 * @see at.fabianachammer.nsend.pdu.ProtocolDataUnit#toBytes()
 	 */
 	@Override
-	public byte[] toBytes() {
+	public final Byte[] toBytes() {
 		return data;
 	}
 
 	/**
 	 * @return the data
 	 */
-	public final byte[] getData() {
+	public final Byte[] getData() {
 		return data;
 	}
 
@@ -38,7 +45,7 @@ public class RawDataUnit implements ProtocolDataUnit {
 	 * @param data
 	 *            the data to set
 	 */
-	public final void setData(byte[] data) {
+	public final void setData(final Byte[] data) {
 		this.data = data;
 	}
 
