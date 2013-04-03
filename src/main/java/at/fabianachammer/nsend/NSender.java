@@ -22,5 +22,5 @@ public class NSender {
 	 * @param interfaceIndex ID des NIC, der die Daten versenden soll
 	 * @param data Daten, die gesendet werden sollen
 	 */
-	private native void send(int interfaceIndex, byte[] data);
+	private native void send(final int interfaceIndex, final byte[] data);
 }

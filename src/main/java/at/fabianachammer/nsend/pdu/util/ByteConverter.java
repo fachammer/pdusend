@@ -22,6 +22,24 @@ public final class ByteConverter {
 	 */
 	private ByteConverter() {
 	}
+	
+	/**
+	 * Converts an array of byte-class-elements into an array of
+	 * byte-primitve-elements.
+	 * 
+	 * @param array
+	 *            byte-class-array to be converted
+	 * @return byte-primitve-array with the corresponding values from the
+	 *         byte-class-array
+	 */
+	public static byte[] toByteArray(final Byte[] array) {
+		byte[] byteArray = new byte[array.length];
+		for (int i = 0; i < array.length; i++) {
+			byteArray[i] = array[i].byteValue();
+		}
+
+		return byteArray;
+	}
 
 	/**
 	 * Converts an array of raw byte data into a hexadecimal representation.

@@ -6,7 +6,7 @@ package at.fabianachammer.nsend.pdu;
 import org.junit.Assert;
 import org.junit.Test;
 
-import at.fabianachammer.nsend.pdu.util.BytePrimitiveConverter;
+import at.fabianachammer.nsend.pdu.util.ByteConverter;
 
 /**
  * @author fabian
@@ -43,7 +43,7 @@ public class EthernetFrameTest {
 		ef.setPdu(pdu);
 
 		final byte[] actual =
-				BytePrimitiveConverter.convertByteArray(ef.toBytes());
+				ByteConverter.toByteArray(ef.toBytes());
 		final byte[] expected =
 				{ 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, (byte) 0xff, (byte) 0xee,
 						(byte) 0xdd, (byte) 0xcc, (byte) 0xbb, (byte) 0xaa,
@@ -83,7 +83,7 @@ public class EthernetFrameTest {
 		ef.setPdu(pdu);
 
 		final byte[] actual =
-				BytePrimitiveConverter.convertByteArray(ef.toBytes());
+				ByteConverter.toByteArray(ef.toBytes());
 		final byte[] expected =
 				{ 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, (byte) 0xff, (byte) 0xee,
 						(byte) 0xdd, (byte) 0xcc, (byte) 0xbb, (byte) 0xaa,

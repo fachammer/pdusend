@@ -4,7 +4,6 @@ import java.util.zip.CRC32;
 
 import at.fabianachammer.nsend.pdu.util.BitOperator;
 import at.fabianachammer.nsend.pdu.util.ByteConverter;
-import at.fabianachammer.nsend.pdu.util.BytePrimitiveConverter;
 import at.fabianachammer.nsend.pdu.util.PrimitiveArrayList;
 
 /**
@@ -75,12 +74,8 @@ public class EthernetFrame implements ProtocolDataUnit {
 			bytes.add((byte) 0);
 		}
 
-		String hexBytes =
-				ByteConverter.toHexString(BytePrimitiveConverter
-						.convertByteArray(bytes.toArray(new Byte[0])));
-
 		CRC32 crc = new CRC32();
-		crc.update(BytePrimitiveConverter.convertByteArray(bytes
+		crc.update(ByteConverter.toByteArray(bytes
 				.toArray(new Byte[0])));
 
 		Byte[] checkSum = BitOperator.split((int) crc.getValue());
