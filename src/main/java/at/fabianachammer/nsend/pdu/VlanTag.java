@@ -19,11 +19,6 @@ public class VlanTag implements ProtocolDataUnit {
 			TagProtocol.IEEE_802_1Q;
 
 	/**
-	 * Size of a VLAN Tag in Bytes.
-	 */
-	private static final int VLAN_TAG_SIZE = 4;
-
-	/**
 	 * Maximum value of the priority code point.
 	 */
 	private static final byte MAX_PRIORITY_CODE_POINT = 7;
