@@ -1,16 +1,86 @@
-apply plugin: "java"
-apply plugin: "eclipse"
+apply plugin:'java'
+apply plugin:'eclipse'
 
 repositories{ mavenCentral() }
 
-dependencies{
-	testCompile group: "junit", name: "junit", version: "4.+"
+configurations{
+	ajc
+	aspectpath
+	ajInpath
 }
 
+dependencies{
+	ajc "org.aspectj:aspectjtools:1.7.2"
+	compile "org.aspectj:aspectjrt:1.7.2"
+	testCompile "junit:junit:4.11"
+}
+
+eclipse{
+	project{
+		name = "nsend"
+
+		natures = [
+			"org.eclipse.ajdt.ui.ajnature",
+			"org.eclipse.jdt.core.javanature",
+			"org.springsource.ide.eclipse.gradle.core.nature"
+		]
+
+		buildCommand "org.eclipse.ajdt.core.ajbuilder"
+	}
+}
+
+sourceSets.main.java{ srcDirs "src/main/aspectj" }
+
 sourceCompatibility = 1.7
-version = "0.1"
+targetCompatibility = 1.7
+
 jar{
-	manifest{
-		attributes "Implementation-Title": "nsend", "Implementation-Version": version
+	manifest{ attributes "Implementation-Title": "nsend" }
+}
+
+task compileJava(overwrite: true, description: 'Compiles AspectJ Source', type: Ajc) {
+	sourceSet = sourceSets.main
+	aspectPath = configurations.aspectpath
+}
+
+task compileTestJava(overwrite: true, description: 'Compiles AspectJ Test Source', type: Ajc) {
+	dependsOn classes
+	sourceSet = sourceSets.test
+	aspectPath = files(configurations.aspectpath)
+}
+
+classes.dependsOn("compileJava")
+
+class Ajc extends DefaultTask {
+	@Input
+	SourceSet sourceSet
+
+	@Input
+	FileCollection aspectPath
+
+	@TaskAction
+	def compile() {
+		println "Running ajc ..."
+		ant.taskdef(
+				resource: "org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties",
+				classpath: project.configurations.ajc.asPath)
+		ant.iajc(
+				classpath: sourceSet.compileClasspath.asPath,
+				destDir: sourceSet.output.classesDir.absolutePath,
+				source: project.convention.plugins.java.sourceCompatibility,
+				target: project.convention.plugins.java.targetCompatibility,
+				aspectPath: aspectPath.asPath,
+				sourceRootCopyFilter: '**/*.java',
+				fork: true,
+				forkclasspath: project.configurations.ajc.asPath,
+				showWeaveInfo: true,
+				verbose: true) {
+
+					sourceroots {
+						sourceSet.java.srcDirs.each {
+							pathelement(location: it.absolutePath)
+						}
+					}
+				}
 	}
 }

@@ -51,15 +51,20 @@ public class EthernetFrame implements ProtocolDataUnit {
 	 * Describes the protocol data unit that encapsulates the data which the
 	 * Ethernet frame carries.
 	 */
-	private ProtocolDataUnit pdu;
+	private ProtocolDataUnit data = null;
 
 	@Override
 	public final Byte[] toBytes() {
 
 		Byte[] vlanTagBytes = new Byte[0];
+		Byte[] pduBytes = new Byte[0];
 
 		if (vlanTag != null) {
 			vlanTagBytes = vlanTag.toBytes();
+		}
+
+		if (data != null) {
+			pduBytes = data.toBytes();
 		}
 
 		PrimitiveArrayList<Byte> bytes = new PrimitiveArrayList<Byte>();
@@ -67,7 +72,7 @@ public class EthernetFrame implements ProtocolDataUnit {
 		bytes.addArray(sourceMacAddress);
 		bytes.addArray(vlanTagBytes);
 		bytes.addArray(BitOperator.split(etherType.getId()));
-		bytes.addArray(pdu.toBytes());
+		bytes.addArray(pduBytes);
 
 		for (int i = bytes.size(); i < MIN_ETHERNET_FRAME_SIZE
 				- CRC_SIZE; i++) {
@@ -75,8 +80,7 @@ public class EthernetFrame implements ProtocolDataUnit {
 		}
 
 		CRC32 crc = new CRC32();
-		crc.update(ByteConverter.toByteArray(bytes
-				.toArray(new Byte[0])));
+		crc.update(ByteConverter.toByteArray(bytes.toArray(new Byte[0])));
 
 		Byte[] checkSum = BitOperator.split((int) crc.getValue());
 
@@ -147,18 +151,18 @@ public class EthernetFrame implements ProtocolDataUnit {
 	}
 
 	/**
-	 * @return the pdu
+	 * @return the data
 	 */
-	public final ProtocolDataUnit getPdu() {
-		return pdu;
+	public final ProtocolDataUnit getData() {
+		return data;
 	}
 
 	/**
-	 * @param pdu
-	 *            the pdu to set
+	 * @param data the data to set
 	 */
-	public final void setPdu(final ProtocolDataUnit pdu) {
-		this.pdu = pdu;
+	public final void setData(final ProtocolDataUnit data) {
+		this.data = data;
 	}
+
 
 }

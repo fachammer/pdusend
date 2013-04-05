@@ -31,11 +31,6 @@ public enum EtherType {
 	RARP((short) 0x8035),
 
 	/**
-	 * VLAN Tag.
-	 */
-	VLAN((short) 0x8100),
-
-	/**
 	 * Internet Protocol version 6.
 	 */
 	IPv6((short) 0x86DD);

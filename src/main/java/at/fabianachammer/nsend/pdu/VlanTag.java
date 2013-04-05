@@ -10,7 +10,7 @@ import at.fabianachammer.nsend.pdu.util.PrimitiveArrayList;
  * @author fabian
  * 
  */
-public class VlanTag implements ProtocolDataUnit {
+public final class VlanTag implements ProtocolDataUnit {
 
 	/**
 	 * Standard tag protocol.
@@ -61,14 +61,20 @@ public class VlanTag implements ProtocolDataUnit {
 	private short vlanIdentifier;
 
 	@Override
-	public final Byte[] toBytes() {
-		
+	public Byte[] toBytes() {
+
 		PrimitiveArrayList<Byte> byteList = new PrimitiveArrayList<Byte>();
-		
+
 		byteList.addArray(BitOperator.split(tagProtocol.getIdentifier()));
 
-		byte thirdHighHalfByte =
-				(byte) ((priorityCodePoint << 1) + (canonicalFormat ? 0 : 1) << (Byte.SIZE / 2));
+		byte canonicalBit = 1;
+
+		if (canonicalFormat) {
+			canonicalBit = 0;
+		}
+
+		byte thirdHighHalfByte = (byte) ((priorityCodePoint << 1)
+				+ (canonicalBit) << (Byte.SIZE / 2));
 
 		Byte[] vid = BitOperator.split(vlanIdentifier);
 
@@ -81,7 +87,7 @@ public class VlanTag implements ProtocolDataUnit {
 	/**
 	 * @return the tagProtocol
 	 */
-	public final TagProtocol getTagProtocol() {
+	public TagProtocol getTagProtocol() {
 		return tagProtocol;
 	}
 
@@ -89,14 +95,14 @@ public class VlanTag implements ProtocolDataUnit {
 	 * @param tagProtocol
 	 *            the tagProtocol to set
 	 */
-	public final void setTagProtocol(final TagProtocol tagProtocol) {
+	public void setTagProtocol(final TagProtocol tagProtocol) {
 		this.tagProtocol = tagProtocol;
 	}
 
 	/**
 	 * @return the priorityCodePoint
 	 */
-	public final byte getPriorityCodePoint() {
+	public byte getPriorityCodePoint() {
 		return priorityCodePoint;
 	}
 
@@ -104,7 +110,7 @@ public class VlanTag implements ProtocolDataUnit {
 	 * @param priorityCodePoint
 	 *            the priorityCodePoint to set
 	 */
-	public final void setPriorityCodePoint(final byte priorityCodePoint) {
+	public void setPriorityCodePoint(final byte priorityCodePoint) {
 		if (priorityCodePoint < MIN_PRIORITY_CODE_POINT
 				|| priorityCodePoint > MAX_PRIORITY_CODE_POINT) {
 			throw new IllegalArgumentException(
@@ -118,7 +124,7 @@ public class VlanTag implements ProtocolDataUnit {
 	/**
 	 * @return the canonicalFormat
 	 */
-	public final boolean isCanonicalFormat() {
+	public boolean isCanonicalFormat() {
 		return canonicalFormat;
 	}
 
@@ -126,14 +132,14 @@ public class VlanTag implements ProtocolDataUnit {
 	 * @param canonicalFormat
 	 *            the canonicalFormat to set
 	 */
-	public final void setCanonicalFormat(final boolean canonicalFormat) {
+	public void setCanonicalFormat(final boolean canonicalFormat) {
 		this.canonicalFormat = canonicalFormat;
 	}
 
 	/**
 	 * @return the vlanIdentifier
 	 */
-	public final short getVlanIdentifier() {
+	public short getVlanIdentifier() {
 		return vlanIdentifier;
 	}
 
@@ -141,7 +147,7 @@ public class VlanTag implements ProtocolDataUnit {
 	 * @param vlanIdentifier
 	 *            the vlanIdentifier to set
 	 */
-	public final void setVlanIdentifier(final short vlanIdentifier) {
+	public void setVlanIdentifier(final short vlanIdentifier) {
 		if (vlanIdentifier < MIN_VLAN_IDETIFIER
 				|| vlanIdentifier > MAX_VLAN_IDENTIFIER) {
 			throw new IllegalArgumentException(
