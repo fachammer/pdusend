@@ -36,7 +36,6 @@ public final class BitOperator {
 	 */
 	public static short merge(final byte lowByte, final byte highByte) {
 		return (short) (lowByte + (highByte << Byte.SIZE));
-
 	}
 
 	/**

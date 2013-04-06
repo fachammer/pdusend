@@ -1,6 +1,3 @@
-/**
- * 
- */
 package at.fabianachammer.nsend.pdu.util;
 
 import static org.junit.Assert.assertEquals;
@@ -21,10 +18,10 @@ public class BitOperatorTest {
 	 * {@link at.fabianachammer.nsend.pdu.util.BitOperator#merge(byte, byte)}.
 	 */
 	@Test
-	public final void testMerge() {
-		final byte lowByte = 0b00110011;
-		final byte highByte = (byte) 0b11110000;
-		final short expected = (short) 0b1111000000110011;
+	public final void testMergeWorks() {
+		final byte lowByte = 0x01;
+		final byte highByte = (byte) 0x01;
+		final short expected = (short) 0x0101;
 		short actual = BitOperator.merge(lowByte, highByte);
 
 		assertEquals(expected, actual);
@@ -35,9 +32,9 @@ public class BitOperatorTest {
 	 * {@link at.fabianachammer.nsend.pdu.util.BitOperator#split(short)}.
 	 */
 	@Test
-	public final void testShortSplit() {
-		final short value = (short) 0b1111000011001100;
-		final Byte[] expected = { (byte) 0b11110000, (byte) 0b11001100 };
+	public final void testShortSplitWorks() {
+		final short value = (short) 0x0101;
+		final Byte[] expected = { (byte) 0x01, (byte) 0x01 };
 
 		Byte[] actual = BitOperator.split(value);
 
@@ -49,9 +46,9 @@ public class BitOperatorTest {
 	 * {@link at.fabianachammer.nsend.pdu.util.BitOperator#split(byte)}.
 	 */
 	@Test
-	public final void testByteSplit() {
-		final byte value = (byte) 0b11001111;
-		final Byte[] expected = { 0b1100, 0b1111 };
+	public final void testByteSplitWorks() {
+		final byte value = (byte) 0x01;
+		final Byte[] expected = { 0x0, 0x1 };
 
 		Byte[] actual = BitOperator.split(value);
 
@@ -63,12 +60,11 @@ public class BitOperatorTest {
 	 * {@link t.fabianachammer.nsend.pdu.util.BitOperator#split(int)}.
 	 */
 	@Test
-	public final void testIntToByteSplit() {
-		final int value = 0b11110000110011000001100011110000;
+	public final void testIntToByteSplitWorks() {
+		final int value = 0x01010101;
 
 		final Byte[] expected =
-				{ (byte) 0b11110000, (byte) 0b11001100, (byte) 0b00011000,
-						(byte) 0b11110000 };
+				{ (byte) 0x01, (byte) 0x01, (byte) 0x01, (byte) 0x01 };
 
 		Byte[] actual = BitOperator.split(value);
 
@@ -80,15 +76,16 @@ public class BitOperatorTest {
 	 * {@link at.fabianachammer.nsend.pdu.util.BitOperator#isSet(int, int)}.
 	 */
 	@Test
-	public final void testIsSet() {
-		final int value = 0b1001;
-		final int n = 3;
-
-		final boolean expected = true;
-
-		boolean actual = BitOperator.isSet(value, n);
-
-		assertEquals(expected, actual);
+	public final void testIsSetWorks() {
+		assertEquals(true, BitOperator.isSet(1, 0));
 	}
 
+	/**
+	 * Test method for
+	 * {@link at.fabianachammer.nsend.pdu.util.BitOperator#isSet(int, int)}.
+	 */
+	@Test
+	public final void testIsNotSetWorks() {
+		assertEquals(false, BitOperator.isSet(0, 0));
+	}
 }

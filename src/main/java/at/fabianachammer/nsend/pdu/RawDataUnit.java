@@ -24,11 +24,6 @@ public class RawDataUnit implements ProtocolDataUnit {
 		this.data = data;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see at.fabianachammer.nsend.pdu.ProtocolDataUnit#toBytes()
-	 */
 	@Override
 	public final Byte[] toBytes() {
 		return data;

@@ -16,27 +16,7 @@ public final class VlanTag implements ProtocolDataUnit {
 	 * Standard tag protocol.
 	 */
 	private static final TagProtocol DEFAULT_TAG_PROTOCOL =
-			TagProtocol.IEEE_802_1Q;
-
-	/**
-	 * Maximum value of the priority code point.
-	 */
-	private static final byte MAX_PRIORITY_CODE_POINT = 7;
-
-	/**
-	 * Minimum value of the priority code point.
-	 */
-	private static final byte MIN_PRIORITY_CODE_POINT = 0;
-
-	/**
-	 * Maximum value of the VLAN identifier.
-	 */
-	private static final short MAX_VLAN_IDENTIFIER = 4095;
-
-	/**
-	 * Minimum value of the VLAN identifier.
-	 */
-	private static final short MIN_VLAN_IDETIFIER = 0;
+			TagProtocol.IEEE_802_1Q;	
 
 	/**
 	 * Tag Protocol. Describes, which protocol is used for Tagging (default is
@@ -111,13 +91,6 @@ public final class VlanTag implements ProtocolDataUnit {
 	 *            the priorityCodePoint to set
 	 */
 	public void setPriorityCodePoint(final byte priorityCodePoint) {
-		if (priorityCodePoint < MIN_PRIORITY_CODE_POINT
-				|| priorityCodePoint > MAX_PRIORITY_CODE_POINT) {
-			throw new IllegalArgumentException(
-					"the priority code point may only have values between "
-							+ MIN_PRIORITY_CODE_POINT + " and "
-							+ MAX_PRIORITY_CODE_POINT);
-		}
 		this.priorityCodePoint = priorityCodePoint;
 	}
 
@@ -148,14 +121,6 @@ public final class VlanTag implements ProtocolDataUnit {
 	 *            the vlanIdentifier to set
 	 */
 	public void setVlanIdentifier(final short vlanIdentifier) {
-		if (vlanIdentifier < MIN_VLAN_IDETIFIER
-				|| vlanIdentifier > MAX_VLAN_IDENTIFIER) {
-			throw new IllegalArgumentException(
-					"the vlan identifier may only have values between "
-							+ MIN_VLAN_IDETIFIER + " and "
-							+ MAX_VLAN_IDENTIFIER);
-		}
-
 		this.vlanIdentifier = vlanIdentifier;
 	}
 }

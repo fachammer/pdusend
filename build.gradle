@@ -7,6 +7,7 @@ configurations{
 	ajc
 	aspectpath
 	ajInpath
+	cobertura
 }
 
 dependencies{
@@ -50,6 +51,7 @@ task compileTestJava(overwrite: true, description: 'Compiles AspectJ Test Source
 }
 
 classes.dependsOn("compileJava")
+build.dependsOn("classes")
 
 class Ajc extends DefaultTask {
 	@Input

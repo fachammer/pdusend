@@ -56,19 +56,6 @@ public final class ByteConverter {
 	}
 
 	/**
-	 * Converts a half-byte into a hexadecimal character.
-	 * @param halfByte half-byte to be converted
-	 * @return hexadecimal character which represents the half-byte
-	 */
-	private static String convertHalfByteToHexString(final byte halfByte) {
-		if (halfByte < 0 || halfByte > HEX_F) {
-			throw new IllegalArgumentException("not a half byte");
-		}
-
-		return Integer.toHexString(halfByte);
-	}
-
-	/**
 	 * Converts a byte into its hexadecimal representation (with leading zeros).
 	 * @param fullByte byte to be converted
 	 * @return hexadecimal representation of the byte
@@ -76,7 +63,7 @@ public final class ByteConverter {
 	private static String convertByteToHexString(final byte fullByte) {
 		Byte[] halfBytes = BitOperator.split(fullByte);
 
-		return convertHalfByteToHexString(halfBytes[0])
-				+ convertHalfByteToHexString(halfBytes[1]);
+		return Integer.toHexString(halfBytes[0])
+				+ Integer.toHexString(halfBytes[1]);
 	}
 }

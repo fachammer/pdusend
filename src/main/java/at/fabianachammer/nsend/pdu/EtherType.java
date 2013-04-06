@@ -1,6 +1,3 @@
-/**
- * 
- */
 package at.fabianachammer.nsend.pdu;
 
 /**
