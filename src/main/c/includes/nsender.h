@@ -10,7 +10,7 @@ extern "C" {
 /*
  * Class:     at_fabianachammer_nsend_NSender
  * Method:    send
- * Signature: (I[B)V
+ * Signature: (I[B[BS[B)V
  */
 JNIEXPORT void JNICALL Java_at_fabianachammer_nsend_NSender_send
   (JNIEnv *, jobject, jint, jbyteArray);

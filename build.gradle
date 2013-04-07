@@ -7,7 +7,6 @@ configurations{
 	ajc
 	aspectpath
 	ajInpath
-	cobertura
 }
 
 dependencies{
@@ -18,22 +17,31 @@ dependencies{
 
 eclipse{
 	project{
+
+		file.beforeMerged{ project ->
+			project.natures.clear()
+		}
+
 		name = "nsend"
 
-		natures = [
-			"org.eclipse.ajdt.ui.ajnature",
-			"org.eclipse.jdt.core.javanature",
-			"org.springsource.ide.eclipse.gradle.core.nature"
-		]
+		natures "org.eclipse.ajdt.ui.ajnature"
+		natures "org.eclipse.jdt.core.javanature"
+		natures "org.springsource.ide.eclipse.gradle.core.nature"
+		natures "net.sf.eclipsecs.core.CheckstyleNature"
+		natures "org.eclipse.cdt.core.cnature"
 
+		buildCommand "org.eclipse.cdt.managedbuilder.core.genmakebuilder"
+		buildCommand "org.eclipse.cdt.managedbuilder.core.ScannerConfigBuilder"
 		buildCommand "org.eclipse.ajdt.core.ajbuilder"
+		buildCommand "net.sf.eclipsecs.core.CheckstyleBuilder"	
 	}
 }
 
 sourceSets.main.java{ srcDirs "src/main/aspectj" }
+sourceSets.main.java{ srcDirs "src/main/c" }
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
 
 jar{
 	manifest{ attributes "Implementation-Title": "nsend" }

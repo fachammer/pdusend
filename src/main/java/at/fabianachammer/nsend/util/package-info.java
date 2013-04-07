@@ -5,4 +5,4 @@
  * @author fabian
  * 
  */
-package at.fabianachammer.nsend.pdu.util;
+package at.fabianachammer.nsend.util;

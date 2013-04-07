@@ -2,9 +2,9 @@ package at.fabianachammer.nsend.pdu;
 
 import java.util.zip.CRC32;
 
-import at.fabianachammer.nsend.pdu.util.BitOperator;
-import at.fabianachammer.nsend.pdu.util.ByteConverter;
-import at.fabianachammer.nsend.pdu.util.PrimitiveArrayList;
+import at.fabianachammer.nsend.util.BitOperator;
+import at.fabianachammer.nsend.util.ByteConverter;
+import at.fabianachammer.nsend.util.PrimitiveArrayList;
 
 /**
  * Represents an Ethernet frame specified in IEEE 802.3.
@@ -13,6 +13,13 @@ import at.fabianachammer.nsend.pdu.util.PrimitiveArrayList;
  * 
  */
 public class EthernetFrame implements ProtocolDataUnit {
+
+	/**
+	 * Specifies the broadcast MAC address.
+	 */
+	public static final Byte[] BROADCAST_MAC = new Byte[] {
+			(byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff,
+			(byte) 0xff };
 
 	/**
 	 * Specifies the minimum size of an Ethernet frame in bytes.
@@ -55,7 +62,6 @@ public class EthernetFrame implements ProtocolDataUnit {
 
 	@Override
 	public final Byte[] toBytes() {
-
 		Byte[] vlanTagBytes = new Byte[0];
 		Byte[] pduBytes = new Byte[0];
 
@@ -82,7 +88,13 @@ public class EthernetFrame implements ProtocolDataUnit {
 		CRC32 crc = new CRC32();
 		crc.update(ByteConverter.toByteArray(bytes.toArray(new Byte[0])));
 
-		Byte[] checkSum = BitOperator.split((int) crc.getValue());
+		Byte[] reverseCheckSum = BitOperator.split((int) crc.getValue());
+		Byte[] checkSum = new Byte[reverseCheckSum.length];
+
+		for (int i = 0; i < checkSum.length; i++) {
+			checkSum[i] = reverseCheckSum[reverseCheckSum.length
+					- i - 1];
+		}
 
 		bytes.addArray(checkSum);
 
@@ -158,11 +170,10 @@ public class EthernetFrame implements ProtocolDataUnit {
 	}
 
 	/**
-	 * @param data the data to set
+	 * @param data
+	 *            the data to set
 	 */
 	public final void setData(final ProtocolDataUnit data) {
 		this.data = data;
 	}
-
-
 }

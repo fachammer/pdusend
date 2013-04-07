@@ -1,7 +1,7 @@
 /**
  * 
  */
-package at.fabianachammer.nsend.pdu.util;
+package at.fabianachammer.nsend.util;
 
 import java.util.ArrayList;
 

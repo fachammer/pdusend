@@ -3,7 +3,7 @@ package at.fabianachammer.nsend.pdu;
 import org.junit.Assert;
 import org.junit.Test;
 
-import at.fabianachammer.nsend.pdu.util.ByteConverter;
+import at.fabianachammer.nsend.util.ByteConverter;
 
 /**
  * @author fabian
@@ -55,7 +55,7 @@ public class EthernetFrameTest {
 						(byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
 						(byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
 						(byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
-						(byte) 0xd0, 0x40, (byte) 0xeb, (byte) 0x9a };
+						(byte) 0x9a, (byte) 0xeb, 0x40, (byte) 0xd0 };
 
 		Assert.assertArrayEquals(expected, actual);
 	}
@@ -83,7 +83,7 @@ public class EthernetFrameTest {
 				{
 						0x00, 0x11, 0x22, 0x33, 0x44, 0x55, (byte) 0xff,
 						(byte) 0xee, (byte) 0xdd, (byte) 0xcc, (byte) 0xbb,
-						(byte) 0xaa, 0x08, 0x00, (byte) 0, (byte) 0,
+						(byte) 0xaa, 0x08, 0x00, (byte) 0, (byte) 0, (byte) 0,
 						(byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
 						(byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
 						(byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
@@ -92,8 +92,8 @@ public class EthernetFrameTest {
 						(byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
 						(byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
 						(byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
-						(byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 0x40,
-						0x59, (byte) 0xd3, (byte) 0x8e };
+						(byte) 0, (byte) 0, (byte) 0, (byte) 0x8e, (byte) 0xd3,
+						0x59, (byte) 0x40 };
 
 		Assert.assertArrayEquals(expected, actual);
 	}

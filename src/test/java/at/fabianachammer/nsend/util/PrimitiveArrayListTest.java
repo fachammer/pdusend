@@ -1,13 +1,15 @@
 /**
  * 
  */
-package at.fabianachammer.nsend.pdu.util;
+package at.fabianachammer.nsend.util;
 
 import static org.junit.Assert.assertArrayEquals;
 
 import java.util.ArrayList;
 
 import org.junit.Test;
+
+import at.fabianachammer.nsend.util.PrimitiveArrayList;
 
 /**
  * @author fabian
@@ -17,7 +19,7 @@ public class PrimitiveArrayListTest {
 
 	/**
 	 * Test method for
-	 * {@link at.fabianachammer.nsend.pdu.util.PrimitiveArrayList#addArray(T[])}
+	 * {@link at.fabianachammer.nsend.util.PrimitiveArrayList#addArray(T[])}
 	 * .
 	 */
 	@Test

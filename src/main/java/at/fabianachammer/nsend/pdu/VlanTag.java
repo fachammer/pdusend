@@ -1,7 +1,7 @@
 package at.fabianachammer.nsend.pdu;
 
-import at.fabianachammer.nsend.pdu.util.BitOperator;
-import at.fabianachammer.nsend.pdu.util.PrimitiveArrayList;
+import at.fabianachammer.nsend.util.BitOperator;
+import at.fabianachammer.nsend.util.PrimitiveArrayList;
 
 /**
  * Represents a VLAN Tag which contains information regarding VLANs inside a
