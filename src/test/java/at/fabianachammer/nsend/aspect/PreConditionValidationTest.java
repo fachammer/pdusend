@@ -9,7 +9,7 @@ import static org.junit.Assert.assertArrayEquals;
 import org.junit.Test;
 
 import at.fabianachammer.nsend.pdu.EtherType;
-import at.fabianachammer.nsend.pdu.EthernetFrame;
+import at.fabianachammer.nsend.pdu.EthernetHeader;
 import at.fabianachammer.nsend.pdu.RawDataUnit;
 import at.fabianachammer.nsend.pdu.VlanTag;
 
@@ -29,11 +29,11 @@ public class PreConditionValidationTest {
 	public final void testSetValidDestinationMacAddressOnEthernetFrameWorks() {
 		final int arraySize = 6;
 		Byte[] mac = new Byte[arraySize];
-		EthernetFrame ef = new EthernetFrame();
+		EthernetHeader eh = new EthernetHeader();
 
-		ef.setDestinationMacAddress(mac);
+		eh.setDestinationMacAddress(mac);
 
-		assertArrayEquals(mac, ef.getDestinationMacAddress());
+		assertArrayEquals(mac, eh.getDestinationMacAddress());
 	}
 
 	/**
@@ -44,36 +44,11 @@ public class PreConditionValidationTest {
 	public final void testSetValidSourceMacAddressOnEthernetFrameWorks() {
 		final int arraySize = 6;
 		Byte[] mac = new Byte[arraySize];
-		EthernetFrame ef = new EthernetFrame();
+		EthernetHeader eh = new EthernetHeader();
 
-		ef.setSourceMacAddress(mac);
+		eh.setSourceMacAddress(mac);
 
-		assertArrayEquals(mac, ef.getSourceMacAddress());
-	}
-
-	/**
-	 * Tests, whether a valid PDU can be set as data for an Ethernet frame.
-	 */
-	@Test
-	public final void testSetValidPduOnEthernetFrameWorks() {
-		final RawDataUnit rdu = new RawDataUnit(new Byte[] { 0 });
-		EthernetFrame ef = new EthernetFrame();
-
-		ef.setData(rdu);
-
-		assertEquals(rdu, ef.getData());
-	}
-
-	/**
-	 * Tests, whether a null PDU can be set as data for an Ethernet frame.
-	 */
-	@Test
-	public final void testSetNullPduOnEthernetFrameWorks() {
-		EthernetFrame ef = new EthernetFrame();
-
-		ef.setData(null);
-
-		assertEquals(null, ef.getData());
+		assertArrayEquals(mac, eh.getSourceMacAddress());
 	}
 
 	/**
@@ -81,11 +56,11 @@ public class PreConditionValidationTest {
 	 */
 	@Test
 	public final void testSetValidEtherTypeOnEthernetFrameWorks() {
-		EthernetFrame ef = new EthernetFrame();
+		EthernetHeader eh = new EthernetHeader();
 
-		ef.setEtherType(EtherType.ARP);
+		eh.setEtherType(EtherType.ARP);
 
-		assertEquals(EtherType.ARP, ef.getEtherType());
+		assertEquals(EtherType.ARP, eh.getEtherType());
 	}
 
 	/**
@@ -96,9 +71,9 @@ public class PreConditionValidationTest {
 	public final void testSetIllegalDestinationMacAddressOnEthernetFrameThrowsIllegalArgumentException() {
 		final int illegalArraySize = 7;
 		Byte[] illegalMac = new Byte[illegalArraySize];
-		EthernetFrame ef = new EthernetFrame();
+		EthernetHeader eh = new EthernetHeader();
 
-		ef.setDestinationMacAddress(illegalMac);
+		eh.setDestinationMacAddress(illegalMac);
 	}
 
 	/**
@@ -109,21 +84,9 @@ public class PreConditionValidationTest {
 	public final void testSetIllegalSourceMacAddressOnEthernetFrameThrowsIllegalArgumentException() {
 		final int illegalArraySize = 7;
 		Byte[] illegalMac = new Byte[illegalArraySize];
-		EthernetFrame ef = new EthernetFrame();
+		EthernetHeader eh = new EthernetHeader();
 
-		ef.setSourceMacAddress(illegalMac);
-	}
-
-	/**
-	 * Tests, whether the setting of an illegal PDU on an Ethernet frame throws
-	 * an IllegalArgumentException.
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public final void testSetIllegalPduOnEthernetFrameThrowsIllegalArgumentException() {
-		EthernetFrame ef = new EthernetFrame();
-		final int illegalArraySize = 1505;
-
-		ef.setData(new RawDataUnit(new Byte[illegalArraySize]));
+		eh.setSourceMacAddress(illegalMac);
 	}
 
 	/**
@@ -132,9 +95,9 @@ public class PreConditionValidationTest {
 	 */
 	@Test(expected = NullPointerException.class)
 	public final void testSetNullDestinationMacAddressOnEthernetFrameThrowsNullPointerException() {
-		EthernetFrame ef = new EthernetFrame();
+		EthernetHeader eh = new EthernetHeader();
 
-		ef.setDestinationMacAddress(null);
+		eh.setDestinationMacAddress(null);
 	}
 
 	/**
@@ -143,9 +106,9 @@ public class PreConditionValidationTest {
 	 */
 	@Test(expected = NullPointerException.class)
 	public final void testSetNullSourceMacAddressOnEthernetFrameThrowsNullPointerException() {
-		EthernetFrame ef = new EthernetFrame();
+		EthernetHeader eh = new EthernetHeader();
 
-		ef.setSourceMacAddress(null);
+		eh.setSourceMacAddress(null);
 	}
 
 	/**
@@ -154,9 +117,9 @@ public class PreConditionValidationTest {
 	 */
 	@Test(expected = NullPointerException.class)
 	public final void testSetNullEtherTypeOnEthernetFrameThrowsNullPointerException() {
-		EthernetFrame ef = new EthernetFrame();
+		EthernetHeader eh = new EthernetHeader();
 
-		ef.setEtherType(null);
+		eh.setEtherType(null);
 	}
 
 	/**
@@ -164,8 +127,8 @@ public class PreConditionValidationTest {
 	 */
 	@Test
 	public final void testSetValidPriorityCodePointOnVlanTagWorks() {
-		VlanTag tag = new VlanTag();
 		final byte validPriorityCodePoint = 0;
+		VlanTag tag = new VlanTag();
 
 		tag.setPriorityCodePoint(validPriorityCodePoint);
 
@@ -177,8 +140,8 @@ public class PreConditionValidationTest {
 	 */
 	@Test
 	public final void testSetValidVlanIdentifierOnVlanTagWorks() {
-		VlanTag tag = new VlanTag();
 		final short validVlanIdentifier = 0;
+		VlanTag tag = new VlanTag();
 
 		tag.setVlanIdentifier(validVlanIdentifier);
 
@@ -191,8 +154,8 @@ public class PreConditionValidationTest {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public final void testSetIllegalPriorityCodePointOnVlanTagThrowsIllegalArgumentException() {
-		final VlanTag tag = new VlanTag();
 		final byte illegalPriorityCodePoint = 8;
+		final VlanTag tag = new VlanTag();
 
 		tag.setPriorityCodePoint(illegalPriorityCodePoint);
 	}
@@ -203,8 +166,8 @@ public class PreConditionValidationTest {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public final void testSetIllegalVlanIdentifierThrowsIllegalArgumentException() {
-		final VlanTag tag = new VlanTag();
 		final short illegalVlanIdentifier = 4097;
+		final VlanTag tag = new VlanTag();
 
 		tag.setVlanIdentifier(illegalVlanIdentifier);
 	}

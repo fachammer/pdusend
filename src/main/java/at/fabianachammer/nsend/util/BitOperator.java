@@ -1,4 +1,4 @@
-package at.fabianachammer.nsend.pdu.util;
+package at.fabianachammer.nsend.util;
 
 /**
  * This class provides methods for operating with numbers on a bit basis.

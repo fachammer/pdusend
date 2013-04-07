@@ -1,9 +1,11 @@
-package at.fabianachammer.nsend.pdu.util;
+package at.fabianachammer.nsend.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertArrayEquals;
 
 import org.junit.Test;
+
+import at.fabianachammer.nsend.util.BitOperator;
 
 /**
  * This class tests the BitOpterator class.
@@ -15,7 +17,7 @@ public class BitOperatorTest {
 
 	/**
 	 * Test method for
-	 * {@link at.fabianachammer.nsend.pdu.util.BitOperator#merge(byte, byte)}.
+	 * {@link at.fabianachammer.nsend.util.BitOperator#merge(byte, byte)}.
 	 */
 	@Test
 	public final void testMergeWorks() {
@@ -29,7 +31,7 @@ public class BitOperatorTest {
 
 	/**
 	 * Test method for
-	 * {@link at.fabianachammer.nsend.pdu.util.BitOperator#split(short)}.
+	 * {@link at.fabianachammer.nsend.util.BitOperator#split(short)}.
 	 */
 	@Test
 	public final void testShortSplitWorks() {
@@ -43,7 +45,7 @@ public class BitOperatorTest {
 
 	/**
 	 * Test method for
-	 * {@link at.fabianachammer.nsend.pdu.util.BitOperator#split(byte)}.
+	 * {@link at.fabianachammer.nsend.util.BitOperator#split(byte)}.
 	 */
 	@Test
 	public final void testByteSplitWorks() {
@@ -73,7 +75,7 @@ public class BitOperatorTest {
 
 	/**
 	 * Test method for
-	 * {@link at.fabianachammer.nsend.pdu.util.BitOperator#isSet(int, int)}.
+	 * {@link at.fabianachammer.nsend.util.BitOperator#isSet(int, int)}.
 	 */
 	@Test
 	public final void testIsSetWorks() {
@@ -82,7 +84,7 @@ public class BitOperatorTest {
 
 	/**
 	 * Test method for
-	 * {@link at.fabianachammer.nsend.pdu.util.BitOperator#isSet(int, int)}.
+	 * {@link at.fabianachammer.nsend.util.BitOperator#isSet(int, int)}.
 	 */
 	@Test
 	public final void testIsNotSetWorks() {

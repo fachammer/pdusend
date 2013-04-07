@@ -1,7 +1,7 @@
 /**
  * 
  */
-package at.fabianachammer.nsend.pdu.util;
+package at.fabianachammer.nsend.util;
 
 /**
  * This class provides methods for converting byte data into a text
@@ -11,7 +11,7 @@ package at.fabianachammer.nsend.pdu.util;
  * 
  */
 public final class ByteConverter {
-	
+
 	/**
 	 * Maximum value for a half-byte.
 	 */
@@ -22,15 +22,15 @@ public final class ByteConverter {
 	 */
 	private ByteConverter() {
 	}
-	
+
 	/**
-	 * Converts an array of byte-class-elements into an array of
-	 * byte-primitve-elements.
+	 * Converts an array of byte-class elements into an array of byte-primitive
+	 * elements.
 	 * 
 	 * @param array
-	 *            byte-class-array to be converted
-	 * @return byte-primitve-array with the corresponding values from the
-	 *         byte-class-array
+	 *            byte-class array to be converted
+	 * @return byte-primitive array with the corresponding values from the
+	 *         byte-class array
 	 */
 	public static byte[] toByteArray(final Byte[] array) {
 		byte[] byteArray = new byte[array.length];
@@ -42,8 +42,28 @@ public final class ByteConverter {
 	}
 
 	/**
+	 * Converts an array of byte-primitive elements into an array of byte-class
+	 * elements.
+	 * 
+	 * @param array
+	 *            byte-primitive array to be converted
+	 * @return byte-class array with the corresponding values from the
+	 *         byte-primitive array
+	 */
+	public static Byte[] toByteArray(final byte[] array) {
+		Byte[] byteArray = new Byte[array.length];
+		for (int i = 0; i < array.length; i++) {
+			byteArray[i] = array[i];
+		}
+
+		return byteArray;
+	}
+
+	/**
 	 * Converts an array of raw byte data into a hexadecimal representation.
-	 * @param data data to be converted
+	 * 
+	 * @param data
+	 *            data to be converted
 	 * @return hexadecimal representation of the data
 	 */
 	public static String toHexString(final byte[] data) {
@@ -57,7 +77,9 @@ public final class ByteConverter {
 
 	/**
 	 * Converts a byte into its hexadecimal representation (with leading zeros).
-	 * @param fullByte byte to be converted
+	 * 
+	 * @param fullByte
+	 *            byte to be converted
 	 * @return hexadecimal representation of the byte
 	 */
 	private static String convertByteToHexString(final byte fullByte) {
