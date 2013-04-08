@@ -10,7 +10,6 @@ import org.junit.Test;
 
 import at.fabianachammer.nsend.pdu.EtherType;
 import at.fabianachammer.nsend.pdu.EthernetFrame;
-import at.fabianachammer.nsend.pdu.RawDataUnit;
 import at.fabianachammer.nsend.pdu.VlanTag;
 
 /**
