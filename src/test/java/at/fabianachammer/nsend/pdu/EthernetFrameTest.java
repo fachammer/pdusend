@@ -11,12 +11,8 @@ import at.fabianachammer.nsend.util.ByteConverter;
  */
 public class EthernetFrameTest {
 
-	/**
-	 * Test method for
-	 * {@link at.fabianachammer.nsend.pdu.EthernetFrame#toBytes()}.
-	 */
 	@Test
-	public final void testToBytesWorks() {
+	public final void testToBytesWithVlanTagWorks() {
 		final EthernetFrame ef = new EthernetFrame();
 		final Byte[] destinationMac = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55 };
 		final Byte[] sourceMac =
@@ -60,10 +56,6 @@ public class EthernetFrameTest {
 		Assert.assertArrayEquals(expected, actual);
 	}
 
-	/**
-	 * Test method for
-	 * {@link at.fabianachammer.nsend.pdu.EthernetFrame#toBytes()}.
-	 */
 	@Test
 	public final void testToBytesWithoutVlanTagWorks() {
 		final EthernetFrame ef = new EthernetFrame();

@@ -7,6 +7,7 @@ configurations{
 	ajc
 	aspectpath
 	ajInpath
+	integrationTestCompile.extendsFrom testCompile
 }
 
 dependencies{
@@ -33,12 +34,20 @@ eclipse{
 		buildCommand "org.eclipse.cdt.managedbuilder.core.genmakebuilder"
 		buildCommand "org.eclipse.cdt.managedbuilder.core.ScannerConfigBuilder"
 		buildCommand "org.eclipse.ajdt.core.ajbuilder"
-		buildCommand "net.sf.eclipsecs.core.CheckstyleBuilder"	
+		buildCommand "net.sf.eclipsecs.core.CheckstyleBuilder"
 	}
 }
 
 sourceSets.main.java{ srcDirs "src/main/aspectj" }
 sourceSets.main.java{ srcDirs "src/main/c" }
+sourceSets{
+	integrationTest{
+		java{
+			srcDirs "src/integration-test/java"
+			compileClasspath += main.output
+		}
+	}
+}
 
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
@@ -58,8 +67,16 @@ task compileTestJava(overwrite: true, description: 'Compiles AspectJ Test Source
 	aspectPath = files(configurations.aspectpath)
 }
 
+task compileIntegrationTestJava(overwrite: true, description: "Compile Integration Tests", type:Ajc){
+	dependsOn classes
+	sourceSet = sourceSets.integrationTest
+	aspectPath = files(configurations.aspectpath);
+}
+
+integrationTestClasses.dependsOn("compileIntegrationTestJava")
 classes.dependsOn("compileJava")
 build.dependsOn("classes")
+build.dependsOn("integrationTestClasses")
 
 class Ajc extends DefaultTask {
 	@Input
