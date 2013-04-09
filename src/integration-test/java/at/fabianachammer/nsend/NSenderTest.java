@@ -7,6 +7,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import at.fabianachammer.nsend.pdu.EtherType;
+import at.fabianachammer.nsend.pdu.EthernetFrame;
 import at.fabianachammer.nsend.pdu.ProtocolDataUnit;
 import at.fabianachammer.nsend.pdu.RawDataUnit;
 
@@ -37,11 +39,32 @@ public class NSenderTest {
 	}
 
 	@Test
-	public final void testSendRawDataOnLoopbackInterfaceWithVlanTag() {
+	public final void testSendRawTwoByteDataOnLoopbackInterface() {
 		NSender sender = new NSender();
 		final Byte[] anyData = new Byte[] { (byte) 0x10, (byte) 0x01 };
 		ProtocolDataUnit anyDataUnit = new RawDataUnit(anyData);
 
 		sender.send(loopbackInterface, anyDataUnit);
+	}
+
+	@Test
+	public final void testSendEthernetFrameOnLoopbackInterface() {
+		NSender sender = new NSender();
+
+		final Byte[] anySMac =
+				new Byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+		final Byte[] anyDMac =
+				new Byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 };
+		final EtherType anyEtherType = EtherType.IPv4;
+		final Byte[] anyData = new Byte[] { 0x00, 0x11 };
+		final ProtocolDataUnit anyDataUnit = new RawDataUnit(anyData);
+
+		EthernetFrame anyFrame = new EthernetFrame();
+		anyFrame.setSourceMacAddress(anySMac);
+		anyFrame.setDestinationMacAddress(anyDMac);
+		anyFrame.setEtherType(anyEtherType);
+		anyFrame.setData(anyDataUnit);
+
+		sender.send(loopbackInterface, anyFrame);
 	}
 }

@@ -85,18 +85,7 @@ public class EthernetFrame implements ProtocolDataUnit {
 			bytes.add((byte) 0);
 		}
 
-		CRC32 crc = new CRC32();
-		crc.update(ByteConverter.toByteArray(bytes.toArray(new Byte[0])));
-
-		Byte[] reverseCheckSum = BitOperator.split((int) crc.getValue());
-		Byte[] checkSum = new Byte[reverseCheckSum.length];
-
-		for (int i = 0; i < checkSum.length; i++) {
-			checkSum[i] = reverseCheckSum[reverseCheckSum.length
-					- i - 1];
-		}
-
-		bytes.addArray(checkSum);
+		bytes.addArray(calculateCheckSum(bytes));
 
 		return bytes.toArray(new Byte[0]);
 	}
@@ -175,5 +164,28 @@ public class EthernetFrame implements ProtocolDataUnit {
 	 */
 	public final void setData(final ProtocolDataUnit data) {
 		this.data = data;
+	}
+
+	/**
+	 * Calculates a CRC-32 checksum for a given array of bytes.
+	 * 
+	 * @param data
+	 *            PrimitiveArrayList<Byte> that holds the data
+	 * @return a byte array with four bytes representing the checksum for the
+	 *         given data
+	 */
+	private Byte[] calculateCheckSum(final PrimitiveArrayList<Byte> data) {
+		CRC32 crc = new CRC32();
+		crc.update(ByteConverter.toByteArray(data.toArray(new Byte[0])));
+
+		Byte[] reverseCheckSum = BitOperator.split((int) crc.getValue());
+		Byte[] checkSum = new Byte[reverseCheckSum.length];
+
+		for (int i = 0; i < checkSum.length; i++) {
+			checkSum[i] = reverseCheckSum[reverseCheckSum.length
+					- i - 1];
+		}
+
+		return checkSum;
 	}
 }

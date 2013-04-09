@@ -13,7 +13,7 @@ configurations{
 dependencies{
 	ajc "org.aspectj:aspectjtools:1.7.2"
 	compile "org.aspectj:aspectjrt:1.7.2"
-	testCompile "junit:junit:4.11"
+	testCompile "junit:junit:4.11", "org.mockito:mockito-core:1.9.5"
 }
 
 eclipse{
@@ -37,9 +37,6 @@ eclipse{
 		buildCommand "net.sf.eclipsecs.core.CheckstyleBuilder"
 	}
 }
-
-sourceSets.main.java{ srcDirs "src/main/aspectj" }
-sourceSets.main.java{ srcDirs "src/main/c" }
 sourceSets{
 	integrationTest{
 		java{
@@ -48,9 +45,12 @@ sourceSets{
 		}
 	}
 }
+sourceSets.main.java{ srcDirs "src/main/aspectj" }
+sourceSets.main.java{ srcDirs "src/main/c" }
 
-sourceCompatibility = 1.6
-targetCompatibility = 1.6
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
 
 jar{
 	manifest{ attributes "Implementation-Title": "nsend" }
