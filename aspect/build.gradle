@@ -1,0 +1,110 @@
+isAspectJProject = true
+usesJunit = true
+usesMockito = true
+usesJavaPlugin = true
+
+dependencies{
+	inpath project(":core")
+	testRuntime configurations.ajc
+}
+
+sourceSets{
+	main{
+		java{ srcDirs = ["src/main/aspectj"]}
+		compileClasspath = configurations.inpath
+		compileClasspath += configurations.ajc
+		output.classesDir = "$buildDir/classes/aspect"
+		output.ext.weavedClasses = file("$buildDir/classes/weaved")
+	}
+	test{
+		java{ srcDirs = ["src/test/java"]}
+
+		compileClasspath += files(sourceSets.main.output.weavedClasses)
+		runtimeClasspath += files(sourceSets.main.output.weavedClasses)
+	}
+}
+
+tasks.jar{
+	baseName = "nsend-aspects"
+	exclude "**/*.aj"
+}
+
+task compileAspects(type: SimpleAjc){ sourceSet = sourceSets.main }
+
+task weaveAspects(type: WeaveTask){
+	dependsOn jar
+	output = sourceSets.main.output.weavedClasses
+	aspectPath = files("$project.buildDir/libs/$tasks.jar.archiveName")
+	inpath = configurations.inpath
+}
+
+task archiveWeavedAspects(type: Jar){
+	dependsOn weaveAspects
+	baseName = "nsend"
+	extension = "jar"
+	destinationDir = file("$project.buildDir/libs")
+	from(sourceSets.main.output.weavedClasses)
+}
+
+jar.dependsOn(compileAspects)
+test.dependsOn(weaveAspects)
+build.dependsOn(archiveWeavedAspects)
+build.dependsOn(javadoc)
+
+class SimpleAjc extends DefaultTask{
+	@Input
+	SourceSet sourceSet
+
+	@TaskAction
+	def compile(){
+		ant.taskdef(
+				resource: "org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties",
+				classpath: project.configurations.ajc.asPath)
+		ant.iajc(
+				classpath: sourceSet.compileClasspath.asPath,
+				destDir: sourceSet.output.classesDir.absolutePath,
+				source: project.convention.plugins.java.sourceCompatibility,
+				target: project.convention.plugins.java.targetCompatibility,
+				sourceRootCopyFilter: '**/*.java',
+				fork: true,
+				forkclasspath: project.configurations.ajc.asPath,
+				showWeaveInfo: true,
+				verbose: true) {
+
+					sourceroots {
+						sourceSet.java.srcDirs.each {
+							pathelement(location: it.absolutePath)
+						}
+					}
+				}
+	}
+}
+
+class WeaveTask extends DefaultTask {
+	@Input
+	File output
+
+	@Input
+	FileCollection aspectPath
+
+	@Input
+	FileCollection inpath
+
+	@TaskAction
+	def compile() {
+		ant.taskdef(
+				resource: "org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties",
+				classpath: project.configurations.ajc.asPath)
+		ant.iajc(
+				destDir: output,
+				source: project.convention.plugins.java.sourceCompatibility,
+				target: project.convention.plugins.java.targetCompatibility,
+				aspectPath: aspectPath.asPath,
+				inpath: inpath.asPath,
+				sourceRootCopyFilter: '**/*.java',
+				fork: true,
+				forkclasspath: project.configurations.ajc.asPath,
+				showWeaveInfo: true,
+				verbose: true)
+	}
+}

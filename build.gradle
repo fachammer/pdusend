@@ -1,113 +1,103 @@
-apply plugin:'java'
-apply plugin:'eclipse'
+apply plugin: "eclipse"
 
-repositories{ mavenCentral() }
+def final JAVA_PLUGIN_PROJECTS = [
+	project(":aspect"),
+	project(":core")
+]
 
-configurations{
-	ajc
-	aspectpath
-	ajInpath
-	integrationTestCompile.extendsFrom testCompile
+def final C_PLUGIN_PROJECTS = [project(":native")]
+def final ASPECTJ_PROJECTS = [project(":aspect")]
+
+// Plugins
+JAVA_PLUGIN_PROJECTS.each{proj->
+	proj.apply plugin: "java"
+	proj.apply plugin: "eclipse"
 }
 
-dependencies{
-	ajc "org.aspectj:aspectjtools:1.7.2"
-	compile "org.aspectj:aspectjrt:1.7.2"
-	testCompile "junit:junit:4.11", "org.mockito:mockito-core:1.9.5"
+C_PLUGIN_PROJECTS.each{
+	it.apply plugin: "cpp-lib"
+	it.apply plugin: "eclipse"
 }
 
-eclipse{
-	project{
-
-		file.beforeMerged{ project ->
-			project.natures.clear()
-		}
-
-		name = "nsend"
-
-		natures "org.eclipse.ajdt.ui.ajnature"
-		natures "org.eclipse.jdt.core.javanature"
-		natures "org.springsource.ide.eclipse.gradle.core.nature"
-		natures "net.sf.eclipsecs.core.CheckstyleNature"
-		natures "org.eclipse.cdt.core.cnature"
-
-		buildCommand "org.eclipse.cdt.managedbuilder.core.genmakebuilder"
-		buildCommand "org.eclipse.cdt.managedbuilder.core.ScannerConfigBuilder"
-		buildCommand "org.eclipse.ajdt.core.ajbuilder"
-		buildCommand "net.sf.eclipsecs.core.CheckstyleBuilder"
+ASPECTJ_PROJECTS.each{proj->
+	proj.configurations{
+		ajc
+		aspectPath
+		inpath
 	}
 }
-sourceSets{
-	integrationTest{
-		java{
-			srcDirs "src/integration-test/java"
-			compileClasspath += main.output
-		}
+
+
+// Property Evaluation
+subprojects{
+	beforeEvaluate{ proj ->
+		proj.ext.isAspectJProject = false
+		proj.ext.isCProject = false
+		proj.ext.usesJavaPlugin = false
+		proj.ext.usesJunit = false
+		proj.ext.usesMockito = false
 	}
-}
-sourceSets.main.java{ srcDirs "src/main/aspectj" }
-sourceSets.main.java{ srcDirs "src/main/c" }
 
+	afterEvaluate{ proj ->
+		if(proj.usesJunit || proj.usesMockito || proj.isAspectJProject){
+			proj.repositories{ mavenCentral() }
+		}
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
-
-jar{
-	manifest{ attributes "Implementation-Title": "nsend" }
-}
-
-task compileJava(overwrite: true, description: 'Compiles AspectJ Source', type: Ajc) {
-	sourceSet = sourceSets.main
-	aspectPath = configurations.aspectpath
-}
-
-task compileTestJava(overwrite: true, description: 'Compiles AspectJ Test Source', type: Ajc) {
-	dependsOn classes
-	sourceSet = sourceSets.test
-	aspectPath = files(configurations.aspectpath)
-}
-
-task compileIntegrationTestJava(overwrite: true, description: "Compile Integration Tests", type:Ajc){
-	dependsOn classes
-	sourceSet = sourceSets.integrationTest
-	aspectPath = files(configurations.aspectpath);
-}
-
-integrationTestClasses.dependsOn("compileIntegrationTestJava")
-classes.dependsOn("compileJava")
-build.dependsOn("classes")
-build.dependsOn("integrationTestClasses")
-
-class Ajc extends DefaultTask {
-	@Input
-	SourceSet sourceSet
-
-	@Input
-	FileCollection aspectPath
-
-	@TaskAction
-	def compile() {
-		println "Running ajc ..."
-		ant.taskdef(
-				resource: "org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties",
-				classpath: project.configurations.ajc.asPath)
-		ant.iajc(
-				classpath: sourceSet.compileClasspath.asPath,
-				destDir: sourceSet.output.classesDir.absolutePath,
-				source: project.convention.plugins.java.sourceCompatibility,
-				target: project.convention.plugins.java.targetCompatibility,
-				aspectPath: aspectPath.asPath,
-				sourceRootCopyFilter: '**/*.java',
-				fork: true,
-				forkclasspath: project.configurations.ajc.asPath,
-				showWeaveInfo: true,
-				verbose: true) {
-
-					sourceroots {
-						sourceSet.java.srcDirs.each {
-							pathelement(location: it.absolutePath)
-						}
-					}
+		if(proj.isAspectJProject){
+			proj.dependencies{ ajc "org.aspectj:aspectjtools:1.7.2", "org.aspectj:aspectjrt:1.7.2" }
+			proj.eclipse{
+				classpath{
+					plusConfigurations += proj.configurations.ajc
 				}
+				project{
+					natures += [
+						"org.eclipse.ajdt.ui.ajnature"
+					]
+
+					buildCommand "org.eclipse.ajdt.core.ajbuilder"
+				}
+			}
+		}
+
+		if(proj.isCProject){
+			proj.eclipse{
+				project{
+					natures += [
+						"org.eclipse.cdt.core.cnature",
+						"org.eclipse.cdt.managedbuilder.core.managedBuildNature",
+						"org.eclipse.cdt.managedbuilder.core.ScannerConfigNature"
+					]
+
+					buildCommand "org.eclipse.cdt.managedbuilder.core.genmakebuilder"
+					buildCommand "org.eclipse.cdt.managedbuilder.core.ScannerConfigBuilder"
+				}
+			}
+		}
+
+		if(proj.usesJunit){
+			proj.dependencies{ testCompile "junit:junit:4.11" }
+		}
+
+		if(proj.usesMockito){
+			proj.dependencies{ testCompile "org.mockito:mockito-all:1.9.5" }
+		}
+
+		if(proj.usesJavaPlugin){
+			proj.eclipse{
+				project{
+					natures "org.eclipse.jdt.core.javanature", "net.sf.eclipsecs.core.CheckstyleNature"
+
+					buildCommand "net.sf.eclipsecs.core.CheckstyleBuilder"
+					buildCommand "org.eclipse.jdt.core.javabuilder"
+				}
+			}
+		}
 	}
 }
+
+allprojects{proj->
+	afterEvaluate{
+		proj.eclipse.project.natures "org.springsource.ide.eclipse.gradle.core.nature"
+	}
+}
+

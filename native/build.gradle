@@ -1,0 +1,8 @@
+isCProject = true
+libraries{
+	main{
+		spec{
+			args "-fPIC"
+		}
+	}
+}

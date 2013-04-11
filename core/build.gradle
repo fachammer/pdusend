@@ -1,0 +1,2 @@
+ext.usesJunit = true
+ext.usesMockito = true

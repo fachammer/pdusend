@@ -13,11 +13,6 @@ package at.fabianachammer.nsend.util;
 public final class ByteConverter {
 
 	/**
-	 * Maximum value for a half-byte.
-	 */
-	private static final byte HEX_F = 0xF;
-
-	/**
 	 * Private constructor because this is an utility class.
 	 */
 	private ByteConverter() {
