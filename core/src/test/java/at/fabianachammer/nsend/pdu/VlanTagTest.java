@@ -23,9 +23,9 @@ public class VlanTagTest {
 		final short vlanId = 4000;
 		tag.setVlanIdentifier(vlanId);
 
-		final Byte[] expected =
-				new Byte[] { (byte) 0x81, 0, (byte) 0x8f, (byte) 0xa0 };
-		Byte[] actual = tag.toBytes();
+		final byte[] expected =
+				new byte[] { (byte) 0x81, 0, (byte) 0x8f, (byte) 0xa0 };
+		byte[] actual = tag.toBytes();
 
 		assertArrayEquals(expected, actual);
 	}
@@ -43,7 +43,7 @@ public class VlanTagTest {
 		final short vlanId = 4000;
 		tag.setVlanIdentifier(vlanId);
 
-		final Byte[] expected = { (byte) 0x81, 0, (byte) 0xff, (byte) 0xa0 };
+		final byte[] expected = { (byte) 0x81, 0, (byte) 0xff, (byte) 0xa0 };
 
 		assertArrayEquals(expected, tag.toBytes());
 	}

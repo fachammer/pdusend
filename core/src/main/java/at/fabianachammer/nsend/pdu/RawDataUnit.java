@@ -14,25 +14,25 @@ public class RawDataUnit implements ProtocolDataUnit {
 	/**
 	 * The data this PDU contains.
 	 */
-	private Byte[] data;
+	private byte[] data;
 
 	/**
 	 * Creates a new RawDataUnit with the specified data.
 	 * @param data raw byte data this data unit should have
 	 */
-	public RawDataUnit(final Byte[] data) {
+	public RawDataUnit(final byte[] data) {
 		this.data = data;
 	}
 
 	@Override
-	public final Byte[] toBytes() {
+	public final byte[] toBytes() {
 		return data;
 	}
 
 	/**
 	 * @return the data
 	 */
-	public final Byte[] getData() {
+	public final byte[] getData() {
 		return data;
 	}
 
@@ -40,7 +40,7 @@ public class RawDataUnit implements ProtocolDataUnit {
 	 * @param data
 	 *            the data to set
 	 */
-	public final void setData(final Byte[] data) {
+	public final void setData(final byte[] data) {
 		this.data = data;
 	}
 

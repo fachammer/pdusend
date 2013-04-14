@@ -4,6 +4,7 @@ usesMockito = true
 usesJavaPlugin = true
 
 dependencies{
+	compile "net.sf.oval:oval:1.81"
 	inpath project(":core")
 	testRuntime configurations.ajc
 }
@@ -29,6 +30,8 @@ tasks.jar{
 	exclude "**/*.aj"
 }
 
+tasks.javadoc{ classpath += configurations.ajc }
+
 task compileAspects(type: SimpleAjc){ sourceSet = sourceSets.main }
 
 task weaveAspects(type: WeaveTask){
@@ -49,7 +52,7 @@ task archiveWeavedAspects(type: Jar){
 jar.dependsOn(compileAspects)
 test.dependsOn(weaveAspects)
 build.dependsOn(archiveWeavedAspects)
-build.dependsOn(javadoc)
+//build.dependsOn(javadoc)
 
 class SimpleAjc extends DefaultTask{
 	@Input

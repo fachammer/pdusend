@@ -25,9 +25,13 @@ public final class ByteConverter {
 	 * @param array
 	 *            byte-class array to be converted
 	 * @return byte-primitive array with the corresponding values from the
-	 *         byte-class array
+	 *         byte-class array or null if the byte-class-array was null
 	 */
 	public static byte[] toByteArray(final Byte[] array) {
+
+		if (array == null)
+			return null;
+
 		byte[] byteArray = new byte[array.length];
 		for (int i = 0; i < array.length; i++) {
 			byteArray[i] = array[i].byteValue();
@@ -78,7 +82,7 @@ public final class ByteConverter {
 	 * @return hexadecimal representation of the byte
 	 */
 	private static String convertByteToHexString(final byte fullByte) {
-		Byte[] halfBytes = BitOperator.split(fullByte);
+		byte[] halfBytes = BitOperator.split(fullByte);
 
 		return Integer.toHexString(halfBytes[0])
 				+ Integer.toHexString(halfBytes[1]);

@@ -1,7 +1,12 @@
 package at.fabianachammer.nsend.pdu;
 
+import net.sf.oval.constraint.AssertFieldConstraints;
+import net.sf.oval.constraint.Max;
+import net.sf.oval.constraint.Min;
+import net.sf.oval.guard.Guarded;
+import net.sf.oval.guard.PreValidateThis;
 import at.fabianachammer.nsend.util.BitOperator;
-import at.fabianachammer.nsend.util.PrimitiveArrayList;
+import at.fabianachammer.nsend.util.ByteArrayBuilder;
 
 /**
  * Represents a VLAN Tag which contains information regarding VLANs inside a
@@ -10,13 +15,34 @@ import at.fabianachammer.nsend.util.PrimitiveArrayList;
  * @author fabian
  * 
  */
+@Guarded
 public final class VlanTag implements ProtocolDataUnit {
 
 	/**
 	 * Standard tag protocol.
 	 */
 	private static final TagProtocol DEFAULT_TAG_PROTOCOL =
-			TagProtocol.IEEE_802_1Q;	
+			TagProtocol.IEEE_802_1Q;
+
+	/**
+	 * Specifies the minimum priority code point a VLAN tag can have.
+	 */
+	private static final int MIN_PRIORITY_CODE_POINT = 0;
+
+	/**
+	 * Specifies the maximum priority code point a VLAN tag can have.
+	 */
+	private static final int MAX_PRIORITY_CODE_POINT = 7;
+
+	/**
+	 * Specifies the minimum VLAN identifier a VLAN tag can have.
+	 */
+	private static final int MIN_VLAN_IDENTIFIER = 0;
+
+	/**
+	 * Specifies the maximum VLAN identifier a VLAN tag can have.
+	 */
+	private static final int MAX_VLAN_IDENTIFIER = 4095;
 
 	/**
 	 * Tag Protocol. Describes, which protocol is used for Tagging (default is
@@ -27,7 +53,9 @@ public final class VlanTag implements ProtocolDataUnit {
 	/**
 	 * Priority Code Point (PCP). Describes user priority information.
 	 */
-	private byte priorityCodePoint;
+	@Min(MIN_PRIORITY_CODE_POINT)
+	@Max(MAX_PRIORITY_CODE_POINT)
+	private byte priorityCodePoint = MIN_PRIORITY_CODE_POINT;
 
 	/**
 	 * Canonical Format Indicator (CFI). Describes whether the MAC adresses are
@@ -38,14 +66,17 @@ public final class VlanTag implements ProtocolDataUnit {
 	/**
 	 * VLAN Identifier (VID). Identifies the VLAN, which this VLAN-Tag is for.
 	 */
-	private short vlanIdentifier;
+	@Min(MIN_VLAN_IDENTIFIER)
+	@Max(MAX_VLAN_IDENTIFIER)
+	private short vlanIdentifier = MIN_VLAN_IDENTIFIER;
 
 	@Override
-	public Byte[] toBytes() {
+	@PreValidateThis
+	public byte[] toBytes() {
 
-		PrimitiveArrayList<Byte> byteList = new PrimitiveArrayList<Byte>();
+		ByteArrayBuilder bab = new ByteArrayBuilder();
 
-		byteList.addArray(BitOperator.split(tagProtocol.getIdentifier()));
+		bab.append(BitOperator.split(tagProtocol.getIdentifier()));
 
 		byte canonicalBit = 1;
 
@@ -56,12 +87,12 @@ public final class VlanTag implements ProtocolDataUnit {
 		byte thirdHighHalfByte = (byte) ((priorityCodePoint << 1)
 				+ (canonicalBit) << (Byte.SIZE / 2));
 
-		Byte[] vid = BitOperator.split(vlanIdentifier);
+		byte[] vid = BitOperator.split(vlanIdentifier);
 
-		byteList.add((byte) (thirdHighHalfByte + vid[0]));
-		byteList.add(vid[1]);
+		bab.append((byte) (thirdHighHalfByte + vid[0]));
+		bab.append((byte) vid[1]);
 
-		return byteList.toArray(new Byte[0]);
+		return bab.toArray();
 	}
 
 	/**
@@ -90,7 +121,8 @@ public final class VlanTag implements ProtocolDataUnit {
 	 * @param priorityCodePoint
 	 *            the priorityCodePoint to set
 	 */
-	public void setPriorityCodePoint(final byte priorityCodePoint) {
+	public void setPriorityCodePoint(
+			@AssertFieldConstraints final byte priorityCodePoint) {
 		this.priorityCodePoint = priorityCodePoint;
 	}
 
@@ -120,7 +152,8 @@ public final class VlanTag implements ProtocolDataUnit {
 	 * @param vlanIdentifier
 	 *            the vlanIdentifier to set
 	 */
-	public void setVlanIdentifier(final short vlanIdentifier) {
+	public void setVlanIdentifier(
+			@AssertFieldConstraints final short vlanIdentifier) {
 		this.vlanIdentifier = vlanIdentifier;
 	}
 }

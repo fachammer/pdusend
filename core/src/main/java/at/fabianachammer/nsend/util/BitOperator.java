@@ -46,9 +46,9 @@ public final class BitOperator {
 	 *            value to be split
 	 * @return array with two bytes in Big Endian Order
 	 */
-	public static Byte[] split(final short value) {
+	public static byte[] split(final short value) {
 
-		Byte[] bytes = new Byte[2];
+		byte[] bytes = new byte[2];
 		bytes[0] = (byte) (value >>> Byte.SIZE);
 		bytes[1] = (byte) (value & MAX_BYTE);
 
@@ -63,8 +63,8 @@ public final class BitOperator {
 	 *            value to be split
 	 * @return array with two half-bytes in Big Endian Order
 	 */
-	public static Byte[] split(final byte value) {
-		Byte[] bytes = new Byte[2];
+	public static byte[] split(final byte value) {
+		byte[] bytes = new byte[2];
 		bytes[0] = (byte) ((value & MAX_BYTE) >>> (Byte.SIZE / 2));
 		bytes[1] = (byte) (value & MAX_HALF_BYTE);
 
@@ -79,9 +79,9 @@ public final class BitOperator {
 	 *            value to be split
 	 * @return array with four byte values in Big Endian Order
 	 */
-	public static Byte[] split(final int value) {
+	public static byte[] split(final int value) {
 
-		Byte[] bytes = new Byte[Integer.SIZE
+		byte[] bytes = new byte[Integer.SIZE
 				/ Byte.SIZE];
 
 		for (int i = 0; i < bytes.length; i++) {

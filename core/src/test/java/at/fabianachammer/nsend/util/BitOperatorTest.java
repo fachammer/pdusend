@@ -36,9 +36,9 @@ public class BitOperatorTest {
 	@Test
 	public final void testShortSplitWorks() {
 		final short value = (short) 0x0101;
-		final Byte[] expected = { (byte) 0x01, (byte) 0x01 };
+		final byte[] expected = { (byte) 0x01, (byte) 0x01 };
 
-		Byte[] actual = BitOperator.split(value);
+		byte[] actual = BitOperator.split(value);
 
 		assertArrayEquals(expected, actual);
 	}
@@ -50,9 +50,9 @@ public class BitOperatorTest {
 	@Test
 	public final void testByteSplitWorks() {
 		final byte value = (byte) 0x01;
-		final Byte[] expected = { 0x0, 0x1 };
+		final byte[] expected = { 0x0, 0x1 };
 
-		Byte[] actual = BitOperator.split(value);
+		byte[] actual = BitOperator.split(value);
 
 		assertArrayEquals(expected, actual);
 	}
@@ -65,10 +65,10 @@ public class BitOperatorTest {
 	public final void testIntToByteSplitWorks() {
 		final int value = 0x01010101;
 
-		final Byte[] expected =
+		final byte[] expected =
 				{ (byte) 0x01, (byte) 0x01, (byte) 0x01, (byte) 0x01 };
 
-		Byte[] actual = BitOperator.split(value);
+		byte[] actual = BitOperator.split(value);
 
 		assertArrayEquals(expected, actual);
 	}

@@ -1,2 +1,19 @@
 ext.usesJunit = true
 ext.usesMockito = true
+
+configurations{
+	integrationTestCompile.extendsFrom testCompile
+	integrationTestRuntime.extendsFrom testRuntime
+}
+
+dependencies{ compile "net.sf.oval:oval:1.81" }
+
+sourceSets{
+	integrationTest{
+		java.srcDirs "src/integration-test/java"
+		compileClasspath += main.output
+		runtimeClasspath += main.output
+	}
+}
+
+build.dependsOn(compileIntegrationTestJava)

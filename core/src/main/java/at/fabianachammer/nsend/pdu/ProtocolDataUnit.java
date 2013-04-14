@@ -14,5 +14,5 @@ public interface ProtocolDataUnit {
 	 * converts the PDU into its byte representation.
 	 * @return the bytes which make up the PDU
 	 */
-	Byte[] toBytes();
+	byte[] toBytes();
 }

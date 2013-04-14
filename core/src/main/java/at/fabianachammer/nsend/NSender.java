@@ -6,7 +6,6 @@ package at.fabianachammer.nsend;
 import java.net.NetworkInterface;
 
 import at.fabianachammer.nsend.pdu.ProtocolDataUnit;
-import at.fabianachammer.nsend.util.ByteConverter;
 
 /**
  * Class for sending arbitrary data wrapped in an Ethernet frame.
@@ -19,7 +18,7 @@ public class NSender {
 	/**
 	 * Specifies the path to the nsender native library.
 	 */
-	private static final String NSENDER_LIB_PATH = "nsender";
+	private static final String NSENDER_LIB_PATH = "native";
 
 	static {
 		System.loadLibrary(NSENDER_LIB_PATH);
@@ -35,9 +34,7 @@ public class NSender {
 	 */
 	public final void send(final NetworkInterface networkInterface,
 			final ProtocolDataUnit data) {
-		send(
-				networkInterface.getIndex(),
-				ByteConverter.toByteArray(data.toBytes()));
+		send(networkInterface.getIndex(), data.toBytes());
 	}
 
 	/**
@@ -49,5 +46,6 @@ public class NSender {
 	 * @param data
 	 *            data that should be sent
 	 */
-	private native void send(final int interfaceIndex, final byte[] data);
+	private native void send(final int interfaceIndex,
+			final byte[] data);
 }

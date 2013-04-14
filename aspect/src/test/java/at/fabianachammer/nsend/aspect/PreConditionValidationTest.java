@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import at.fabianachammer.nsend.pdu.EtherType;
 import at.fabianachammer.nsend.pdu.EthernetFrame;
+import at.fabianachammer.nsend.pdu.MacAddress;
 import at.fabianachammer.nsend.pdu.VlanTag;
 
 /**
@@ -20,78 +21,49 @@ import at.fabianachammer.nsend.pdu.VlanTag;
  */
 public class PreConditionValidationTest {
 
-	/**
-	 * Tests, whether a valid destination MAC address can be set on an Ethernet
-	 * frame.
-	 */
 	@Test
 	public final void testSetValidDestinationMacAddressOnEthernetFrameWorks() {
 		final int arraySize = 6;
-		Byte[] mac = new Byte[arraySize];
+		byte[] mac = new byte[arraySize];
 		EthernetFrame eh = new EthernetFrame();
 
-		eh.setDestinationMacAddress(mac);
-
-		assertArrayEquals(mac, eh.getDestinationMacAddress());
+		eh.setDestinationMacAddress(new MacAddress(mac));
 	}
 
-	/**
-	 * Tests, whether a valid source MAC address can be set on an Ethernet
-	 * frame.
-	 */
 	@Test
 	public final void testSetValidSourceMacAddressOnEthernetFrameWorks() {
 		final int arraySize = 6;
-		Byte[] mac = new Byte[arraySize];
+		byte[] mac = new byte[arraySize];
 		EthernetFrame eh = new EthernetFrame();
 
-		eh.setSourceMacAddress(mac);
-
-		assertArrayEquals(mac, eh.getSourceMacAddress());
+		eh.setSourceMacAddress(new MacAddress(mac));
 	}
 
-	/**
-	 * Tests, whether a valid EtherType can be set on an Ethernet frame.
-	 */
 	@Test
 	public final void testSetValidEtherTypeOnEthernetFrameWorks() {
 		EthernetFrame eh = new EthernetFrame();
 
 		eh.setEtherType(EtherType.ARP);
-
-		assertEquals(EtherType.ARP, eh.getEtherType());
 	}
 
-	/**
-	 * Tests, whether the setting of an illegal destination MAC address on an
-	 * Ethernet frame throws an IllegalArgumentException.
-	 */
 	@Test(expected = IllegalArgumentException.class)
 	public final void testSetIllegalDestinationMacAddressOnEthernetFrameThrowsIllegalArgumentException() {
 		final int illegalArraySize = 7;
-		Byte[] illegalMac = new Byte[illegalArraySize];
+		byte[] illegalMac = new byte[illegalArraySize];
 		EthernetFrame eh = new EthernetFrame();
 
-		eh.setDestinationMacAddress(illegalMac);
+		eh.setDestinationMacAddress(new MacAddress(illegalMac));
 	}
 
-	/**
-	 * Tests, whether the setting of an illegal source MAC address on an
-	 * Ethernet frame throws an IllegalArgumentException.
-	 */
 	@Test(expected = IllegalArgumentException.class)
 	public final void testSetIllegalSourceMacAddressOnEthernetFrameThrowsIllegalArgumentException() {
 		final int illegalArraySize = 7;
-		Byte[] illegalMac = new Byte[illegalArraySize];
+		byte[] illegalMac = new byte[illegalArraySize];
 		EthernetFrame eh = new EthernetFrame();
 
-		eh.setSourceMacAddress(illegalMac);
+		eh.setSourceMacAddress(new MacAddress(illegalMac));
 	}
 
-	/**
-	 * Tests, whether the setting of a null destination MAC address on an
-	 * Ethernet frame throws a NullPointerException.
-	 */
 	@Test(expected = NullPointerException.class)
 	public final void testSetNullDestinationMacAddressOnEthernetFrameThrowsNullPointerException() {
 		EthernetFrame eh = new EthernetFrame();
@@ -99,10 +71,6 @@ public class PreConditionValidationTest {
 		eh.setDestinationMacAddress(null);
 	}
 
-	/**
-	 * Tests, whether the setting of a null source MAC address on an Ethernet
-	 * frame throws a NullPointerException.
-	 */
 	@Test(expected = NullPointerException.class)
 	public final void testSetNullSourceMacAddressOnEthernetFrameThrowsNullPointerException() {
 		EthernetFrame eh = new EthernetFrame();
@@ -110,10 +78,6 @@ public class PreConditionValidationTest {
 		eh.setSourceMacAddress(null);
 	}
 
-	/**
-	 * Tests, whether the setting of a null EtherType on an Ethernet frame
-	 * throws a NullPointerException.
-	 */
 	@Test(expected = NullPointerException.class)
 	public final void testSetNullEtherTypeOnEthernetFrameThrowsNullPointerException() {
 		EthernetFrame eh = new EthernetFrame();
@@ -121,9 +85,6 @@ public class PreConditionValidationTest {
 		eh.setEtherType(null);
 	}
 
-	/**
-	 * Tests, whether a valid priority code point can be set on a vlan tag.
-	 */
 	@Test
 	public final void testSetValidPriorityCodePointOnVlanTagWorks() {
 		final byte validPriorityCodePoint = 0;
@@ -134,9 +95,6 @@ public class PreConditionValidationTest {
 		assertEquals(0, tag.getPriorityCodePoint());
 	}
 
-	/**
-	 * Tests, whether a valid vlan identifier can be set on a vlan tag.
-	 */
 	@Test
 	public final void testSetValidVlanIdentifierOnVlanTagWorks() {
 		final short validVlanIdentifier = 0;
@@ -147,10 +105,6 @@ public class PreConditionValidationTest {
 		assertEquals(0, tag.getVlanIdentifier());
 	}
 
-	/**
-	 * Tests, whether the setting of an illegal priority code point on a vlan
-	 * tag throws an IllegalArgumentException.
-	 */
 	@Test(expected = IllegalArgumentException.class)
 	public final void testSetIllegalPriorityCodePointOnVlanTagThrowsIllegalArgumentException() {
 		final byte illegalPriorityCodePoint = 8;
@@ -159,10 +113,6 @@ public class PreConditionValidationTest {
 		tag.setPriorityCodePoint(illegalPriorityCodePoint);
 	}
 
-	/**
-	 * Tests, whether the setting of an illegal vlan identifier on a vlan tag
-	 * throws an IllegalArgumentException.
-	 */
 	@Test(expected = IllegalArgumentException.class)
 	public final void testSetIllegalVlanIdentifierThrowsIllegalArgumentException() {
 		final short illegalVlanIdentifier = 4097;

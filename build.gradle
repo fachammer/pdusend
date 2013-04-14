@@ -27,7 +27,6 @@ ASPECTJ_PROJECTS.each{proj->
 	}
 }
 
-
 // Property Evaluation
 subprojects{
 	beforeEvaluate{ proj ->
@@ -44,7 +43,7 @@ subprojects{
 		}
 
 		if(proj.isAspectJProject){
-			proj.dependencies{ ajc "org.aspectj:aspectjtools:1.7.2", "org.aspectj:aspectjrt:1.7.2" }
+			proj.dependencies{ ajc "org.aspectj:aspectjrt:1.7.2", "org.aspectj:aspectjtools:1.7.2" }
 			proj.eclipse{
 				classpath{
 					plusConfigurations += proj.configurations.ajc
