@@ -1,5 +1,6 @@
-ext.usesJunit = true
-ext.usesMockito = true
+usesJunit = true
+usesMockito = true
+isGroovyProject = true
 
 configurations{
 	integrationTestCompile.extendsFrom testCompile
@@ -16,4 +17,5 @@ sourceSets{
 	}
 }
 
+compileIntegrationTestJava.dependsOn(project(":native").tasks.assemble)
 build.dependsOn(compileIntegrationTestJava)

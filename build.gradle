@@ -1,12 +1,10 @@
 apply plugin: "eclipse"
 
-def final JAVA_PLUGIN_PROJECTS = [
-	project(":aspect"),
-	project(":core")
-]
+def final JAVA_PLUGIN_PROJECTS = [project(":aspect")]
 
 def final C_PLUGIN_PROJECTS = [project(":native")]
 def final ASPECTJ_PROJECTS = [project(":aspect")]
+def final GROOVY_PROJECTS = [project(":core")]
 
 // Plugins
 JAVA_PLUGIN_PROJECTS.each{proj->
@@ -27,11 +25,17 @@ ASPECTJ_PROJECTS.each{proj->
 	}
 }
 
+GROOVY_PROJECTS.each{
+	it.apply plugin: "groovy"
+	it.apply plugin: "eclipse"
+}
+
 // Property Evaluation
 subprojects{
 	beforeEvaluate{ proj ->
 		proj.ext.isAspectJProject = false
 		proj.ext.isCProject = false
+		proj.ext.isGroovyProject = false
 		proj.ext.usesJavaPlugin = false
 		proj.ext.usesJunit = false
 		proj.ext.usesMockito = false
@@ -69,6 +73,17 @@ subprojects{
 
 					buildCommand "org.eclipse.cdt.managedbuilder.core.genmakebuilder"
 					buildCommand "org.eclipse.cdt.managedbuilder.core.ScannerConfigBuilder"
+				}
+			}
+		}
+
+		if(proj.isGroovyProject){
+			proj.dependencies{ compile "org.codehaus.groovy:groovy-all:2.1.3"}
+			proj.eclipse{
+				project{
+					natures +=[
+						"org.eclipse.jdt.groovy.core.groovyNature"
+					]
 				}
 			}
 		}

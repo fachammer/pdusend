@@ -4,8 +4,8 @@ usesMockito = true
 usesJavaPlugin = true
 
 dependencies{
-	compile "net.sf.oval:oval:1.81"
 	inpath project(":core")
+	compile "net.sf.oval:oval:1.81", configurations.inpath
 	testRuntime configurations.ajc
 }
 
@@ -26,7 +26,7 @@ sourceSets{
 }
 
 tasks.jar{
-	baseName = "nsend-aspects"
+	baseName = "pdusend-aspects"
 	exclude "**/*.aj"
 }
 
@@ -43,7 +43,7 @@ task weaveAspects(type: WeaveTask){
 
 task archiveWeavedAspects(type: Jar){
 	dependsOn weaveAspects
-	baseName = "nsend"
+	baseName = "pdusend"
 	extension = "jar"
 	destinationDir = file("$project.buildDir/libs")
 	from(sourceSets.main.output.weavedClasses)
