@@ -1,15 +1,15 @@
 apply plugin: "eclipse"
 
-def final JAVA_PLUGIN_PROJECTS = [project(":aspect")]
+def final JAVA_PLUGIN_PROJECTS = [project(":aspect"), project(":core")]
 
 def final C_PLUGIN_PROJECTS = [project(":native")]
 def final ASPECTJ_PROJECTS = [project(":aspect")]
-def final GROOVY_PROJECTS = [project(":core")]
+def final GROOVY_PROJECTS = [project(":dsl")]
 
 // Plugins
-JAVA_PLUGIN_PROJECTS.each{proj->
-	proj.apply plugin: "java"
-	proj.apply plugin: "eclipse"
+JAVA_PLUGIN_PROJECTS.each{
+	it.apply plugin: "java"
+	it.apply plugin: "eclipse"
 }
 
 C_PLUGIN_PROJECTS.each{
@@ -17,8 +17,8 @@ C_PLUGIN_PROJECTS.each{
 	it.apply plugin: "eclipse"
 }
 
-ASPECTJ_PROJECTS.each{proj->
-	proj.configurations{
+ASPECTJ_PROJECTS.each{
+	it.configurations{
 		ajc
 		aspectPath
 		inpath
@@ -42,7 +42,7 @@ subprojects{
 	}
 
 	afterEvaluate{ proj ->
-		if(proj.usesJunit || proj.usesMockito || proj.isAspectJProject){
+		if(proj.usesJunit || proj.usesMockito || proj.isAspectJProject || proj.isGroovyProject){
 			proj.repositories{ mavenCentral() }
 		}
 
@@ -78,7 +78,7 @@ subprojects{
 		}
 
 		if(proj.isGroovyProject){
-			proj.dependencies{ compile "org.codehaus.groovy:groovy-all:2.1.3"}
+			proj.dependencies{ compile "org.codehaus.groovy:groovy-all:2.1.1"}
 			proj.eclipse{
 				project{
 					natures +=[

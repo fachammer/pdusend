@@ -1,6 +1,6 @@
 usesJunit = true
 usesMockito = true
-isGroovyProject = true
+usesJavaPlugin = true
 
 configurations{
 	integrationTestCompile.extendsFrom testCompile

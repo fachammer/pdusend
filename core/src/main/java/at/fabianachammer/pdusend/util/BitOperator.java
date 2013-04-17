@@ -1,5 +1,7 @@
 package at.fabianachammer.pdusend.util;
 
+import java.math.BigInteger;
+
 /**
  * This class provides methods for operating with numbers on a bit basis.
  * 
@@ -88,13 +90,30 @@ public final class BitOperator {
 
 			int bitsSet = (-1) >>> (i * Byte.SIZE);
 
-			byte calcByte = (byte) ((value & bitsSet) >>> ((bytes.length
-					- i - 1) * Byte.SIZE));
+			byte calcByte =
+					(byte) ((value & bitsSet) >>> ((bytes.length
+							- i - 1) * Byte.SIZE));
 
 			bytes[i] = calcByte;
 		}
 
 		return bytes;
+	}
+
+	public static byte[] split(final BigInteger value, int arraySize) {
+		ByteArrayBuilder bab = new ByteArrayBuilder();
+		byte[] values = value.toByteArray();
+		if (values.length < arraySize) {
+			bab.append(new byte[arraySize
+					- values.length]);
+		}
+		
+		bab.append(values);
+		return bab.toArray();
+	}
+
+	public static byte[] split(final BigInteger value) {
+		return value.toByteArray();
 	}
 
 	/**

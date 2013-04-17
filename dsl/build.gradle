@@ -1,0 +1,5 @@
+isGroovyProject = true
+
+dependencies{
+	compile project(":core")
+}

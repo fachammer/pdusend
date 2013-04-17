@@ -35,44 +35,44 @@ public class ArpSegment implements ProtocolDataUnit {
 	 * Specifies the hardware address type of the ARP segment.
 	 */
 	@NotNull
-	private HardwareAddressType hardwareType;
+	private HardwareAddressType hardwareType = HardwareAddressType.Ethernet;
 
 	/**
 	 * Specifies the protocol address type (specified by EtherType) of the ARP
 	 * segment.
 	 */
 	@NotNull
-	private EtherType protocolType;
+	private EtherType protocolType = EtherType.IPv4;
 
 	/**
 	 * Specifies the ARP operation of the ARP segment.
 	 */
 	@NotNull
-	private ArpOperation operation;
+	private ArpOperation operation = ArpOperation.Request;
 
 	/**
 	 * Specifies the hardware address of the sender of the ARP segment.
 	 */
 	@NotNull
-	private MacAddress senderHardwareAddress;
+	private MacAddress senderHardwareAddress = new MacAddress();
 
 	/**
 	 * Specifies the protocol address of the sender of the ARP segment.
 	 */
 	@NotNull
-	private Ip4Address senderProtocolAddress;
+	private Ip4Address senderProtocolAddress = new Ip4Address();
 
 	/**
 	 * Specifies the hardware address of the target of the ARP segment.
 	 */
 	@NotNull
-	private MacAddress targetHardwareAddress;
+	private MacAddress targetHardwareAddress = new MacAddress();
 
 	/**
 	 * Specifies the protocol address of the target of the ARP segment.
 	 */
 	@NotNull
-	private Ip4Address targetProtocolAddress;
+	private Ip4Address targetProtocolAddress = new Ip4Address();
 
 	@Override
 	public final byte[] toBytes() {

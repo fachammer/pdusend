@@ -24,13 +24,6 @@ public class EthernetFrame implements ProtocolDataUnit {
 	public static final short HARDWARE_ADDRESS_TYPE = 1;
 
 	/**
-	 * Specifies the broadcast MAC address.
-	 */
-	public static final Byte[] BROADCAST_MAC = new Byte[] {
-			(byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff,
-			(byte) 0xff, (byte) 0xff };
-
-	/**
 	 * Specifies the minimum size of an Ethernet frame in bytes.
 	 */
 	private static final int MIN_ETHERNET_FRAME_SIZE = 64;

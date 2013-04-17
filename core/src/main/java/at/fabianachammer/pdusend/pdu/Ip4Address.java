@@ -15,7 +15,7 @@ import net.sf.oval.guard.Guarded;
  * 
  */
 @Guarded
-public class Ip4Address {
+public class Ip4Address implements NetworkType {
 
 	/**
 	 * Specifies the number of bytes that an IPv4 address has.
@@ -57,8 +57,24 @@ public class Ip4Address {
 	 * @param bytes
 	 *            the bytes to set
 	 */
-	public final void setBytes(@AssertFieldConstraints final byte[] bytes) {
+	public final void setBytes(
+			@AssertFieldConstraints final byte[] bytes) {
 		this.bytes = bytes;
+	}
+
+	@Override
+	public final int getSize() {
+		return 4;
+	}
+
+	@Override
+	public final void decode(final byte[] data) {
+		setBytes(data);
+	}
+
+	@Override
+	public final byte[] encode() {
+		return getBytes();
 	}
 
 }

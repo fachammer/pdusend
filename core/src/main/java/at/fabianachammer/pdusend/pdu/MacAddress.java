@@ -15,7 +15,7 @@ import net.sf.oval.guard.Guarded;
  * 
  */
 @Guarded
-public class MacAddress {
+public class MacAddress implements NetworkType {
 
 	/**
 	 * Specifies the size of a MAC address in bytes.
@@ -60,5 +60,20 @@ public class MacAddress {
 	public final void setBytes(
 			@AssertFieldConstraints final byte[] bytes) {
 		this.bytes = bytes;
+	}
+
+	@Override
+	public final void decode(final byte[] data) {
+		setBytes(data);
+	}
+
+	@Override
+	public final byte[] encode() {
+		return getBytes();
+	}
+
+	@Override
+	public int getSize() {
+		return SIZE;
 	}
 }
