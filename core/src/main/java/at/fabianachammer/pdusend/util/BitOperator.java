@@ -37,7 +37,28 @@ public final class BitOperator {
 	 * @return merged 16 bit number
 	 */
 	public static short merge(final byte lowByte, final byte highByte) {
-		return (short) (lowByte + (highByte << Byte.SIZE));
+		short highShift = (short) (highByte << Byte.SIZE);
+		return (short) (highShift | lowByte);
+	}
+
+	/**
+	 * Merges four byte numbers into a 32-bit number.
+	 * 
+	 * @param lowlowByte
+	 *            least significant byte of the 32-bit number
+	 * @param lowHighByte
+	 *            second least significant byte of the 32-bit number
+	 * @param highLowByte
+	 *            second most significant byte of the 32-bit number
+	 * @param highHighByte
+	 *            most significant byte of the 32-bit number
+	 * @return merged 32-bit number
+	 */
+	public static int merge(final byte lowlowByte, final byte lowHighByte,
+			final byte highLowByte, final byte highHighByte) {
+		return (highHighByte << (Short.SIZE + Byte.SIZE))
+				| (highLowByte << Short.SIZE)
+				| (lowHighByte << Byte.SIZE) | lowlowByte;
 	}
 
 	/**
@@ -107,7 +128,7 @@ public final class BitOperator {
 			bab.append(new byte[arraySize
 					- values.length]);
 		}
-		
+
 		bab.append(values);
 		return bab.toArray();
 	}

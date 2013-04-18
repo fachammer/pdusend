@@ -20,11 +20,38 @@ public class BitOperatorTest {
 	 * {@link at.fabianachammer.pdusend.util.BitOperator#merge(byte, byte)}.
 	 */
 	@Test
-	public final void testMergeWorks() {
+	public final void testMergeToShortWorks() {
 		final byte lowByte = 0x01;
 		final byte highByte = (byte) 0x01;
 		final short expected = (short) 0x0101;
+
 		short actual = BitOperator.merge(lowByte, highByte);
+
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public final void testMergeToShortWithMaximumBytesWorks() {
+		final byte lowByte = (byte) 0xff;
+		final byte highByte = (byte) 0xff;
+		final short expected = (short) 0xffff;
+
+		short actual = BitOperator.merge(lowByte, highByte);
+
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public final void testMergeToIntWorks() {
+		byte lowlowByte = 0x01;
+		byte lowHighByte = 0x01;
+		byte highLowByte = 0x01;
+		byte highHighByte = 0x01;
+		int expected = 0x01010101;
+
+		int actual =
+				BitOperator.merge(lowlowByte, lowHighByte,
+						highLowByte, highHighByte);
 
 		assertEquals(expected, actual);
 	}

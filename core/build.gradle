@@ -1,15 +1,17 @@
 usesJunit = true
 usesMockito = true
 usesJavaPlugin = true
+isAspectJProject = true
 
 configurations{
 	integrationTestCompile.extendsFrom testCompile
 	integrationTestRuntime.extendsFrom testRuntime
 }
 
-dependencies{ compile "net.sf.oval:oval:1.81" }
+dependencies{ compile "net.sf.oval:oval:1.81", configurations.ajc }
 
 sourceSets{
+	main{ java{ srcDir "src/main/aspectj" } }
 	integrationTest{
 		java.srcDirs "src/integration-test/java"
 		compileClasspath += main.output
@@ -17,5 +19,47 @@ sourceSets{
 	}
 }
 
+task compileAspects(dependsOn: JavaPlugin.PROCESS_RESOURCES_TASK_NAME, overwrite: true) << {
+	ant.taskdef(
+			resource: "org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties",
+			classpath: configurations.ajc.asPath)
+	ant.iajc(
+			classpath: sourceSets.main.compileClasspath.asPath,
+			destDir: sourceSets.main.output.classesDir.absolutePath,
+			source: project.convention.plugins.java.sourceCompatibility,
+			target: project.convention.plugins.java.targetCompatibility,
+			sourceRootCopyFilter: '**/*.java',
+			aspectPath: configurations.aspectPath.asPath,
+			inpath: configurations.inpath.asPath,
+			fork: true,
+			forkclasspath: project.configurations.ajc.asPath,
+			showWeaveInfo: true,
+			verbose: true) {
+
+				sourceRoots {
+					sourceSets.main.java.srcDirs.each {
+						pathelement(location: it.absolutePath)
+					}
+				}
+			}
+}
+
+
 compileIntegrationTestJava.dependsOn(project(":native").tasks.assemble)
 build.dependsOn(compileIntegrationTestJava)
+test.dependsOn(compileAspects)
+
+class Ajc extends DefaultTask{
+	@Input
+	SourceSet sourceSet
+
+	@Input
+	FileCollection aspectPath
+
+	@Input
+	FileCollection inpath
+
+	@TaskAction
+	def compile(){
+	}
+}

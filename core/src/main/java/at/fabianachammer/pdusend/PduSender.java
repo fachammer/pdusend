@@ -5,7 +5,7 @@ package at.fabianachammer.pdusend;
 
 import java.net.NetworkInterface;
 
-import at.fabianachammer.pdusend.pdu.ProtocolDataUnit;
+import at.fabianachammer.pdusend.type.DataUnit;
 
 /**
  * Class for sending arbitrary data wrapped in an Ethernet frame.
@@ -33,8 +33,8 @@ public class PduSender {
 	 *            PDU to be sent
 	 */
 	public final void send(final NetworkInterface networkInterface,
-			final ProtocolDataUnit data) {
-		send(networkInterface.getIndex(), data.toBytes());
+			final DataUnit data) {
+		send(networkInterface.getIndex(), data.encode());
 	}
 
 	/**

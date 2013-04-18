@@ -1,9 +1,9 @@
 apply plugin: "eclipse"
 
-def final JAVA_PLUGIN_PROJECTS = [project(":aspect"), project(":core")]
+def final JAVA_PLUGIN_PROJECTS = [project(":core")]
 
 def final C_PLUGIN_PROJECTS = [project(":native")]
-def final ASPECTJ_PROJECTS = [project(":aspect")]
+def final ASPECTJ_PROJECTS = [project(":core")]
 def final GROOVY_PROJECTS = [project(":dsl")]
 
 // Plugins
@@ -47,7 +47,10 @@ subprojects{
 		}
 
 		if(proj.isAspectJProject){
-			proj.dependencies{ ajc "org.aspectj:aspectjrt:1.7.2", "org.aspectj:aspectjtools:1.7.2" }
+			proj.dependencies{
+				ajc "org.aspectj:aspectjrt:1.7.2", "org.aspectj:aspectjtools:1.7.2"
+				compile configurations.ajc
+			}
 			proj.eclipse{
 				classpath{
 					plusConfigurations += proj.configurations.ajc
