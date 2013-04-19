@@ -16,6 +16,16 @@ import at.fabianachammer.pdusend.type.Ip4Address;
  */
 public class Ip4AddressDecoderTest {
 
+	public final void testDecodeWithZeroLengthByteArrayInputOnIp4AddressDecoderWorks() {
+		Ip4AddressDecoder decoder = new Ip4AddressDecoder();
+		Ip4Address expected = new Ip4Address();
+		byte[] input = new byte[0];
+
+		Ip4Address actual = decoder.decode(input);
+
+		assertEquals(expected, actual);
+	}
+
 	@Test
 	public final void testDecodeWithOneByteInputOnIp4AddressDecoderWorks() {
 		Ip4AddressDecoder decoder = new Ip4AddressDecoder();
@@ -32,6 +42,17 @@ public class Ip4AddressDecoderTest {
 		Ip4AddressDecoder decoder = new Ip4AddressDecoder();
 		Ip4Address expected = new Ip4Address(1);
 		byte[] input = { 0, 1 };
+
+		Ip4Address actual = decoder.decode(input);
+
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public final void testDecodeWithThreeByteInputOnIp4AddressDecoderWorks() {
+		Ip4AddressDecoder decoder = new Ip4AddressDecoder();
+		Ip4Address expected = new Ip4Address(1);
+		byte[] input = { 0, 0, 1 };
 
 		Ip4Address actual = decoder.decode(input);
 

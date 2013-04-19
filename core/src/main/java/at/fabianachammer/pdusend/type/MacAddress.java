@@ -3,12 +3,16 @@
  */
 package at.fabianachammer.pdusend.type;
 
-import at.fabianachammer.pdusend.type.decoder.DataUnitDecoder;
-import at.fabianachammer.pdusend.type.decoder.MacAddressDecoder;
 import net.sf.oval.constraint.AssertFieldConstraints;
 import net.sf.oval.constraint.NotNull;
 import net.sf.oval.constraint.Size;
 import net.sf.oval.guard.Guarded;
+
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
+import at.fabianachammer.pdusend.type.decoder.DataUnitDecoder;
+import at.fabianachammer.pdusend.type.decoder.MacAddressDecoder;
 
 /**
  * Represents a Media Access Control (MAC) address.
@@ -35,7 +39,7 @@ public class MacAddress implements DataUnit {
 	 */
 	@Size(min = SIZE, max = SIZE)
 	@NotNull
-	private byte[] bytes = new byte[SIZE];
+	private byte[] value = new byte[SIZE];
 
 	/**
 	 * Creates a new MAC address with all bits set to zero.
@@ -47,11 +51,11 @@ public class MacAddress implements DataUnit {
 	/**
 	 * Creates a new MAC address with the specified bytes.
 	 * 
-	 * @param bytes
+	 * @param value
 	 *            byte array that contains the data of a MAC address
 	 */
-	public MacAddress(final byte[] bytes) {
-		setBytes(bytes);
+	public MacAddress(final byte[] value) {
+		setValue(value);
 	}
 
 	@Override
@@ -61,22 +65,44 @@ public class MacAddress implements DataUnit {
 
 	@Override
 	public final byte[] encode() {
-		return getBytes();
+		return getValue();
+	}
+
+	@Override
+	public final boolean equals(final Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj instanceof MacAddress) {
+			MacAddress rhs = (MacAddress) obj;
+			return new EqualsBuilder().append(getValue(),
+					rhs.getValue()).isEquals();
+		}
+
+		return false;
+	}
+
+	@Override
+	public final int hashCode() {
+		final int intial = 239;
+		final int multiplier = 63;
+		return new HashCodeBuilder(intial, multiplier).append(
+				getValue()).hashCode();
 	}
 
 	/**
-	 * @return the address
+	 * @return the value
 	 */
-	public final byte[] getBytes() {
-		return bytes;
+	public final byte[] getValue() {
+		return value;
 	}
 
 	/**
-	 * @param bytes
-	 *            the address to set
+	 * @param value
+	 *            the value to set
 	 */
-	public final void setBytes(
-			@AssertFieldConstraints final byte[] bytes) {
-		this.bytes = bytes;
+	public final void setValue(
+			@AssertFieldConstraints final byte[] value) {
+		this.value = value;
 	}
 }

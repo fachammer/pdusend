@@ -8,10 +8,11 @@ configurations{
 	integrationTestRuntime.extendsFrom testRuntime
 }
 
-dependencies{ compile "net.sf.oval:oval:1.81", configurations.ajc }
+dependencies{ compile "net.sf.oval:oval:1.81","commons-lang:commons-lang:2.6", configurations.ajc }
 
 sourceSets{
-	main{ java{ srcDir "src/main/aspectj" } }
+	main{ java{ srcDir "src/main/aspectj"
+		} }
 	integrationTest{
 		java.srcDirs "src/integration-test/java"
 		compileClasspath += main.output

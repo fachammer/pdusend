@@ -39,17 +39,29 @@ public class Ip4AddressTest {
 	}
 
 	@Test
-	public final void testEqualsOnIp4AddressWithDifferentIp4AddressesReturnsFalse() {
+	public final void testEqualsWithDifferentIp4AddressesOnIp4AddressReturnsFalse() {
 		assertFalse(new Ip4Address(1).equals(new Ip4Address(2)));
 	}
 
 	@Test
-	public final void testEqualsOnIp4AddressWithEqualIp4AddressesReturnsTrue() {
+	public final void testEqualsWithEqualIp4AddressesOnIp4AddressReturnsTrue() {
 		assertTrue(new Ip4Address(1).equals(new Ip4Address(1)));
 	}
 
 	@Test
-	public final void testEqualsOnIp4AddressWithDifferentTypesReturnsFalse() {
+	public final void testEqualsWithDifferentTypesOnIp4AddressReturnsFalse() {
 		assertFalse(new Ip4Address().equals(new Object()));
+	}
+
+	@Test
+	public final void testHashCodeWithEqualIp4AddressesReturnsEqualHashCodes() {
+		assertEquals(new Ip4Address(1).hashCode(),
+				new Ip4Address(1).hashCode());
+	}
+
+	@Test
+	public final void testHashCodeWithDifferentIp4AddresssesReturnsDifferentHashCodes() {
+		assertNotEquals(new Ip4Address(1).hashCode(),
+				new Ip4Address(2).hashCode());
 	}
 }

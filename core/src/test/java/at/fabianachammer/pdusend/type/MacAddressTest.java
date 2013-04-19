@@ -22,7 +22,7 @@ public class MacAddressTest {
 		MacAddress macAddress = new MacAddress();
 		byte[] illegalSizeByteArray = new byte[7];
 
-		macAddress.setBytes(illegalSizeByteArray);
+		macAddress.setValue(illegalSizeByteArray);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -36,7 +36,7 @@ public class MacAddressTest {
 	public final void testSetNullByteArrayOnMacAddressThrowsNullPointerException() {
 		MacAddress macAddress = new MacAddress();
 
-		macAddress.setBytes(null);
+		macAddress.setValue(null);
 	}
 
 	@Test(expected = NullPointerException.class)
@@ -49,7 +49,7 @@ public class MacAddressTest {
 		MacAddress macAddress = new MacAddress();
 		byte[] validMacByteArray = new byte[6];
 
-		macAddress.setBytes(validMacByteArray);
+		macAddress.setValue(validMacByteArray);
 	}
 
 	@Test
@@ -59,6 +59,7 @@ public class MacAddressTest {
 		new MacAddress(validMacByteArray);
 	}
 
+	@Test
 	public final void testGetDecoderOnMacAddressReturnsInstanceOfMacAddressDecoder() {
 		MacAddress anyMacAddress = new MacAddress();
 
@@ -68,4 +69,38 @@ public class MacAddressTest {
 		assertTrue(decoder instanceof MacAddressDecoder);
 	}
 
+	@Test
+	public final void testEqualsWithEqualMacAddressesOnMacAddressReturnsTrue() {
+		assertTrue(new MacAddress().equals(new MacAddress()));
+	}
+
+	@Test
+	public final void testEqualsWithDifferentMacAddressesOnMacAddressReturnsFalse() {
+		assertFalse(new MacAddress().equals(new MacAddress(new byte[] {
+				0, 0, 0, 0, 0, 1 })));
+	}
+
+	@Test
+	public final void testEqualsWithDifferentTypesOnMacAddressReturnsFalse() {
+		assertFalse(new MacAddress().equals(new Object()));
+	}
+
+	@Test
+	public final void testEqualsWithNullOnMacAddressReturnsFalse() {
+		assertFalse(new MacAddress().equals(null));
+	}
+
+	@Test
+	public final void testHashCodeWithEqualMacAddressesOnMacAddressReturnsEqualHashCodes() {
+		assertEquals(
+				new MacAddress(new byte[] { 0, 0, 0, 0, 0, 1 }).hashCode(),
+				new MacAddress(new byte[] { 0, 0, 0, 0, 0, 1 }).hashCode());
+	}
+
+	@Test
+	public final void testHashCodeWithDifferentMacAddressesOnMacAddressReturnsDifferentHashCodes() {
+		assertNotEquals(
+				new MacAddress(new byte[] { 0, 0, 0, 0, 0, 1 }).hashCode(),
+				new MacAddress(new byte[] { 0, 0, 0, 0, 0, 2 }).hashCode());
+	}
 }

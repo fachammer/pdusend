@@ -46,4 +46,36 @@ public class RawDataUnitTest {
 		RawDataUnit anyRawDataUnit = new RawDataUnit();
 		anyRawDataUnit.setData(null);
 	}
+
+	@Test
+	public final void testEqualsWithEqualRawDataUnitsOnRawDataUnitReturnsTrue() {
+		assertTrue(new RawDataUnit((byte) 1).equals(new RawDataUnit((byte) 1)));
+	}
+
+	@Test
+	public final void testEqualsWithDifferentRawDataUnitsOnRawDataUnitReturnsFalse() {
+		assertFalse(new RawDataUnit((byte) 1).equals(new RawDataUnit((byte) 2)));
+	}
+
+	@Test
+	public final void testEqualsWithDifferentTypesOnRawDataUnitReturnsFalse() {
+		assertFalse(new RawDataUnit().equals(new Object()));
+	}
+
+	@Test
+	public final void testEqualsWithNullOnRawDataUnitReturnsFalse() {
+		assertFalse(new RawDataUnit().equals(null));
+	}
+
+	@Test
+	public final void testHashCodeWithEqualRawDataUnitsOnRawDataUnitReturnsEqualHashCodes() {
+		assertEquals(new RawDataUnit((byte) 1).hashCode(),
+				new RawDataUnit((byte) 1).hashCode());
+	}
+
+	@Test
+	public final void testHashCodeWithDifferentRawDataUnitsOnRawDataUnitReturnsDifferentHashCodes() {
+		assertNotEquals(new RawDataUnit((byte) 1).hashCode(),
+				new RawDataUnit((byte) 2).hashCode());
+	}
 }

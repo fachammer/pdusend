@@ -3,6 +3,9 @@
  */
 package at.fabianachammer.pdusend.type;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import net.sf.oval.constraint.AssertFieldConstraints;
 import net.sf.oval.constraint.NotNull;
 import net.sf.oval.guard.Guarded;
@@ -43,8 +46,41 @@ public class RawDataUnit implements DataUnit {
 	 * @param data
 	 *            raw byte data this data unit should have
 	 */
-	public RawDataUnit(final byte[] data) {
+	public RawDataUnit(final byte... data) {
 		setData(data);
+	}
+
+	@Override
+	public final DataUnitDecoder<RawDataUnit> getDecoder() {
+		return DECODER;
+	}
+
+	@Override
+	public final byte[] encode() {
+		return getData();
+	}
+
+	@Override
+	public final boolean equals(final Object obj) {
+		if (obj == null) {
+			return false;
+		}
+
+		if (obj instanceof RawDataUnit) {
+			RawDataUnit rhs = (RawDataUnit) obj;
+			return new EqualsBuilder().append(getData(),
+					rhs.getData()).isEquals();
+		}
+
+		return false;
+	}
+
+	@Override
+	public final int hashCode() {
+		final int initial = 121;
+		final int multiplier = 135;
+		return new HashCodeBuilder(initial, multiplier).append(
+				getData()).hashCode();
 	}
 
 	/**
@@ -58,18 +94,8 @@ public class RawDataUnit implements DataUnit {
 	 * @param data
 	 *            the data to set
 	 */
-	public final void setData(@AssertFieldConstraints final byte[] data) {
+	public final void setData(
+			@AssertFieldConstraints final byte... data) {
 		this.data = data;
 	}
-
-	@Override
-	public final DataUnitDecoder<RawDataUnit> getDecoder() {
-		return DECODER;
-	}
-
-	@Override
-	public final byte[] encode() {
-		return getData();
-	}
-
 }
