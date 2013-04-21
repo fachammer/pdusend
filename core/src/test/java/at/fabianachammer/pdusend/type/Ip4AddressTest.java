@@ -61,7 +61,7 @@ public class Ip4AddressTest {
 
 	@Test
 	public final void testHashCodeWithDifferentIp4AddresssesReturnsDifferentHashCodes() {
-		assertNotEquals(new Ip4Address(1).hashCode(),
-				new Ip4Address(2).hashCode());
+		assertNotEquals(new Ip4Address(1).hashCode(), new Ip4Address(
+				2).hashCode());
 	}
 }

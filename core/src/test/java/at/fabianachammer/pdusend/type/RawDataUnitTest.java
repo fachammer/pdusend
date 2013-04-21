@@ -5,7 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import at.fabianachammer.pdusend.type.decoder.DataUnitDecoder;
-import at.fabianachammer.pdusend.type.decoder.RawDataUnitDecoder;
+import at.fabianachammer.pdusend.type.pdu.RawDataUnit;
+import at.fabianachammer.pdusend.type.pdu.decoder.RawDataUnitDecoder;
 
 /**
  * @author fabian
@@ -35,26 +36,32 @@ public class RawDataUnitTest {
 	}
 
 	@Test
+	public final void testEncodeWithNullDataOnRawDataUnitReturnsEmptyByteArray() {
+		RawDataUnit anyRawDataUnit = new RawDataUnit(null);
+		byte[] expected = new byte[0];
+
+		byte[] actual = anyRawDataUnit.encode();
+
+		assertArrayEquals(expected, actual);
+	}
+
+	@Test
 	public final void testSetNonNullDataOnRawDataUnitWorks() {
 		RawDataUnit anyRawDataUnit = new RawDataUnit();
 		byte[] nonNullData = new byte[] { 0 };
 		anyRawDataUnit.setData(nonNullData);
 	}
 
-	@Test(expected = NullPointerException.class)
-	public final void testSetNullDataOnRawDataUnitThrowsNullPointerException() {
-		RawDataUnit anyRawDataUnit = new RawDataUnit();
-		anyRawDataUnit.setData(null);
-	}
-
 	@Test
 	public final void testEqualsWithEqualRawDataUnitsOnRawDataUnitReturnsTrue() {
-		assertTrue(new RawDataUnit((byte) 1).equals(new RawDataUnit((byte) 1)));
+		assertTrue(new RawDataUnit((byte) 1).equals(new RawDataUnit(
+				(byte) 1)));
 	}
 
 	@Test
 	public final void testEqualsWithDifferentRawDataUnitsOnRawDataUnitReturnsFalse() {
-		assertFalse(new RawDataUnit((byte) 1).equals(new RawDataUnit((byte) 2)));
+		assertFalse(new RawDataUnit((byte) 1).equals(new RawDataUnit(
+				(byte) 2)));
 	}
 
 	@Test

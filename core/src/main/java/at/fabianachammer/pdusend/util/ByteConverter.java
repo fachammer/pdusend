@@ -29,8 +29,9 @@ public final class ByteConverter {
 	 */
 	public static byte[] toByteArray(final Byte[] array) {
 
-		if (array == null)
+		if (array == null) {
 			return null;
+		}
 
 		byte[] byteArray = new byte[array.length];
 		for (int i = 0; i < array.length; i++) {

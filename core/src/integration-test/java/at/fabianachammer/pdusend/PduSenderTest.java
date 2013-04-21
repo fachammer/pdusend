@@ -14,10 +14,10 @@ import at.fabianachammer.pdusend.type.EtherType;
 import at.fabianachammer.pdusend.type.HardwareAddressType;
 import at.fabianachammer.pdusend.type.Ip4Address;
 import at.fabianachammer.pdusend.type.MacAddress;
-import at.fabianachammer.pdusend.type.RawDataUnit;
 import at.fabianachammer.pdusend.type.pdu.ArpSegment;
 import at.fabianachammer.pdusend.type.pdu.EthernetFrame;
 import at.fabianachammer.pdusend.type.pdu.ProtocolDataUnit;
+import at.fabianachammer.pdusend.type.pdu.RawDataUnit;
 
 /**
  * This class tests the NSender class. Due to
@@ -63,7 +63,7 @@ public class PduSenderTest {
 				new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 		final byte[] anyDMac =
 				new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 };
-		final EtherType anyEtherType = EtherType.IPv4;
+		final EtherType anyEtherType = EtherType.Unknown;
 		final byte[] anyData = new byte[] { 0x00, 0x11 };
 		final DataUnit anyDataUnit = new RawDataUnit(anyData);
 
@@ -83,7 +83,7 @@ public class PduSenderTest {
 		ArpSegment arpSegment = new ArpSegment();
 		arpSegment.setHardwareType(HardwareAddressType.Ethernet);
 		arpSegment.setOperation(ArpOperation.Request);
-		arpSegment.setProtocolType(EtherType.IPv4);
+		arpSegment.setProtocolType(EtherType.Unknown);
 		arpSegment.setSenderHardwareAddress(new MacAddress(new byte[] {
 				0, 0, 0, 0, 0, 1 }));
 		arpSegment.setSenderProtocolAddress(new Ip4Address(1));
@@ -101,7 +101,7 @@ public class PduSenderTest {
 		ArpSegment arpSegment = new ArpSegment();
 		arpSegment.setHardwareType(HardwareAddressType.Ethernet);
 		arpSegment.setOperation(ArpOperation.Request);
-		arpSegment.setProtocolType(EtherType.IPv4);
+		arpSegment.setProtocolType(EtherType.Unknown);
 		arpSegment.setSenderHardwareAddress(new MacAddress(new byte[] {
 				0, 0, 0, 0, 0, 1 }));
 		arpSegment.setSenderProtocolAddress(new Ip4Address(1));

@@ -50,6 +50,11 @@ public class Ip4Address implements DataUnit {
 	public final byte[] encode() {
 		return BitOperator.split(value);
 	}
+	
+	@Override
+	public final int size() {
+		return SIZE;
+	}
 
 	@Override
 	public final boolean equals(final Object obj) {

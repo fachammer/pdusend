@@ -1,11 +1,10 @@
 package at.fabianachammer.pdusend.type.pdu;
 
-import org.junit.Assert;
+import static org.junit.Assert.*;
 import org.junit.Test;
 
 import at.fabianachammer.pdusend.type.EtherType;
 import at.fabianachammer.pdusend.type.MacAddress;
-import at.fabianachammer.pdusend.type.RawDataUnit;
 import at.fabianachammer.pdusend.type.TagProtocol;
 
 /**
@@ -23,15 +22,15 @@ public class EthernetFrameTest {
 				{
 						(byte) 0xff, (byte) 0xee, (byte) 0xdd,
 						(byte) 0xcc, (byte) 0xbb, (byte) 0xaa };
-		final EtherType etherType = EtherType.IPv4;
+		final EtherType etherType = EtherType.Unknown;
 		final VlanTag vlanTag = new VlanTag();
 		vlanTag.setTagProtocol(TagProtocol.IEEE_802_1Q);
-		vlanTag.setPriorityCodePoint((byte) 4);
+		vlanTag.setPriorityCodePoint((byte) 1);
 		vlanTag.setCanonicalFormat(true);
-		final short vlanId = 4000;
+		final short vlanId = 1;
 		vlanTag.setVlanIdentifier(vlanId);
 
-		final byte[] data = new byte[] { (byte) 0x92 };
+		final byte[] data = new byte[] { (byte) 0x01 };
 		final RawDataUnit pdu = new RawDataUnit(data);
 
 		ef.setSourceMacAddress(new MacAddress(sourceMac));
@@ -46,21 +45,14 @@ public class EthernetFrameTest {
 						0x00, 0x11, 0x22, 0x33, 0x44, 0x55,
 						(byte) 0xff, (byte) 0xee, (byte) 0xdd,
 						(byte) 0xcc, (byte) 0xbb, (byte) 0xaa,
-						(byte) 0x81, 0x00, (byte) 0x8f, (byte) 0xa0,
-						0x08, 0x00, (byte) 0x92, (byte) 0, (byte) 0,
-						(byte) 0, (byte) 0, (byte) 0, (byte) 0,
-						(byte) 0, (byte) 0, (byte) 0, (byte) 0,
-						(byte) 0, (byte) 0, (byte) 0, (byte) 0,
-						(byte) 0, (byte) 0, (byte) 0, (byte) 0,
-						(byte) 0, (byte) 0, (byte) 0, (byte) 0,
-						(byte) 0, (byte) 0, (byte) 0, (byte) 0,
-						(byte) 0, (byte) 0, (byte) 0, (byte) 0,
-						(byte) 0, (byte) 0, (byte) 0, (byte) 0,
-						(byte) 0, (byte) 0, (byte) 0, (byte) 0,
-						(byte) 0, (byte) 0, (byte) 0, (byte) 0x9a,
-						(byte) 0xeb, 0x40, (byte) 0xd0 };
+						(byte) 0x81, 0x00, (byte) 0x20, (byte) 1, 0,
+						0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+						0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+						0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+						(byte) 0x69, (byte) 0x77, (byte) 0xb3,
+						(byte) 0xea };
 
-		Assert.assertArrayEquals(expected, actual);
+		assertArrayEquals(expected, actual);
 	}
 
 	@Test
@@ -72,7 +64,7 @@ public class EthernetFrameTest {
 				{
 						(byte) 0xff, (byte) 0xee, (byte) 0xdd,
 						(byte) 0xcc, (byte) 0xbb, (byte) 0xaa };
-		final EtherType etherType = EtherType.IPv4;
+		final EtherType etherType = EtherType.Unknown;
 
 		ef.setSourceMacAddress(new MacAddress(sourceMac));
 		ef.setDestinationMacAddress(new MacAddress(destinationMac));
@@ -83,22 +75,14 @@ public class EthernetFrameTest {
 				{
 						0x00, 0x11, 0x22, 0x33, 0x44, 0x55,
 						(byte) 0xff, (byte) 0xee, (byte) 0xdd,
-						(byte) 0xcc, (byte) 0xbb, (byte) 0xaa, 0x08,
-						0x00, (byte) 0, (byte) 0, (byte) 0, (byte) 0,
-						(byte) 0, (byte) 0, (byte) 0, (byte) 0,
-						(byte) 0, (byte) 0, (byte) 0, (byte) 0,
-						(byte) 0, (byte) 0, (byte) 0, (byte) 0,
-						(byte) 0, (byte) 0, (byte) 0, (byte) 0,
-						(byte) 0, (byte) 0, (byte) 0, (byte) 0,
-						(byte) 0, (byte) 0, (byte) 0, (byte) 0,
-						(byte) 0, (byte) 0, (byte) 0, (byte) 0,
-						(byte) 0, (byte) 0, (byte) 0, (byte) 0,
-						(byte) 0, (byte) 0, (byte) 0, (byte) 0,
-						(byte) 0, (byte) 0, (byte) 0, (byte) 0,
-						(byte) 0, (byte) 0, (byte) 0x8e, (byte) 0xd3,
-						0x59, (byte) 0x40 };
+						(byte) 0xcc, (byte) 0xbb, (byte) 0xaa, 0, 0,
+						0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+						0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+						0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+						0, (byte) 0x76, (byte) 0xa7, (byte) 0xb3,
+						(byte) 0x2f };
 
-		Assert.assertArrayEquals(expected, actual);
+		assertArrayEquals(expected, actual);
 	}
 
 	@Test(expected = NullPointerException.class)
@@ -120,5 +104,44 @@ public class EthernetFrameTest {
 		EthernetFrame ef = new EthernetFrame();
 
 		ef.setEtherType(null);
+	}
+
+	@Test
+	public final void testEqualsWithEqualEthernetFramesOnEthernetFrameReturnsTrue() {
+		assertTrue(new EthernetFrame().equals(new EthernetFrame()));
+	}
+
+	@Test
+	public final void testEqualsWithDifferentEthernetFramesOnEthernetFrameReturnsFalse() {
+		EthernetFrame ethernetFrame = new EthernetFrame();
+		EthernetFrame differentEthernetFrame = new EthernetFrame();
+		differentEthernetFrame.setData(new RawDataUnit());
+
+		assertFalse(ethernetFrame.equals(differentEthernetFrame));
+	}
+
+	@Test
+	public final void testEqualsWithNullOnEthernetFrameReturnsFalse() {
+		assertFalse(new EthernetFrame().equals(null));
+	}
+
+	@Test
+	public final void testEqualsWithDifferentTypesOnEthernetFrameReturnsFalse() {
+		assertFalse(new EthernetFrame().equals(new Object()));
+	}
+
+	@Test
+	public final void testHashCodeWithEqualEthernetFramesOnEthernetFrameReturnsEqualHashCodes() {
+		assertEquals(new EthernetFrame().hashCode(),
+				new EthernetFrame().hashCode());
+	}
+
+	@Test
+	public final void testHashCodeWithDifferentEthernetFramesOnEthernetFrameReturnsDifferentHashCodes() {
+		EthernetFrame ethernetFrame = new EthernetFrame();
+		EthernetFrame differentEthernetFrame = new EthernetFrame();
+		differentEthernetFrame.setData(new RawDataUnit());
+
+		assertNotEquals(ethernetFrame, differentEthernetFrame);
 	}
 }

@@ -1,16 +1,13 @@
 /**
  * 
  */
-package at.fabianachammer.pdusend.type;
+package at.fabianachammer.pdusend.type.pdu;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-import net.sf.oval.constraint.AssertFieldConstraints;
-import net.sf.oval.constraint.NotNull;
-import net.sf.oval.guard.Guarded;
 import at.fabianachammer.pdusend.type.decoder.DataUnitDecoder;
-import at.fabianachammer.pdusend.type.decoder.RawDataUnitDecoder;
+import at.fabianachammer.pdusend.type.pdu.decoder.RawDataUnitDecoder;
 
 /**
  * This class serves as a data unit that encapsulates raw data.
@@ -18,8 +15,7 @@ import at.fabianachammer.pdusend.type.decoder.RawDataUnitDecoder;
  * @author fabian
  * 
  */
-@Guarded
-public class RawDataUnit implements DataUnit {
+public class RawDataUnit implements ProtocolDataUnit {
 
 	/**
 	 * decoder for raw data units.
@@ -30,7 +26,6 @@ public class RawDataUnit implements DataUnit {
 	/**
 	 * data this raw data unit contains.
 	 */
-	@NotNull
 	private byte[] data = new byte[0];
 
 	/**
@@ -57,7 +52,16 @@ public class RawDataUnit implements DataUnit {
 
 	@Override
 	public final byte[] encode() {
-		return getData();
+		if (data != null) {
+			return getData();
+		}
+
+		return new byte[0];
+	}
+	
+	@Override
+	public int size() {
+		return data.length;
 	}
 
 	@Override
@@ -94,8 +98,7 @@ public class RawDataUnit implements DataUnit {
 	 * @param data
 	 *            the data to set
 	 */
-	public final void setData(
-			@AssertFieldConstraints final byte... data) {
+	public final void setData(final byte... data) {
 		this.data = data;
 	}
 }

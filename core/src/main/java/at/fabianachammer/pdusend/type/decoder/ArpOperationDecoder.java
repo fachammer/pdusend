@@ -30,8 +30,8 @@ public class ArpOperationDecoder implements
 	private static final int MIN_DATA_SIZE = 1;
 
 	@Override
-	public final ArpOperation decode(
-			@Size(min = MIN_DATA_SIZE, max = MAX_DATA_SIZE) @NotNull final byte... data) {
+	public final ArpOperation decode(@Size(min = MIN_DATA_SIZE,
+			max = MAX_DATA_SIZE) @NotNull final byte... data) {
 
 		short id = 0;
 		if (data.length == 1) {

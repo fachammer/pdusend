@@ -28,4 +28,11 @@ public interface DataUnit {
 	 * @return the encoded data unit
 	 */
 	byte[] encode();
+
+	/**
+	 * Returns the size of the data unit in bytes.
+	 * 
+	 * @return size of the data unit in bytes
+	 */
+	int size();
 }

@@ -37,6 +37,11 @@ public enum ArpOperation implements DataUnit {
 	 * RARP reply.
 	 */
 	ReplyReverse((short) 4);
+	
+	/**
+	 * size of an ARP operation in bytes.
+	 */
+	public static final int SIZE = 2;
 
 	/**
 	 * decoder for ARP operations.
@@ -67,6 +72,11 @@ public enum ArpOperation implements DataUnit {
 	@Override
 	public byte[] encode() {
 		return BitOperator.split(getId());
+	}
+	
+	@Override
+	public int size() {
+		return SIZE;
 	}
 
 	/**

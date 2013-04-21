@@ -20,6 +20,11 @@ public enum TagProtocol implements DataUnit {
 	 * IEEE 802.1Q Tagging Protocol (0x8100 in HEX).
 	 */
 	IEEE_802_1Q((short) 0x8100);
+	
+	/**
+	 * size of tag protocol identifiers in bytes.
+	 */
+	public static final int SIZE = 2;
 
 	/**
 	 * decoder for tag protocols.
@@ -50,6 +55,11 @@ public enum TagProtocol implements DataUnit {
 	@Override
 	public byte[] encode() {
 		return BitOperator.split(getId());
+	}
+	
+	@Override
+	public int size() {
+		return SIZE;
 	}
 
 	/**

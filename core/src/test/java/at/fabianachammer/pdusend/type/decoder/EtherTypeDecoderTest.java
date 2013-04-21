@@ -16,7 +16,7 @@ public class EtherTypeDecoderTest {
 	public final void testDecodeWithValidTwoByteIdOnEtherTypeDecoderWorks() {
 		EtherTypeDecoder decoder = new EtherTypeDecoder();
 		final byte[] validTwoByteId = { 0x08, 0 };
-		EtherType expected = EtherType.IPv4;
+		EtherType expected = EtherType.Unknown;
 
 		EtherType actual = decoder.decode(validTwoByteId);
 

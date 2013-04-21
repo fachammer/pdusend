@@ -1,8 +1,6 @@
 package at.fabianachammer.pdusend.type.pdu;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-
+import static org.junit.Assert.*;
 import org.junit.Test;
 
 import at.fabianachammer.pdusend.type.TagProtocol;
@@ -19,16 +17,13 @@ public class VlanTagTest {
 	 * Test method for {@link at.fabianachammer.pdusend.type.pdu.VlanTag#()}.
 	 */
 	@Test
-	public final void testWorks() {
+	public final void testEncodeOnVlanTagWorks() {
 		final VlanTag tag = new VlanTag();
-		tag.setTagProtocol(TagProtocol.IEEE_802_1Q);
-		tag.setPriorityCodePoint((byte) 4);
-		tag.setCanonicalFormat(true);
-		final short vlanId = 4000;
-		tag.setVlanIdentifier(vlanId);
+		tag.setPriorityCodePoint((byte) 1);
+		tag.setVlanIdentifier((short) 1);
 
 		final byte[] expected =
-				new byte[] { (byte) 0x81, 0, (byte) 0x8f, (byte) 0xa0 };
+				new byte[] { (byte) 0x81, 0, (byte) 0x20, (byte) 0x01 };
 		byte[] actual = tag.encode();
 
 		assertArrayEquals(expected, actual);
@@ -52,7 +47,7 @@ public class VlanTagTest {
 
 		assertArrayEquals(expected, tag.encode());
 	}
-	
+
 	@Test
 	public final void testSetValidPriorityCodePointOnVlanTagWorks() {
 		final byte validPriorityCodePoint = 0;
@@ -87,5 +82,47 @@ public class VlanTagTest {
 		final VlanTag tag = new VlanTag();
 
 		tag.setVlanIdentifier(illegalVlanIdentifier);
+	}
+
+	@Test
+	public final void testEqualsWithEqualVlanTagsOnVlanTagReturnsTrue() {
+		VlanTag vlanTag = new VlanTag();
+		VlanTag sameVlanTag = new VlanTag();
+
+		assertTrue(vlanTag.equals(sameVlanTag));
+	}
+
+	@Test
+	public final void testEqualsWithDifferentVlanTagsOnVlanTagReturnsFalse() {
+		VlanTag vlanTag = new VlanTag();
+		VlanTag differentVlanTag = new VlanTag();
+		differentVlanTag.setPriorityCodePoint((byte) 1);
+
+		assertFalse(vlanTag.equals(differentVlanTag));
+	}
+
+	@Test
+	public final void testEqualsWithDifferentTypesOnVlanTagReturnsFalse() {
+		assertFalse(new VlanTag().equals(new Object()));
+	}
+
+	@Test
+	public final void testEqualsWithNullOnVlanTagReturnsFalse() {
+		assertFalse(new VlanTag().equals(null));
+	}
+
+	@Test
+	public final void testHashCodeWithEqualVlanTagsReturnsEqualHashCodes() {
+		assertEquals(new VlanTag().hashCode(),
+				new VlanTag().hashCode());
+	}
+
+	@Test
+	public final void testHashCodeWithDifferentVlanTagsReturnsDifferentHashCodes() {
+		VlanTag vlanTag = new VlanTag();
+		VlanTag differentVlanTag = new VlanTag();
+		differentVlanTag.setPriorityCodePoint((byte) 1);
+
+		assertNotEquals(vlanTag, differentVlanTag);
 	}
 }

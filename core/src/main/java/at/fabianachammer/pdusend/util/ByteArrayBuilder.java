@@ -13,8 +13,14 @@ import java.util.ArrayList;
  */
 public class ByteArrayBuilder {
 
+	/**
+	 * array list that contains the added data.
+	 */
 	private ArrayList<Byte> arrayList;
 
+	/**
+	 * creates a new ByteArrayBuilder.
+	 */
 	public ByteArrayBuilder() {
 		this.arrayList = new ArrayList<Byte>();
 	}
@@ -25,7 +31,7 @@ public class ByteArrayBuilder {
 	 * @param bytes
 	 *            bytes to add to the ByteArrayBuilder
 	 */
-	public final void append(byte... bytes) {
+	public final void append(final byte... bytes) {
 		for (int i = 0; i < bytes.length; i++) {
 			arrayList.add(bytes[i]);
 		}

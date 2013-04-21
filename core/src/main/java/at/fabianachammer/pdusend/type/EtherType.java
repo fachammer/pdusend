@@ -2,6 +2,9 @@ package at.fabianachammer.pdusend.type;
 
 import at.fabianachammer.pdusend.type.decoder.DataUnitDecoder;
 import at.fabianachammer.pdusend.type.decoder.EtherTypeDecoder;
+import at.fabianachammer.pdusend.type.pdu.ProtocolDataUnit;
+import at.fabianachammer.pdusend.type.pdu.decoder.ArpSegmentDecoder;
+import at.fabianachammer.pdusend.type.pdu.decoder.RawDataUnitDecoder;
 import at.fabianachammer.pdusend.util.BitOperator;
 
 /**
@@ -10,36 +13,22 @@ import at.fabianachammer.pdusend.util.BitOperator;
  * @author fabian
  * 
  */
-public enum EtherType implements DataUnit {
+public enum EtherType implements ProtocolIdentifier {
 
 	/**
 	 * Unknown protocol.
 	 */
-	Unknown((short) 0),
-	/**
-	 * Internet Protocol version 4.
-	 */
-	IPv4((short) 0x0800),
+	Unknown((short) 0, new RawDataUnitDecoder()),
 
 	/**
 	 * Address Resolution Protocol.
 	 */
-	ARP((short) 0x0806),
+	ARP((short) 0x0806, new ArpSegmentDecoder());
 
 	/**
-	 * Wake on LAN.
+	 * size of EtherTypes in bytes.
 	 */
-	WoL((short) 0x0842),
-
-	/**
-	 * Reverse Address Resolution Protocol.
-	 */
-	RARP((short) 0x8035),
-
-	/**
-	 * Internet Protocol version 6.
-	 */
-	IPv6((short) 0x86DD);
+	public static final int SIZE = 2;
 
 	/**
 	 * decoder for EtherTypes.
@@ -53,13 +42,25 @@ public enum EtherType implements DataUnit {
 	private short id;
 
 	/**
+	 * decoder that is used for decoding data units of the protocol
+	 * specified by the EtherType.
+	 */
+	private DataUnitDecoder<? extends ProtocolDataUnit> protocolDecoder;
+
+	/**
 	 * Creates a new EtherType with the specified ID.
 	 * 
 	 * @param id
 	 *            ID of the EtherType
+	 * @param protocolDecoder
+	 *            decoder that is used for decoding the protocol specified by
+	 *            the EtherType
 	 */
-	private EtherType(final short id) {
+	private EtherType(
+			final short id,
+			final DataUnitDecoder<? extends ProtocolDataUnit> protocolDecoder) {
 		setId(id);
+		setProtocolDecoder(protocolDecoder);
 	}
 
 	@Override
@@ -70,6 +71,16 @@ public enum EtherType implements DataUnit {
 	@Override
 	public byte[] encode() {
 		return BitOperator.split(getId());
+	}
+	
+	@Override
+	public int size() {
+		return SIZE;
+	}
+
+	@Override
+	public DataUnitDecoder<? extends ProtocolDataUnit> getProtocolDecoder() {
+		return protocolDecoder;
 	}
 
 	/**
@@ -85,5 +96,14 @@ public enum EtherType implements DataUnit {
 	 */
 	public final void setId(final short id) {
 		this.id = id;
+	}
+
+	/**
+	 * @param protocolDecoder
+	 *            the protocolDecoder to set
+	 */
+	public void setProtocolDecoder(
+			final DataUnitDecoder<? extends ProtocolDataUnit> protocolDecoder) {
+		this.protocolDecoder = protocolDecoder;
 	}
 }

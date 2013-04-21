@@ -27,7 +27,8 @@ public class MacAddressDecoder implements DataUnitDecoder<MacAddress> {
 			@Size(max = MAX_SIZE) @NotNull final byte... data) {
 		switch (data.length) {
 		case 1:
-			return new MacAddress(new byte[] { 0, 0, 0, 0, 0, data[0] });
+			return new MacAddress(
+					new byte[] { 0, 0, 0, 0, 0, data[0] });
 		case 2:
 			return new MacAddress(new byte[] {
 					0, 0, 0, 0, data[0], data[1] });

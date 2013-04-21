@@ -76,8 +76,8 @@ public class MacAddressTest {
 
 	@Test
 	public final void testEqualsWithDifferentMacAddressesOnMacAddressReturnsFalse() {
-		assertFalse(new MacAddress().equals(new MacAddress(new byte[] {
-				0, 0, 0, 0, 0, 1 })));
+		assertFalse(new MacAddress().equals(new MacAddress(
+				new byte[] { 0, 0, 0, 0, 0, 1 })));
 	}
 
 	@Test
@@ -93,14 +93,17 @@ public class MacAddressTest {
 	@Test
 	public final void testHashCodeWithEqualMacAddressesOnMacAddressReturnsEqualHashCodes() {
 		assertEquals(
-				new MacAddress(new byte[] { 0, 0, 0, 0, 0, 1 }).hashCode(),
-				new MacAddress(new byte[] { 0, 0, 0, 0, 0, 1 }).hashCode());
+				new MacAddress(new byte[] { 0, 0, 0, 0, 0, 1 })
+						.hashCode(),
+				new MacAddress(new byte[] { 0, 0, 0, 0, 0, 1 })
+						.hashCode());
 	}
 
 	@Test
 	public final void testHashCodeWithDifferentMacAddressesOnMacAddressReturnsDifferentHashCodes() {
-		assertNotEquals(
-				new MacAddress(new byte[] { 0, 0, 0, 0, 0, 1 }).hashCode(),
-				new MacAddress(new byte[] { 0, 0, 0, 0, 0, 2 }).hashCode());
+		assertNotEquals(new MacAddress(
+				new byte[] { 0, 0, 0, 0, 0, 1 }).hashCode(),
+				new MacAddress(new byte[] { 0, 0, 0, 0, 0, 2 })
+						.hashCode());
 	}
 }

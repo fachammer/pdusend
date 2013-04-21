@@ -3,6 +3,9 @@
  */
 package at.fabianachammer.pdusend.type.pdu;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import net.sf.oval.constraint.AssertFieldConstraints;
 import net.sf.oval.constraint.NotNull;
 import net.sf.oval.guard.Guarded;
@@ -24,6 +27,11 @@ import at.fabianachammer.pdusend.util.ByteArrayBuilder;
  */
 @Guarded
 public class ArpSegment implements ProtocolDataUnit {
+
+	/**
+	 * size of an ARP segment.
+	 */
+	public static final int SIZE = 28;
 
 	/**
 	 * Specifies the hardware address length.
@@ -55,7 +63,7 @@ public class ArpSegment implements ProtocolDataUnit {
 	 * segment.
 	 */
 	@NotNull
-	private EtherType protocolType = EtherType.IPv4;
+	private EtherType protocolType = EtherType.Unknown;
 
 	/**
 	 * Specifies the ARP operation of the ARP segment.
@@ -107,6 +115,55 @@ public class ArpSegment implements ProtocolDataUnit {
 		bab.append(targetProtocolAddress.encode());
 
 		return bab.toArray();
+	}
+
+	@Override
+	public final int size() {
+		return hardwareType.size()
+				+ protocolType.size()
+				+ operation.size()
+				+ 2 // lengths of the addresses
+				+ senderHardwareAddress.size()
+				+ senderProtocolAddress.size()
+				+ targetHardwareAddress.size()
+				+ targetProtocolAddress.size();
+	}
+
+	@Override
+	public final boolean equals(final Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj instanceof ArpSegment) {
+			ArpSegment rhs = (ArpSegment) obj;
+			return new EqualsBuilder()
+					.append(getHardwareType(), rhs.getHardwareType())
+					.append(getProtocolType(), rhs.getProtocolType())
+					.append(getOperation(), rhs.getOperation())
+					.append(getSenderHardwareAddress(),
+							rhs.getSenderHardwareAddress())
+					.append(getSenderProtocolAddress(),
+							rhs.getSenderProtocolAddress())
+					.append(getTargetHardwareAddress(),
+							rhs.getTargetHardwareAddress())
+					.append(getTargetProtocolAddress(),
+							rhs.getTargetProtocolAddress())
+					.isEquals();
+		}
+		return false;
+	}
+
+	@Override
+	public final int hashCode() {
+		final int initial = 111;
+		final int multiplier = 19;
+		return new HashCodeBuilder(initial, multiplier)
+				.append(getHardwareType()).append(getProtocolType())
+				.append(getOperation())
+				.append(getSenderHardwareAddress())
+				.append(getSenderProtocolAddress())
+				.append(getTargetHardwareAddress())
+				.append(getTargetProtocolAddress()).hashCode();
 	}
 
 	/**

@@ -2,8 +2,12 @@ package at.fabianachammer.pdusend.type.pdu;
 
 import java.util.zip.CRC32;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import net.sf.oval.constraint.AssertFieldConstraints;
 import net.sf.oval.constraint.NotNull;
+import net.sf.oval.constraint.Size;
 import net.sf.oval.guard.Guarded;
 import at.fabianachammer.pdusend.type.DataUnit;
 import at.fabianachammer.pdusend.type.EtherType;
@@ -23,25 +27,30 @@ import at.fabianachammer.pdusend.util.ByteArrayBuilder;
 public class EthernetFrame implements EmbeddingProtocolDataUnit {
 
 	/**
-	 * Specifies the hardware address type of the Ethernet protocol.
+	 * hardware address type of the Ethernet protocol.
 	 */
 	public static final short HARDWARE_ADDRESS_TYPE = 1;
 
 	/**
-	 * Specifies the minimum size of an Ethernet frame in bytes.
+	 * minimum size of an Ethernet frame in bytes.
 	 */
-	private static final int MIN_ETHERNET_FRAME_SIZE = 64;
+	public static final int MIN_SIZE = 64;
 
 	/**
-	 * Specifies the size of the cyclic redundancy check in bytes.
+	 * maximum size of an Ethernet frame in bytes.
 	 */
-	private static final int CRC_SIZE = 4;
+	public static final int MAX_SIZE = 1522;
+
+	/**
+	 * size of the cyclic redundancy check in bytes.
+	 */
+	public static final int CRC_SIZE = 4;
 
 	/**
 	 * Specifies the default Ether type for the Ethernet frame.
 	 */
 	private static final EtherType DEFAULT_ETHER_TYPE =
-			EtherType.IPv4;
+			EtherType.Unknown;
 
 	/**
 	 * the decoder used for decoding data units of this type.
@@ -82,6 +91,17 @@ public class EthernetFrame implements EmbeddingProtocolDataUnit {
 	private DataUnit data = null;
 
 	/**
+	 * padding bytes of the Ethernet frame in case the frame is too small.
+	 */
+	private byte[] padding = null;
+
+	/**
+	 * checksum of the Ethernet frame.
+	 */
+	@Size(min = CRC_SIZE, max = CRC_SIZE)
+	private byte[] checksum = null;
+
+	/**
 	 * Creates a new Ethernet frame without any defined attributes.
 	 */
 	public EthernetFrame() {
@@ -95,38 +115,94 @@ public class EthernetFrame implements EmbeddingProtocolDataUnit {
 
 	@Override
 	public final byte[] encode() {
-		byte[] vlanTagBytes = new byte[0];
-		byte[] pduBytes = new byte[0];
-
-		if (vlanTag != null) {
-			vlanTagBytes = vlanTag.encode();
-		}
-
-		if (data != null) {
-			pduBytes = data.encode();
-		}
-
 		ByteArrayBuilder bab = new ByteArrayBuilder();
 
 		bab.append(destinationMacAddress.encode());
 		bab.append(sourceMacAddress.encode());
-		bab.append(vlanTagBytes);
-		bab.append(etherType.encode());
-		bab.append(pduBytes);
 
-		for (int i = bab.size(); i < MIN_ETHERNET_FRAME_SIZE
-				- CRC_SIZE; i++) {
-			bab.append((byte) 0);
+		if (vlanTag != null) {
+			bab.append(vlanTag.encode());
 		}
 
-		bab.append(calculateCheckSum(bab.toArray()));
+		bab.append(etherType.encode());
+
+		if (data != null) {
+			bab.append(data.encode());
+		}
+
+		if (padding == null) {
+			padding = getPaddingBytes();
+		}
+
+		bab.append(padding);
+
+		if (checksum == null) {
+			checksum = calculateCheckSum(bab.toArray());
+		}
+
+		bab.append(checksum);
 
 		return bab.toArray();
 	}
-	
+
+	@Override
+	public int size() {
+		int vlanTagSize = 0, dataSize = 0, paddingSize = 0;
+		if (vlanTag != null) {
+			vlanTagSize = vlanTag.size();
+		}
+
+		if (data != null) {
+			dataSize = data.size();
+		}
+
+		if (padding != null) {
+			paddingSize = padding.length;
+		}
+
+		return destinationMacAddress.size()
+				+ sourceMacAddress.size() + etherType.size()
+				+ vlanTagSize + dataSize + paddingSize + CRC_SIZE;
+	}
+
 	@Override
 	public final DataUnit getEmbeddedData() {
-		return data;
+		return getData();
+	}
+
+	@Override
+	public final boolean equals(final Object obj) {
+		if (obj == null) {
+			return false;
+		}
+
+		if (obj instanceof EthernetFrame) {
+			EthernetFrame rhs = (EthernetFrame) obj;
+			return new EqualsBuilder()
+					.append(getDestinationMacAddress(),
+							rhs.getDestinationMacAddress())
+					.append(getSourceMacAddress(),
+							rhs.getSourceMacAddress())
+					.append(getEtherType(), rhs.getEtherType())
+					.append(getVlanTag(), rhs.getVlanTag())
+					.append(getData(), rhs.getData())
+					.append(getPadding(), rhs.getPadding())
+					.append(getChecksum(), rhs.getChecksum())
+					.isEquals();
+		}
+		return false;
+	}
+
+	@Override
+	public final int hashCode() {
+		final int initial = 197;
+		final int multiplier = 209;
+		return new HashCodeBuilder(initial, multiplier)
+				.append(getDestinationMacAddress())
+				.append(getSourceMacAddress()).append(getEtherType())
+				.append(getVlanTag()).append(getData())
+				.append(getPadding()).append(getChecksum())
+				.hashCode();
 	}
 
 	/**
@@ -208,6 +284,37 @@ public class EthernetFrame implements EmbeddingProtocolDataUnit {
 	}
 
 	/**
+	 * @return the padding
+	 */
+	public final byte[] getPadding() {
+		return padding;
+	}
+
+	/**
+	 * @param padding
+	 *            the padding to set
+	 */
+	public final void setPadding(final byte[] padding) {
+		this.padding = padding;
+	}
+
+	/**
+	 * @return the checksum
+	 */
+	public final byte[] getChecksum() {
+		return checksum;
+	}
+
+	/**
+	 * @param checksum
+	 *            the checksum to set
+	 */
+	public final void setChecksum(
+			@AssertFieldConstraints final byte[] checksum) {
+		this.checksum = checksum;
+	}
+
+	/**
 	 * Calculates a CRC-32 checksum for a given array of bytes.
 	 * 
 	 * @param data
@@ -218,16 +325,34 @@ public class EthernetFrame implements EmbeddingProtocolDataUnit {
 	private byte[] calculateCheckSum(final byte[] data) {
 		CRC32 crc = new CRC32();
 		crc.update(data);
+		byte[] checksum = BitOperator.split((int) crc.getValue());
 
-		byte[] reverseCheckSum =
-				BitOperator.split((int) crc.getValue());
-		byte[] checkSum = new byte[reverseCheckSum.length];
+		return checksum;
+	}
 
-		for (int i = 0; i < checkSum.length; i++) {
-			checkSum[i] = reverseCheckSum[reverseCheckSum.length
-					- i - 1];
+	/**
+	 * Calculates the required padding to match the minimum size of thi Ethernet
+	 * frame.
+	 * 
+	 * @return required padding in bytes
+	 */
+	private byte[] getPaddingBytes() {
+		int currentFrameSize = 2
+				* MacAddress.SIZE + EtherType.SIZE;
+
+		if (vlanTag != null) {
+			currentFrameSize += VlanTag.SIZE;
 		}
 
-		return checkSum;
+		if (data != null) {
+			currentFrameSize += data.encode().length;
+		}
+
+		ByteArrayBuilder bab = new ByteArrayBuilder();
+		for (int i = currentFrameSize; i < MIN_SIZE
+				- CRC_SIZE; i++) {
+			bab.append((byte) 0);
+		}
+		return bab.toArray();
 	}
 }

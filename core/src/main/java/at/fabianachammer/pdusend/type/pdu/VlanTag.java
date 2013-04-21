@@ -1,5 +1,8 @@
 package at.fabianachammer.pdusend.type.pdu;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import net.sf.oval.constraint.AssertFieldConstraints;
 import net.sf.oval.constraint.Max;
 import net.sf.oval.constraint.Min;
@@ -21,10 +24,9 @@ import at.fabianachammer.pdusend.util.ByteArrayBuilder;
 public final class VlanTag implements ProtocolDataUnit {
 
 	/**
-	 * Standard tag protocol.
+	 * size of a VLAN tag in bytes.
 	 */
-	private static final TagProtocol DEFAULT_TAG_PROTOCOL =
-			TagProtocol.IEEE_802_1Q;
+	public static final int SIZE = 4;
 
 	/**
 	 * Specifies the minimum priority code point a VLAN tag can have.
@@ -56,7 +58,7 @@ public final class VlanTag implements ProtocolDataUnit {
 	 * Tag Protocol. Describes, which protocol is used for Tagging (default is
 	 * 802.1Q).
 	 */
-	private TagProtocol tagProtocol = DEFAULT_TAG_PROTOCOL;
+	private TagProtocol tagProtocol = TagProtocol.IEEE_802_1Q;
 
 	/**
 	 * Priority Code Point (PCP). Describes user priority information.
@@ -104,6 +106,42 @@ public final class VlanTag implements ProtocolDataUnit {
 		bab.append((byte) vid[1]);
 
 		return bab.toArray();
+	}
+	
+	@Override
+	public int size() {
+		return SIZE;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj instanceof VlanTag) {
+			VlanTag rhs = (VlanTag) obj;
+			return new EqualsBuilder()
+					.append(getTagProtocol(), rhs.getTagProtocol())
+					.append(getPriorityCodePoint(),
+							rhs.getPriorityCodePoint())
+					.append(isCanonicalFormat(),
+							rhs.isCanonicalFormat())
+					.append(getVlanIdentifier(),
+							rhs.getVlanIdentifier()).isEquals();
+		}
+
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		final int initial = 163;
+		final int multiplier = 105;
+		return new HashCodeBuilder(initial, multiplier)
+				.append(getTagProtocol())
+				.append(getPriorityCodePoint())
+				.append(isCanonicalFormat())
+				.append(getVlanIdentifier()).hashCode();
 	}
 
 	/**

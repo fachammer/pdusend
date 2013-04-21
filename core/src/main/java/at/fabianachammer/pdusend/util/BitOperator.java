@@ -54,8 +54,9 @@ public final class BitOperator {
 	 *            most significant byte of the 32-bit number
 	 * @return merged 32-bit number
 	 */
-	public static int merge(final byte lowlowByte, final byte lowHighByte,
-			final byte highLowByte, final byte highHighByte) {
+	public static int merge(final byte lowlowByte,
+			final byte lowHighByte, final byte highLowByte,
+			final byte highHighByte) {
 		return (highHighByte << (Short.SIZE + Byte.SIZE))
 				| (highLowByte << Short.SIZE)
 				| (lowHighByte << Byte.SIZE) | lowlowByte;
@@ -121,7 +122,22 @@ public final class BitOperator {
 		return bytes;
 	}
 
-	public static byte[] split(final BigInteger value, int arraySize) {
+	/**
+	 * Splits an BitInteger value into chunks of bytes and puts them in an array
+	 * with the specified size. If the value needs more space than specified,
+	 * the give array size is ignored.
+	 * 
+	 * @param value
+	 *            value to split
+	 * @param arraySize
+	 *            size of the resulting array (ignored, if value needs a bigger
+	 *            array)
+	 * @return byte array containing the split value (there are leading zero
+	 *         bytes, if the given array size is bigger than the needed array
+	 *         size of the value
+	 */
+	public static byte[] split(final BigInteger value,
+			final int arraySize) {
 		ByteArrayBuilder bab = new ByteArrayBuilder();
 		byte[] values = value.toByteArray();
 		if (values.length < arraySize) {
@@ -133,6 +149,13 @@ public final class BitOperator {
 		return bab.toArray();
 	}
 
+	/**
+	 * Splits a BigInteger value into chunks of byte data.
+	 * 
+	 * @param value
+	 *            value to split
+	 * @return byte array containing the split BigInteger
+	 */
 	public static byte[] split(final BigInteger value) {
 		return value.toByteArray();
 	}

@@ -39,6 +39,12 @@ public class Ip4Segment implements EmbeddingProtocolDataUnit {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public int size() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 	@Override
 	public DataUnit getEmbeddedData() {

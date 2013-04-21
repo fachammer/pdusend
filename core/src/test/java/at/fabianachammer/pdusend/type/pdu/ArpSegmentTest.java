@@ -20,18 +20,18 @@ public class ArpSegmentTest {
 	public final void testEncodeOnArpSegmentWithRequestWorks() {
 		ArpSegment arpSegment = new ArpSegment();
 		arpSegment.setHardwareType(HardwareAddressType.Ethernet);
-		arpSegment.setProtocolType(EtherType.IPv4);
+		arpSegment.setProtocolType(EtherType.Unknown);
 		arpSegment.setOperation(ArpOperation.Request);
-		arpSegment.setSenderHardwareAddress(new MacAddress(new byte[] {
-				0, 0, 0, 0, 0, 1 }));
+		arpSegment.setSenderHardwareAddress(new MacAddress(
+				new byte[] { 0, 0, 0, 0, 0, 1 }));
 		arpSegment.setSenderProtocolAddress(new Ip4Address(1));
-		arpSegment.setTargetHardwareAddress(new MacAddress(new byte[] {
-				0, 0, 0, 0, 0, 2 }));
+		arpSegment.setTargetHardwareAddress(new MacAddress(
+				new byte[] { 0, 0, 0, 0, 0, 2 }));
 		arpSegment.setTargetProtocolAddress(new Ip4Address(2));
 
 		byte[] expected =
 				new byte[] {
-						0, 1, 0x08, 0, 6, 4, 0, 1, 0, 0, 0, 0, 0, 1,
+						0, 1, 0, 0, 6, 4, 0, 1, 0, 0, 0, 0, 0, 1,
 						0, 0, 0, 1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2 };
 
 		byte[] actual = arpSegment.encode();
@@ -43,18 +43,18 @@ public class ArpSegmentTest {
 	public final void testEncodeOnArpSegmentWithReplyWorks() {
 		ArpSegment arpSegment = new ArpSegment();
 		arpSegment.setHardwareType(HardwareAddressType.Ethernet);
-		arpSegment.setProtocolType(EtherType.IPv4);
+		arpSegment.setProtocolType(EtherType.Unknown);
 		arpSegment.setOperation(ArpOperation.Reply);
-		arpSegment.setSenderHardwareAddress(new MacAddress(new byte[] {
-				0, 0, 0, 0, 0, 1 }));
+		arpSegment.setSenderHardwareAddress(new MacAddress(
+				new byte[] { 0, 0, 0, 0, 0, 1 }));
 		arpSegment.setSenderProtocolAddress(new Ip4Address(1));
-		arpSegment.setTargetHardwareAddress(new MacAddress(new byte[] {
-				0, 0, 0, 0, 0, 2 }));
+		arpSegment.setTargetHardwareAddress(new MacAddress(
+				new byte[] { 0, 0, 0, 0, 0, 2 }));
 		arpSegment.setTargetProtocolAddress(new Ip4Address(2));
 
 		byte[] expected =
 				new byte[] {
-						0, 1, 0x08, 0, 6, 4, 0, 2, 0, 0, 0, 0, 0, 1,
+						0, 1, 0, 0, 6, 4, 0, 2, 0, 0, 0, 0, 0, 1,
 						0, 0, 0, 1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2 };
 
 		byte[] actual = arpSegment.encode();
@@ -109,5 +109,45 @@ public class ArpSegmentTest {
 		ArpSegment arpSegment = new ArpSegment();
 
 		arpSegment.setTargetProtocolAddress(null);
+	}
+
+	@Test
+	public final void testEqualsWithEqualArpSegmentsOnArpSegmentReturnsTrue() {
+		assertTrue(new ArpSegment().equals(new ArpSegment()));
+	}
+
+	@Test
+	public final void testEqualsWithDifferentArpSegmentsOnArpSegmentReturnsFalse() {
+		ArpSegment arpSegment = new ArpSegment();
+		ArpSegment differentArpSegment = new ArpSegment();
+		differentArpSegment.setProtocolType(EtherType.ARP);
+
+		assertFalse(arpSegment.equals(differentArpSegment));
+	}
+
+	@Test
+	public final void testEqualsWithNullOnArpSegmentReturnsFalse() {
+		assertFalse(new ArpSegment().equals(null));
+	}
+
+	@Test
+	public final void testEqualsWithDifferentTypesOnArpSegmentReturnsFalse() {
+		assertFalse(new ArpSegment().equals(new Object()));
+	}
+
+	@Test
+	public final void testHashCodeWithEqualArpSegmentsOnArpSegmentReturnsEqualHashCodes() {
+		assertEquals(new ArpSegment().hashCode(),
+				new ArpSegment().hashCode());
+	}
+
+	@Test
+	public final void testHashCodeWithDifferentArpSegmentsOnArpSegmentReturnsDifferentHashCodes() {
+		ArpSegment arpSegment = new ArpSegment();
+		ArpSegment differentArpSegment = new ArpSegment();
+		differentArpSegment.setProtocolType(EtherType.ARP);
+
+		assertNotEquals(arpSegment.hashCode(),
+				differentArpSegment.hashCode());
 	}
 }

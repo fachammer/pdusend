@@ -19,7 +19,7 @@ public class EtherTypeTest {
 	 */
 	@Test
 	public final void testGetDecoderOnEtherTypeReturnsInstanceOfEtherTypeDecoder() {
-		EtherType anyEtherType = EtherType.IPv4;
+		EtherType anyEtherType = EtherType.Unknown;
 
 		DataUnitDecoder<EtherType> decoder =
 				anyEtherType.getDecoder();
@@ -33,8 +33,8 @@ public class EtherTypeTest {
 	 */
 	@Test
 	public final void testEncodeOnEtherTypeWorks() {
-		EtherType anyEtherType = EtherType.IPv4;
-		byte[] expected = { 0x08, 0 };
+		EtherType anyEtherType = EtherType.Unknown;
+		byte[] expected = { 0, 0 };
 
 		byte[] actual = anyEtherType.encode();
 

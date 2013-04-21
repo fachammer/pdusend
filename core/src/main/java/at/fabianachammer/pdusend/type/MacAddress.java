@@ -67,6 +67,11 @@ public class MacAddress implements DataUnit {
 	public final byte[] encode() {
 		return getValue();
 	}
+	
+	@Override
+	public final int size() {
+		return SIZE;
+	}
 
 	@Override
 	public final boolean equals(final Object obj) {
