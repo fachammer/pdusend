@@ -1,6 +1,10 @@
 package at.fabianachammer.pdusend.type.pdu;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
 
@@ -20,7 +24,7 @@ public class ArpSegmentTest {
 	public final void testEncodeOnArpSegmentWithRequestWorks() {
 		ArpSegment arpSegment = new ArpSegment();
 		arpSegment.setHardwareType(HardwareAddressType.Ethernet);
-		arpSegment.setProtocolType(EtherType.Unknown);
+		arpSegment.setProtocolType(EtherType.ARP);
 		arpSegment.setOperation(ArpOperation.Request);
 		arpSegment.setSenderHardwareAddress(new MacAddress(
 				new byte[] { 0, 0, 0, 0, 0, 1 }));
@@ -31,10 +35,15 @@ public class ArpSegmentTest {
 
 		byte[] expected =
 				new byte[] {
-						0, 1, 0, 0, 6, 4, 0, 1, 0, 0, 0, 0, 0, 1,
-						0, 0, 0, 1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2 };
+						0, 1, 0x08, 0x06, 6, 4, 0, 1, 0, 0, 0, 0, 0, 1, 0,
+						0, 0, 1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2 };
 
 		byte[] actual = arpSegment.encode();
+
+		for (int i = 0; i < expected.length; i++) {
+			System.out.println(expected[i]
+					+ " " + actual[i]);
+		}
 
 		assertArrayEquals(expected, actual);
 	}
@@ -43,7 +52,7 @@ public class ArpSegmentTest {
 	public final void testEncodeOnArpSegmentWithReplyWorks() {
 		ArpSegment arpSegment = new ArpSegment();
 		arpSegment.setHardwareType(HardwareAddressType.Ethernet);
-		arpSegment.setProtocolType(EtherType.Unknown);
+		arpSegment.setProtocolType(EtherType.ARP);
 		arpSegment.setOperation(ArpOperation.Reply);
 		arpSegment.setSenderHardwareAddress(new MacAddress(
 				new byte[] { 0, 0, 0, 0, 0, 1 }));
@@ -54,10 +63,15 @@ public class ArpSegmentTest {
 
 		byte[] expected =
 				new byte[] {
-						0, 1, 0, 0, 6, 4, 0, 2, 0, 0, 0, 0, 0, 1,
-						0, 0, 0, 1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2 };
+						0, 1, 0x08, 0x06, 6, 4, 0, 2, 0, 0, 0, 0, 0, 1, 0,
+						0, 0, 1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2 };
 
 		byte[] actual = arpSegment.encode();
+		
+		for (int i = 0; i < expected.length; i++) {
+			System.out.println(expected[i]
+					+ " " + actual[i]);
+		}
 
 		assertArrayEquals(expected, actual);
 	}

@@ -146,7 +146,7 @@ public class EthernetFrame implements EmbeddingProtocolDataUnit {
 	}
 
 	@Override
-	public int size() {
+	public final int size() {
 		int vlanTagSize = 0, dataSize = 0, paddingSize = 0;
 		if (vlanTag != null) {
 			vlanTagSize = vlanTag.size();

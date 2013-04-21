@@ -1,7 +1,5 @@
 package at.fabianachammer.pdusend.type.pdu.decoder;
 
-import java.util.zip.CRC32;
-
 import net.sf.oval.constraint.NotNull;
 import net.sf.oval.constraint.Size;
 import net.sf.oval.guard.Guarded;
@@ -52,14 +50,16 @@ public class EthernetFrameDecoder implements
 
 		System.arraycopy(data, counter, destinationMacBytes, 0,
 				destinationMacBytes.length);
-		ethernetFrame.setDestinationMacAddress(new MacAddress(destinationMacBytes));
+		ethernetFrame.setDestinationMacAddress(new MacAddress(
+				destinationMacBytes));
 		counter += destinationMacBytes.length;
-		
+
 		System.arraycopy(data, counter, sourceMacBytes, 0,
 				sourceMacBytes.length);
-		ethernetFrame.setSourceMacAddress(new MacAddress(sourceMacBytes));
+		ethernetFrame.setSourceMacAddress(new MacAddress(
+				sourceMacBytes));
 		counter += sourceMacBytes.length;
-		
+
 		System.arraycopy(data, counter, etherTypeBytes, 0,
 				etherTypeBytes.length);
 
@@ -79,7 +79,7 @@ public class EthernetFrameDecoder implements
 			System.arraycopy(data, counter, etherTypeBytes, 0,
 					etherTypeBytes.length);
 		}
-		
+
 		EtherType etherType =
 				new EtherTypeDecoder().decode(etherTypeBytes);
 		ethernetFrame.setEtherType(etherType);

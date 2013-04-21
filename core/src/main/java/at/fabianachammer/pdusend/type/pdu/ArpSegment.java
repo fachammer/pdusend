@@ -56,7 +56,7 @@ public class ArpSegment implements ProtocolDataUnit {
 	 */
 	@NotNull
 	private HardwareAddressType hardwareType =
-			HardwareAddressType.Ethernet;
+			HardwareAddressType.Unknown;
 
 	/**
 	 * Specifies the protocol address type (specified by EtherType) of the ARP

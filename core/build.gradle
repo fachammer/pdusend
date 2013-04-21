@@ -11,8 +11,7 @@ configurations{
 dependencies{ compile "net.sf.oval:oval:1.81","commons-lang:commons-lang:2.6", configurations.ajc }
 
 sourceSets{
-	main{ java{ srcDir "src/main/aspectj"
-		} }
+	main{ java{ srcDir "src/main/aspectj" } }
 	integrationTest{
 		java.srcDirs "src/integration-test/java"
 		compileClasspath += main.output
@@ -45,22 +44,6 @@ task compileAspects(dependsOn: JavaPlugin.PROCESS_RESOURCES_TASK_NAME, overwrite
 			}
 }
 
-
 compileIntegrationTestJava.dependsOn(project(":native").tasks.assemble)
 build.dependsOn(compileIntegrationTestJava)
 test.dependsOn(compileAspects)
-
-class Ajc extends DefaultTask{
-	@Input
-	SourceSet sourceSet
-
-	@Input
-	FileCollection aspectPath
-
-	@Input
-	FileCollection inpath
-
-	@TaskAction
-	def compile(){
-	}
-}

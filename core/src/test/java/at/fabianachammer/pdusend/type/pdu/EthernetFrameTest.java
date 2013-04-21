@@ -14,7 +14,7 @@ import at.fabianachammer.pdusend.type.TagProtocol;
 public class EthernetFrameTest {
 
 	@Test
-	public final void testEncodeWithVlanTagWorks() {
+	public final void testEncodeOnEthernetFrameWithVlanTagWorks() {
 		final EthernetFrame ef = new EthernetFrame();
 		final byte[] destinationMac =
 				{ 0x00, 0x11, 0x22, 0x33, 0x44, 0x55 };
@@ -22,7 +22,7 @@ public class EthernetFrameTest {
 				{
 						(byte) 0xff, (byte) 0xee, (byte) 0xdd,
 						(byte) 0xcc, (byte) 0xbb, (byte) 0xaa };
-		final EtherType etherType = EtherType.Unknown;
+		final EtherType etherType = EtherType.ARP;
 		final VlanTag vlanTag = new VlanTag();
 		vlanTag.setTagProtocol(TagProtocol.IEEE_802_1Q);
 		vlanTag.setPriorityCodePoint((byte) 1);
@@ -45,18 +45,23 @@ public class EthernetFrameTest {
 						0x00, 0x11, 0x22, 0x33, 0x44, 0x55,
 						(byte) 0xff, (byte) 0xee, (byte) 0xdd,
 						(byte) 0xcc, (byte) 0xbb, (byte) 0xaa,
-						(byte) 0x81, 0x00, (byte) 0x20, (byte) 1, 0,
-						0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+						(byte) 0x81, 0x00, (byte) 0x20, (byte) 1,
+						0x08, 0x06, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 						0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-						0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-						(byte) 0x69, (byte) 0x77, (byte) 0xb3,
-						(byte) 0xea };
+						0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+						0, (byte) 0xaa, (byte) 0x5e, (byte) 0x46,
+						(byte) 0xe0 };
+
+		for (int i = 0; i < expected.length; i++) {
+			System.out.println(expected[i]
+					+ " " + actual[i]);
+		}
 
 		assertArrayEquals(expected, actual);
 	}
 
 	@Test
-	public final void testEncodeWithoutVlanTagWorks() {
+	public final void testEncodeOnEthernetFrameWithoutVlanTagWorks() {
 		final EthernetFrame ef = new EthernetFrame();
 		final byte[] destinationMac =
 				{ 0x00, 0x11, 0x22, 0x33, 0x44, 0x55 };
@@ -64,7 +69,7 @@ public class EthernetFrameTest {
 				{
 						(byte) 0xff, (byte) 0xee, (byte) 0xdd,
 						(byte) 0xcc, (byte) 0xbb, (byte) 0xaa };
-		final EtherType etherType = EtherType.Unknown;
+		final EtherType etherType = EtherType.ARP;
 
 		ef.setSourceMacAddress(new MacAddress(sourceMac));
 		ef.setDestinationMacAddress(new MacAddress(destinationMac));
@@ -75,12 +80,17 @@ public class EthernetFrameTest {
 				{
 						0x00, 0x11, 0x22, 0x33, 0x44, 0x55,
 						(byte) 0xff, (byte) 0xee, (byte) 0xdd,
-						(byte) 0xcc, (byte) 0xbb, (byte) 0xaa, 0, 0,
+						(byte) 0xcc, (byte) 0xbb, (byte) 0xaa, 0x08,
+						0x06, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 						0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 						0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-						0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-						0, (byte) 0x76, (byte) 0xa7, (byte) 0xb3,
-						(byte) 0x2f };
+						0, 0, 0, (byte) 0xec, (byte) 0x3e,
+						(byte) 0xee, (byte) 0x91 };
+
+		for (int i = 0; i < expected.length; i++) {
+			System.out.println(expected[i]
+					+ " " + actual[i]);
+		}
 
 		assertArrayEquals(expected, actual);
 	}

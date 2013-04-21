@@ -42,8 +42,8 @@ public enum EtherType implements ProtocolIdentifier {
 	private short id;
 
 	/**
-	 * decoder that is used for decoding data units of the protocol
-	 * specified by the EtherType.
+	 * decoder that is used for decoding data units of the protocol specified by
+	 * the EtherType.
 	 */
 	private DataUnitDecoder<? extends ProtocolDataUnit> protocolDecoder;
 
@@ -72,7 +72,7 @@ public enum EtherType implements ProtocolIdentifier {
 	public byte[] encode() {
 		return BitOperator.split(getId());
 	}
-	
+
 	@Override
 	public int size() {
 		return SIZE;

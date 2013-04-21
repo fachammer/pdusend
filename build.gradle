@@ -100,6 +100,8 @@ subprojects{
 		}
 
 		if(proj.usesJavaPlugin){
+			proj.convention.plugins.java.sourceCompatibility = 1.7
+			proj.convention.plugins.java.targetCompatibility = 1.7
 			proj.eclipse{
 				project{
 					natures "org.eclipse.jdt.core.javanature", "net.sf.eclipsecs.core.CheckstyleNature"

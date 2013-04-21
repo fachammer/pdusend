@@ -25,12 +25,16 @@ public aspect PreConditionValidation extends GuardAspect {
 				if (ex instanceof ConstraintsViolatedException) {
 					ConstraintsViolatedException e =
 							(ConstraintsViolatedException) ex;
-					if (e.getConstraintViolations()[0].getInvalidValue() == null) {
-						return new NullPointerException(e.getMessage());
+					if (e.getConstraintViolations()[0]
+							.getInvalidValue() == null) {
+						return new NullPointerException(e
+								.getMessage());
 					}
 
-					else if (e.getConstraintViolations()[0].getContext() instanceof MethodParameterContext) {
-						return new IllegalArgumentException(e.getMessage());
+					else if (e.getConstraintViolations()[0]
+							.getContext() instanceof MethodParameterContext) {
+						return new IllegalArgumentException(e
+								.getMessage());
 					}
 				}
 

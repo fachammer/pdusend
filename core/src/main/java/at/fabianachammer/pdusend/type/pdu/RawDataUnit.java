@@ -60,7 +60,7 @@ public class RawDataUnit implements ProtocolDataUnit {
 	}
 	
 	@Override
-	public int size() {
+	public final int size() {
 		return data.length;
 	}
 
