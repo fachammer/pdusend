@@ -15,7 +15,7 @@ import at.fabianachammer.pdusend.type.HardwareAddressType;
 import at.fabianachammer.pdusend.type.Ip4Address;
 import at.fabianachammer.pdusend.type.MacAddress;
 import at.fabianachammer.pdusend.type.decoder.DataUnitDecoder;
-import at.fabianachammer.pdusend.type.pdu.decoder.ArpSegmentDecoder;
+import at.fabianachammer.pdusend.type.pdu.decoder.ArpPacketDecoder;
 import at.fabianachammer.pdusend.util.ByteArrayBuilder;
 
 /**
@@ -26,7 +26,7 @@ import at.fabianachammer.pdusend.util.ByteArrayBuilder;
  * 
  */
 @Guarded
-public class ArpSegment implements ProtocolDataUnit {
+public class ArpPacket implements ProtocolDataUnit {
 
 	/**
 	 * size of an ARP segment.
@@ -34,42 +34,40 @@ public class ArpSegment implements ProtocolDataUnit {
 	public static final int SIZE = 28;
 
 	/**
-	 * Specifies the hardware address length.
-	 */
-	private static final byte HARDWARE_ADDRESS_LENGTH =
-			MacAddress.SIZE;
-
-	/**
-	 * Specifies the protocol address length.
-	 */
-	private static final byte PROTOCOL_ADDRESS_LENGTH =
-			Ip4Address.SIZE;
-
-	/**
 	 * Sepcifies the decoder used for decoding data units of this type.
 	 */
-	private static final DataUnitDecoder<ArpSegment> DECODER =
-			new ArpSegmentDecoder();
+	private static final DataUnitDecoder<ArpPacket> DECODER =
+			new ArpPacketDecoder();
 
 	/**
 	 * Specifies the hardware address type of the ARP segment.
 	 */
 	@NotNull
 	private HardwareAddressType hardwareType =
-			HardwareAddressType.Unknown;
+			HardwareAddressType.UNKOWN;
 
 	/**
 	 * Specifies the protocol address type (specified by EtherType) of the ARP
 	 * segment.
 	 */
 	@NotNull
-	private EtherType protocolType = EtherType.Unknown;
+	private EtherType protocolType = EtherType.UNKNOWN;
+
+	/**
+	 * length of the hardware address.
+	 */
+	private byte hardwareAddressLength = MacAddress.SIZE;
+
+	/**
+	 * length of the protocol address.
+	 */
+	private byte protocolAddressLength = Ip4Address.SIZE;
 
 	/**
 	 * Specifies the ARP operation of the ARP segment.
 	 */
 	@NotNull
-	private ArpOperation operation = ArpOperation.Request;
+	private ArpOperation operation = ArpOperation.UNKNOWN;
 
 	/**
 	 * Specifies the hardware address of the sender of the ARP segment.
@@ -96,7 +94,7 @@ public class ArpSegment implements ProtocolDataUnit {
 	private Ip4Address targetProtocolAddress = new Ip4Address();
 
 	@Override
-	public final DataUnitDecoder<ArpSegment> getDecoder() {
+	public final DataUnitDecoder<ArpPacket> getDecoder() {
 		return DECODER;
 	}
 
@@ -106,8 +104,8 @@ public class ArpSegment implements ProtocolDataUnit {
 
 		bab.append(hardwareType.encode());
 		bab.append(protocolType.encode());
-		bab.append(HARDWARE_ADDRESS_LENGTH);
-		bab.append(PROTOCOL_ADDRESS_LENGTH);
+		bab.append(hardwareAddressLength);
+		bab.append(protocolAddressLength);
 		bab.append(operation.encode());
 		bab.append(senderHardwareAddress.encode());
 		bab.append(senderProtocolAddress.encode());
@@ -134,8 +132,8 @@ public class ArpSegment implements ProtocolDataUnit {
 		if (obj == null) {
 			return false;
 		}
-		if (obj instanceof ArpSegment) {
-			ArpSegment rhs = (ArpSegment) obj;
+		if (obj instanceof ArpPacket) {
+			ArpPacket rhs = (ArpPacket) obj;
 			return new EqualsBuilder()
 					.append(getHardwareType(), rhs.getHardwareType())
 					.append(getProtocolType(), rhs.getProtocolType())
@@ -196,6 +194,38 @@ public class ArpSegment implements ProtocolDataUnit {
 	public final void setProtocolType(
 			@AssertFieldConstraints final EtherType protocolType) {
 		this.protocolType = protocolType;
+	}
+
+	/**
+	 * @return the hardwareAddressLength
+	 */
+	public final byte getHardwareAddressLength() {
+		return hardwareAddressLength;
+	}
+
+	/**
+	 * @param hardwareAddressLength
+	 *            the hardwareAddressLength to set
+	 */
+	public final void setHardwareAddressLength(
+			final byte hardwareAddressLength) {
+		this.hardwareAddressLength = hardwareAddressLength;
+	}
+
+	/**
+	 * @return the protocolAddressLength
+	 */
+	public final byte getProtocolAddressLength() {
+		return protocolAddressLength;
+	}
+
+	/**
+	 * @param protocolAddressLength
+	 *            the protocolAddressLength to set
+	 */
+	public final void setProtocolAddressLength(
+			final byte protocolAddressLength) {
+		this.protocolAddressLength = protocolAddressLength;
 	}
 
 	/**

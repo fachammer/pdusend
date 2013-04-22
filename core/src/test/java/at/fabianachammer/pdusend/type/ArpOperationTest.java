@@ -19,7 +19,7 @@ public class ArpOperationTest {
 	 */
 	@Test
 	public final void testGetDecoderOnArpOperationReturnsInstanceOfArpOperationDecoder() {
-		ArpOperation anyArpOperation = ArpOperation.Request;
+		ArpOperation anyArpOperation = ArpOperation.REQUEST;
 
 		DataUnitDecoder<ArpOperation> decoder =
 				anyArpOperation.getDecoder();
@@ -33,7 +33,7 @@ public class ArpOperationTest {
 	 */
 	@Test
 	public final void testEncodeOnArpOperationWorks() {
-		ArpOperation anyArpOperation = ArpOperation.Request;
+		ArpOperation anyArpOperation = ArpOperation.REQUEST;
 		byte[] expected = { 0, 1 };
 
 		byte[] actual = anyArpOperation.encode();

@@ -28,14 +28,13 @@ public class EtherTypeDecoder implements DataUnitDecoder<EtherType> {
 			@Size(min = SIZE, max = SIZE) @NotNull final byte... data) {
 		final short id = BitOperator.merge(data[1], data[0]);
 
-		for (EtherType et : EtherType.values()) {
+		for (EtherType et : EtherType.VALUES) {
 			if (et.getId() == id) {
 				return et;
 			}
 		}
 
-		EtherType returnValue = EtherType.Unknown;
-		returnValue.setId(id);
+		EtherType returnValue = new EtherType(id);
 		return returnValue;
 	}
 }

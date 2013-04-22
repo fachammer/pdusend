@@ -13,7 +13,7 @@ import at.fabianachammer.pdusend.type.decoder.DataUnitDecoder;
  * @author fabian
  * 
  */
-public class Ip4Segment implements EmbeddingProtocolDataUnit {
+public class Ip4Packet implements EmbeddingProtocolDataUnit {
 
 	private static final byte VERSION = 4;
 
@@ -29,7 +29,7 @@ public class Ip4Segment implements EmbeddingProtocolDataUnit {
 	private Ip4Address destinationIpAddress;
 
 	@Override
-	public final DataUnitDecoder<Ip4Segment> getDecoder() {
+	public final DataUnitDecoder<Ip4Packet> getDecoder() {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -66,7 +66,7 @@ public class EthernetFrameDecoder implements
 		TagProtocol tagProtocol =
 				new TagProtocolDecoder().decode(etherTypeBytes);
 
-		if (tagProtocol != TagProtocol.Unknown) {
+		if (tagProtocol != TagProtocol.UNKNOWN) {
 			vlanTagBytes = new byte[VlanTag.SIZE];
 			System.arraycopy(data, counter, vlanTagBytes, 0,
 					vlanTagBytes.length);

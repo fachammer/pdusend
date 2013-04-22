@@ -17,7 +17,7 @@ public class HardwareAddressTypeDecoderTest {
 		HardwareAddressTypeDecoder decoder =
 				new HardwareAddressTypeDecoder();
 		byte[] validTwoByteId = { 0, 1 };
-		HardwareAddressType expected = HardwareAddressType.Ethernet;
+		HardwareAddressType expected = HardwareAddressType.ETHERNET;
 
 		HardwareAddressType actual = decoder.decode(validTwoByteId);
 
@@ -29,23 +29,11 @@ public class HardwareAddressTypeDecoderTest {
 		HardwareAddressTypeDecoder decoder =
 				new HardwareAddressTypeDecoder();
 		byte validOneByteId = 1;
-		HardwareAddressType expected = HardwareAddressType.Ethernet;
+		HardwareAddressType expected = HardwareAddressType.ETHERNET;
 
 		HardwareAddressType actual = decoder.decode(validOneByteId);
 
 		assertEquals(expected, actual);
-	}
-
-	@Test
-	public final void testDecodeWithNonExistentIdOnHardwareAddressTypeDecoderReturnsUnknown() {
-		HardwareAddressTypeDecoder decoder =
-				new HardwareAddressTypeDecoder();
-		byte nonExistentId = -1;
-
-		HardwareAddressType actual = decoder.decode(nonExistentId);
-
-		assertEquals(HardwareAddressType.Unknown, actual);
-		assertEquals(((byte) -1), actual.getId());
 	}
 
 	@Test(expected = IllegalArgumentException.class)

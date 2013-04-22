@@ -1,4 +1,4 @@
-package at.fabianachammer.pdusend.type;
+package at.fabianachammer.pdusend.type.pdu;
 
 import static org.junit.Assert.*;
 

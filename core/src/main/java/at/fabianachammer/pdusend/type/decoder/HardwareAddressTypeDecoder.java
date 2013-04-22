@@ -30,8 +30,8 @@ public class HardwareAddressTypeDecoder implements
 	private static final int MAX_SIZE = 2;
 
 	@Override
-	public final HardwareAddressType decode(
-			@Size(min = MIN_SIZE, max = MAX_SIZE) @NotNull final byte... data) {
+	public final HardwareAddressType decode(@Size(min = MIN_SIZE,
+			max = MAX_SIZE) @NotNull final byte... data) {
 		short id = 0;
 		if (data.length == 1) {
 			id = data[0];
@@ -39,14 +39,13 @@ public class HardwareAddressTypeDecoder implements
 			id = BitOperator.merge(data[1], data[0]);
 		}
 
-		for (HardwareAddressType hat : HardwareAddressType.values()) {
+		for (HardwareAddressType hat : HardwareAddressType.VALUES) {
 			if (hat.getId() == id) {
 				return hat;
 			}
 		}
 
-		HardwareAddressType returnValue = HardwareAddressType.Unknown;
-		returnValue.setId(id);
+		HardwareAddressType returnValue = new HardwareAddressType(id);
 		return returnValue;
 	}
 

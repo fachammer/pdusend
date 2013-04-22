@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import at.fabianachammer.pdusend.type.TagProtocol;
+import at.fabianachammer.pdusend.type.pdu.decoder.VlanTagDecoder;
 
 /**
  * This class tests the VlanTag class.
@@ -124,5 +125,17 @@ public class VlanTagTest {
 		differentVlanTag.setPriorityCodePoint((byte) 1);
 
 		assertNotEquals(vlanTag, differentVlanTag);
+	}
+
+	@Test
+	public final void testGetDecoderReturnsInstanceOfVlanTagDecoder() {
+		VlanTag vlanTag = new VlanTag();
+
+		assertTrue(vlanTag.getDecoder() instanceof VlanTagDecoder);
+	}
+
+	@Test
+	public final void testSizeReturnsFour() {
+		assertEquals(4, new VlanTag().size());
 	}
 }

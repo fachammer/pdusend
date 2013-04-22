@@ -1,11 +1,13 @@
 package at.fabianachammer.pdusend.type.pdu;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 import org.junit.Test;
 
 import at.fabianachammer.pdusend.type.EtherType;
 import at.fabianachammer.pdusend.type.MacAddress;
 import at.fabianachammer.pdusend.type.TagProtocol;
+import at.fabianachammer.pdusend.type.pdu.decoder.EthernetFrameDecoder;
 
 /**
  * @author fabian
@@ -52,11 +54,6 @@ public class EthernetFrameTest {
 						0, (byte) 0xaa, (byte) 0x5e, (byte) 0x46,
 						(byte) 0xe0 };
 
-		for (int i = 0; i < expected.length; i++) {
-			System.out.println(expected[i]
-					+ " " + actual[i]);
-		}
-
 		assertArrayEquals(expected, actual);
 	}
 
@@ -86,11 +83,6 @@ public class EthernetFrameTest {
 						0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 						0, 0, 0, (byte) 0xec, (byte) 0x3e,
 						(byte) 0xee, (byte) 0x91 };
-
-		for (int i = 0; i < expected.length; i++) {
-			System.out.println(expected[i]
-					+ " " + actual[i]);
-		}
 
 		assertArrayEquals(expected, actual);
 	}
@@ -153,5 +145,32 @@ public class EthernetFrameTest {
 		differentEthernetFrame.setData(new RawDataUnit());
 
 		assertNotEquals(ethernetFrame, differentEthernetFrame);
+	}
+
+	@Test
+	public final void sizeWithDefaultArgumentsReturns18() {
+		assertEquals(18, new EthernetFrame().size());
+	}
+
+	@Test
+	public final void sizeWithDefaultArgumentsAndVlanTagReturns22() {
+		EthernetFrame ef = new EthernetFrame();
+		ef.setVlanTag(new VlanTag());
+
+		assertEquals(22, ef.size());
+	}
+
+	@Test
+	public final void getDecoderReturnsInstanceOfEthernetFrameDecoder() {
+		assertTrue(new EthernetFrame().getDecoder() instanceof EthernetFrameDecoder);
+	}
+
+	@Test
+	public final void getEmbeddedDataCallsGetData() {
+		EthernetFrame ethernetFrame = new EthernetFrame();
+		ethernetFrame.setData(new RawDataUnit());
+
+		assertEquals(ethernetFrame.getData(),
+				ethernetFrame.getEmbeddedData());
 	}
 }

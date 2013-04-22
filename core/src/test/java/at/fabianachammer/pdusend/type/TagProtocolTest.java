@@ -13,10 +13,6 @@ import at.fabianachammer.pdusend.type.decoder.TagProtocolDecoder;
  */
 public class TagProtocolTest {
 
-	/**
-	 * Test method for
-	 * {@link at.fabianachammer.pdusend.type.TagProtocol#getDecoder()}.
-	 */
 	@Test
 	public final void testGetDecoderOnTagProtocolReturnsInstanceOfTagProtocolDecoder() {
 		TagProtocol anyTagProtocol = TagProtocol.IEEE_802_1Q;
@@ -27,10 +23,6 @@ public class TagProtocolTest {
 		assertTrue(decoder instanceof TagProtocolDecoder);
 	}
 
-	/**
-	 * Test method for
-	 * {@link at.fabianachammer.pdusend.type.TagProtocol#encode()}.
-	 */
 	@Test
 	public final void testEncodeOnTagProtocolWorks() {
 		TagProtocol anyTagProtocol = TagProtocol.IEEE_802_1Q;
@@ -41,4 +33,41 @@ public class TagProtocolTest {
 		assertArrayEquals(expected, actual);
 	}
 
+	@Test
+	public final void testEqualsWithEqualIdTagProtocolsOnTagProtocolReturnsTrue() {
+		TagProtocol tp = new TagProtocol((short) 0);
+		TagProtocol equalTp = new TagProtocol((short) 0);
+
+		assertTrue(tp.equals(equalTp));
+	}
+
+	@Test
+	public final void testEqualsWithDiffertenIdTagProtocolsOnTagProtocolReturnsFalse() {
+		TagProtocol tp = new TagProtocol((short) 0);
+		TagProtocol differentTp = new TagProtocol((short) 1);
+
+		assertFalse(tp.equals(differentTp));
+	}
+
+	@Test
+	public final void testEqualsWithDifferentTypesOnTagProtocolReturnsFalse() {
+		assertFalse(new TagProtocol((short) 0).equals(new Object()));
+	}
+
+	@Test
+	public final void testEqualsWithNullOnTagProtocolReturnsFalse() {
+		assertFalse(new TagProtocol((short) 0).equals(null));
+	}
+
+	@Test
+	public final void testHashCodeWithEqualIdTagProtocolsReturnsEqualHashCodes() {
+		assertEquals(new TagProtocol((short) 0).hashCode(),
+				new TagProtocol((short) 0).hashCode());
+	}
+
+	@Test
+	public final void testHashCodeWithDifferentIdTagProtocolsReturnsDifferentHashCodes() {
+		assertNotEquals(new TagProtocol((short) 0).hashCode(),
+				new TagProtocol((short) 1).hashCode());
+	}
 }

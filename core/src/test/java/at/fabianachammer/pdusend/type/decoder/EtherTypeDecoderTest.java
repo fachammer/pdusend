@@ -15,23 +15,12 @@ public class EtherTypeDecoderTest {
 	@Test
 	public final void testDecodeWithValidTwoByteIdOnEtherTypeDecoderWorks() {
 		EtherTypeDecoder decoder = new EtherTypeDecoder();
-		final byte[] validTwoByteId = { 0x08, 0 };
-		EtherType expected = EtherType.Unknown;
+		final byte[] validTwoByteId = { 0, 1 };
+		EtherType expected = new EtherType((short) 1);
 
 		EtherType actual = decoder.decode(validTwoByteId);
 
 		assertEquals(expected, actual);
-	}
-
-	@Test
-	public final void testDecodeWithNonExistentIdOnEtherTypeDecoderReturnsUnknown() {
-		EtherTypeDecoder decoder = new EtherTypeDecoder();
-		final byte[] nonExistentId = { 0, 1 };
-
-		EtherType actual = decoder.decode(nonExistentId);
-
-		assertEquals(EtherType.Unknown, actual);
-		assertEquals(1, actual.getId());
 	}
 
 	@Test(expected = IllegalArgumentException.class)

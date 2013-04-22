@@ -36,17 +36,16 @@ public class TagProtocolDecoder implements
 			id = BitOperator.merge(data[1], data[0]);
 			break;
 		default:
-			return TagProtocol.Unknown;
+			return TagProtocol.UNKNOWN;
 		}
 
-		for (TagProtocol tp : TagProtocol.values()) {
+		for (TagProtocol tp : TagProtocol.VALUES) {
 			if (tp.getId() == id) {
 				return tp;
 			}
 		}
 
-		TagProtocol returnValue = TagProtocol.Unknown;
-		returnValue.setId(id);
+		TagProtocol returnValue = new TagProtocol(id);
 		return returnValue;
 	}
 

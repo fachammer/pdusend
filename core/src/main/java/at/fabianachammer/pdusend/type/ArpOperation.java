@@ -13,31 +13,32 @@ import at.fabianachammer.pdusend.util.BitOperator;
  * @author fabian
  * 
  */
-public enum ArpOperation implements DataUnit {
+public class ArpOperation implements DataUnit {
+
 	/**
 	 * Unknown ARP operation.
 	 */
-	Unknown((short) 0),
+	public static final ArpOperation UNKNOWN = new ArpOperation(
+			(short) 0);
+
 	/**
 	 * ARP request.
 	 */
-	Request((short) 1),
+	public static final ArpOperation REQUEST = new ArpOperation(
+			(short) 1);
 
 	/**
 	 * ARP reply.
 	 */
-	Reply((short) 2),
+	public static final ArpOperation REPLY = new ArpOperation(
+			(short) 2);
 
 	/**
-	 * RARP request.
+	 * array that contains predefined ARP operations.
 	 */
-	RequestReverse((short) 3),
+	public static final ArpOperation[] VALUES = {
+			UNKNOWN, REQUEST, REPLY };
 
-	/**
-	 * RARP reply.
-	 */
-	ReplyReverse((short) 4);
-	
 	/**
 	 * size of an ARP operation in bytes.
 	 */
@@ -60,29 +61,29 @@ public enum ArpOperation implements DataUnit {
 	 * @param id
 	 *            id of the operation
 	 */
-	private ArpOperation(final short id) {
+	public ArpOperation(final short id) {
 		setId(id);
 	}
 
 	@Override
-	public DataUnitDecoder<ArpOperation> getDecoder() {
+	public final DataUnitDecoder<ArpOperation> getDecoder() {
 		return DECODER;
 	}
 
 	@Override
-	public byte[] encode() {
+	public final byte[] encode() {
 		return BitOperator.split(getId());
 	}
-	
+
 	@Override
-	public int size() {
+	public final int size() {
 		return SIZE;
 	}
 
 	/**
 	 * @return the id
 	 */
-	public short getId() {
+	public final short getId() {
 		return id;
 	}
 
@@ -90,7 +91,7 @@ public enum ArpOperation implements DataUnit {
 	 * @param id
 	 *            the id to set
 	 */
-	public final void setId(final short id) {
+	private void setId(final short id) {
 		this.id = id;
 	}
 }

@@ -50,7 +50,7 @@ public class EthernetFrame implements EmbeddingProtocolDataUnit {
 	 * Specifies the default Ether type for the Ethernet frame.
 	 */
 	private static final EtherType DEFAULT_ETHER_TYPE =
-			EtherType.Unknown;
+			EtherType.UNKNOWN;
 
 	/**
 	 * the decoder used for decoding data units of this type.
@@ -105,7 +105,7 @@ public class EthernetFrame implements EmbeddingProtocolDataUnit {
 	 * Creates a new Ethernet frame without any defined attributes.
 	 */
 	public EthernetFrame() {
-
+		
 	}
 
 	@Override

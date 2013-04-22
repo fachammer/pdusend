@@ -1,29 +1,39 @@
 package at.fabianachammer.pdusend.type;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import at.fabianachammer.pdusend.type.decoder.DataUnitDecoder;
 import at.fabianachammer.pdusend.type.decoder.EtherTypeDecoder;
 import at.fabianachammer.pdusend.type.pdu.ProtocolDataUnit;
-import at.fabianachammer.pdusend.type.pdu.decoder.ArpSegmentDecoder;
+import at.fabianachammer.pdusend.type.pdu.decoder.ArpPacketDecoder;
 import at.fabianachammer.pdusend.type.pdu.decoder.RawDataUnitDecoder;
 import at.fabianachammer.pdusend.util.BitOperator;
 
 /**
- * Enumeration of possible EtherTypes.
+ * Class that represents EtherTypes.
  * 
  * @author fabian
  * 
  */
-public enum EtherType implements ProtocolIdentifier {
+public class EtherType implements ProtocolIdentifier {
 
 	/**
 	 * Unknown protocol.
 	 */
-	Unknown((short) 0, new RawDataUnitDecoder()),
+	public static final EtherType UNKNOWN = new EtherType((short) 0,
+			new RawDataUnitDecoder());
 
 	/**
 	 * Address Resolution Protocol.
 	 */
-	ARP((short) 0x0806, new ArpSegmentDecoder());
+	public static final EtherType ARP = new EtherType((short) 0x0806,
+			new ArpPacketDecoder());
+
+	/**
+	 * array with ossible EtherTypes.
+	 */
+	public static final EtherType[] VALUES = { UNKNOWN, ARP };
 
 	/**
 	 * size of EtherTypes in bytes.
@@ -33,22 +43,40 @@ public enum EtherType implements ProtocolIdentifier {
 	/**
 	 * decoder for EtherTypes.
 	 */
-	private static final DataUnitDecoder<EtherType> ENCODING =
+	private static final DataUnitDecoder<EtherType> DECODER =
 			new EtherTypeDecoder();
 
 	/**
 	 * ID for the protocol specified by IEEE 802.3.
 	 */
-	private short id;
+	private short id = 0;
 
 	/**
 	 * decoder that is used for decoding data units of the protocol specified by
 	 * the EtherType.
 	 */
-	private DataUnitDecoder<? extends ProtocolDataUnit> protocolDecoder;
+	private DataUnitDecoder<? extends ProtocolDataUnit> protocolDecoder =
+			new RawDataUnitDecoder();
 
 	/**
-	 * Creates a new EtherType with the specified ID.
+	 * creates anew EtherType with the specified ID and a raw data unit decoder.
+	 * 
+	 * @param id
+	 *            ID of the EtherType
+	 */
+	public EtherType(final short id) {
+		for (EtherType e : VALUES) {
+			if (id == e.getId()) {
+				setId(id);
+				setProtocolDecoder(e.getProtocolDecoder());
+				return;
+			}
+		}
+		setId(id);
+	}
+
+	/**
+	 * Creates a new EtherType with the specified ID and protocol decoder.
 	 * 
 	 * @param id
 	 *            ID of the EtherType
@@ -64,29 +92,52 @@ public enum EtherType implements ProtocolIdentifier {
 	}
 
 	@Override
-	public DataUnitDecoder<EtherType> getDecoder() {
-		return ENCODING;
+	public final DataUnitDecoder<EtherType> getDecoder() {
+		return DECODER;
 	}
 
 	@Override
-	public byte[] encode() {
+	public final byte[] encode() {
 		return BitOperator.split(getId());
 	}
 
 	@Override
-	public int size() {
+	public final int size() {
 		return SIZE;
 	}
 
 	@Override
-	public DataUnitDecoder<? extends ProtocolDataUnit> getProtocolDecoder() {
+	public final DataUnitDecoder<? extends ProtocolDataUnit> getProtocolDecoder() {
 		return protocolDecoder;
+	}
+
+	@Override
+	public final boolean equals(final Object obj) {
+		if (obj == null) {
+			return false;
+		}
+
+		if (obj instanceof EtherType) {
+			EtherType rhs = (EtherType) obj;
+			return new EqualsBuilder().append(getId(), rhs.getId())
+					.isEquals();
+		}
+
+		return false;
+	}
+
+	@Override
+	public final int hashCode() {
+		final int initial = 147;
+		final int multiplier = 23;
+		return new HashCodeBuilder(initial, multiplier).append(
+				getId()).hashCode();
 	}
 
 	/**
 	 * @return the id
 	 */
-	public short getId() {
+	public final short getId() {
 		return id;
 	}
 
@@ -94,7 +145,7 @@ public enum EtherType implements ProtocolIdentifier {
 	 * @param id
 	 *            the id to set
 	 */
-	public final void setId(final short id) {
+	private void setId(final short id) {
 		this.id = id;
 	}
 
@@ -102,7 +153,7 @@ public enum EtherType implements ProtocolIdentifier {
 	 * @param protocolDecoder
 	 *            the protocolDecoder to set
 	 */
-	public void setProtocolDecoder(
+	private void setProtocolDecoder(
 			final DataUnitDecoder<? extends ProtocolDataUnit> protocolDecoder) {
 		this.protocolDecoder = protocolDecoder;
 	}

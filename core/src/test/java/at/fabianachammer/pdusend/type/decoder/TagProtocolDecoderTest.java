@@ -16,12 +16,11 @@ public class TagProtocolDecoderTest {
 	public final void testDecodeWithOneByteInputOnTagProtocolDecoderWorks() {
 		TagProtocolDecoder decoder = new TagProtocolDecoder();
 		byte input = 1;
-		TagProtocol expected = TagProtocol.Unknown;
+		TagProtocol expected = new TagProtocol((short) 1);
 
 		TagProtocol actual = decoder.decode(input);
 
 		assertEquals(expected, actual);
-		assertEquals(input, actual.getId());
 	}
 
 	@Test
@@ -34,7 +33,6 @@ public class TagProtocolDecoderTest {
 		TagProtocol actual = decoder.decode(validByteArray);
 
 		assertEquals(expected, actual);
-		assertEquals(id, actual.getId());
 	}
 
 	@Test(expected = IllegalArgumentException.class)

@@ -13,14 +13,10 @@ import at.fabianachammer.pdusend.type.decoder.HardwareAddressTypeDecoder;
  */
 public class HardwareAddressTypeTest {
 
-	/**
-	 * Test method for
-	 * {@link at.fabianachammer.pdusend.type.HardwareAddressType#getDecoder()}.
-	 */
 	@Test
 	public final void testGetDecoderOnHardwareAddressTypeReturnsInstanceOfHardwareAddressTypeDecoder() {
 		HardwareAddressType anyHardwareAddressType =
-				HardwareAddressType.Ethernet;
+				HardwareAddressType.UNKOWN;
 
 		DataUnitDecoder<HardwareAddressType> decoder =
 				anyHardwareAddressType.getDecoder();
@@ -28,19 +24,56 @@ public class HardwareAddressTypeTest {
 		assertTrue(decoder instanceof HardwareAddressTypeDecoder);
 	}
 
-	/**
-	 * Test method for
-	 * {@link at.fabianachammer.pdusend.type.HardwareAddressType#encode()}.
-	 */
 	@Test
 	public final void testEncodeOnHardwareAddressTypeWorks() {
 		HardwareAddressType anyHardwareAddressType =
-				HardwareAddressType.Ethernet;
-		byte[] expected = { 0, 1 };
+				HardwareAddressType.UNKOWN;
+		byte[] expected = { 0, 0 };
 
 		byte[] actual = anyHardwareAddressType.encode();
 
 		assertArrayEquals(expected, actual);
 	}
 
+	@Test
+	public final void testEqualsWithEqualIdHardwareAddressTypesOnHardwareAddressTypeReturnsTrue() {
+		HardwareAddressType hat = new HardwareAddressType((short) 0);
+		HardwareAddressType equalHat =
+				new HardwareAddressType((short) 0);
+
+		assertTrue(hat.equals(equalHat));
+	}
+
+	@Test
+	public final void testEqualsWithDifferentIdHardwareAddressTypesOnHardwareAddressTypeReturnsFalse() {
+		HardwareAddressType hat = new HardwareAddressType((short) 0);
+		HardwareAddressType differentHat =
+				new HardwareAddressType((short) 1);
+
+		assertFalse(hat.equals(differentHat));
+	}
+
+	@Test
+	public final void testEqualsWithDifferentTypesOnHardwareAddressTypeReturnsFalse() {
+		assertFalse(new HardwareAddressType((short) 0)
+				.equals(new Object()));
+	}
+
+	@Test
+	public final void testEqualsWithNullOnHardwareAddressTypeReturnsFalse() {
+		assertFalse(new HardwareAddressType((short) 0).equals(null));
+	}
+
+	@Test
+	public final void testHashCodeWithEqualIdHardwareAddressTypesOnHardwareAddressTypeReturnsEqualHashCodes() {
+		assertEquals(new HardwareAddressType((short) 0).hashCode(),
+				new HardwareAddressType((short) 0).hashCode());
+	}
+
+	@Test
+	public final void testHashCodeWithDifferentIdHardwareAddressTypesOnHardwareAddressTypeReturnsDifferentHashCodes() {
+		assertNotEquals(
+				new HardwareAddressType((short) 0).hashCode(),
+				new HardwareAddressType((short) 1).hashCode());
+	}
 }

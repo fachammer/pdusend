@@ -40,14 +40,13 @@ public class ArpOperationDecoder implements
 			id = BitOperator.merge(data[1], data[0]);
 		}
 
-		for (ArpOperation ao : ArpOperation.values()) {
+		for (ArpOperation ao : ArpOperation.VALUES) {
 			if (ao.getId() == id) {
 				return ao;
 			}
 		}
 
-		ArpOperation returnValue = ArpOperation.Unknown;
-		returnValue.setId(id);
+		ArpOperation returnValue = new ArpOperation(id);
 		return returnValue;
 	}
 }

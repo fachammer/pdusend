@@ -1,5 +1,8 @@
 package at.fabianachammer.pdusend.type;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import at.fabianachammer.pdusend.type.decoder.DataUnitDecoder;
 import at.fabianachammer.pdusend.type.decoder.TagProtocolDecoder;
 import at.fabianachammer.pdusend.util.BitOperator;
@@ -10,17 +13,26 @@ import at.fabianachammer.pdusend.util.BitOperator;
  * @author fabian
  * 
  */
-public enum TagProtocol implements DataUnit {
+public class TagProtocol implements DataUnit {
 
 	/**
 	 * Unknown tag protocol.
 	 */
-	Unknown((short) 0),
+	public static final TagProtocol UNKNOWN = new TagProtocol(
+			(short) 0);
+
 	/**
 	 * IEEE 802.1Q Tagging Protocol (0x8100 in HEX).
 	 */
-	IEEE_802_1Q((short) 0x8100);
-	
+	public static final TagProtocol IEEE_802_1Q = new TagProtocol(
+			(short) 0x8100);
+
+	/**
+	 * array with predefined tag protocols.
+	 */
+	public static final TagProtocol[] VALUES =
+			{ UNKNOWN, IEEE_802_1Q };
+
 	/**
 	 * size of tag protocol identifiers in bytes.
 	 */
@@ -43,29 +55,52 @@ public enum TagProtocol implements DataUnit {
 	 * @param id
 	 *            id the protocol should have
 	 */
-	private TagProtocol(final short id) {
+	public TagProtocol(final short id) {
 		setId(id);
 	}
 
 	@Override
-	public DataUnitDecoder<TagProtocol> getDecoder() {
+	public final DataUnitDecoder<TagProtocol> getDecoder() {
 		return DECODER;
 	}
 
 	@Override
-	public byte[] encode() {
+	public final byte[] encode() {
 		return BitOperator.split(getId());
 	}
-	
+
 	@Override
-	public int size() {
+	public final int size() {
 		return SIZE;
+	}
+
+	@Override
+	public final boolean equals(final Object obj) {
+		if (obj == null) {
+			return false;
+		}
+
+		if (obj instanceof TagProtocol) {
+			TagProtocol rhs = (TagProtocol) obj;
+			return new EqualsBuilder().append(getId(), rhs.getId())
+					.isEquals();
+		}
+
+		return false;
+	}
+
+	@Override
+	public final int hashCode() {
+		final int initial = 233;
+		final int multiplier = 181;
+		return new HashCodeBuilder(initial, multiplier).append(
+				getId()).hashCode();
 	}
 
 	/**
 	 * @return the id
 	 */
-	public short getId() {
+	public final short getId() {
 		return id;
 	}
 
@@ -73,7 +108,7 @@ public enum TagProtocol implements DataUnit {
 	 * @param id
 	 *            the id to set
 	 */
-	public final void setId(final short id) {
+	private void setId(final short id) {
 		this.id = id;
 	}
 }

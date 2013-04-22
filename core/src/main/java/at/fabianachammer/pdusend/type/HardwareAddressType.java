@@ -3,6 +3,9 @@
  */
 package at.fabianachammer.pdusend.type;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import at.fabianachammer.pdusend.type.decoder.DataUnitDecoder;
 import at.fabianachammer.pdusend.type.decoder.HardwareAddressTypeDecoder;
 import at.fabianachammer.pdusend.type.pdu.ProtocolDataUnit;
@@ -17,22 +20,33 @@ import at.fabianachammer.pdusend.util.BitOperator;
  * @author fabian
  * 
  */
-public enum HardwareAddressType implements ProtocolIdentifier {
-
-	/**
-	 * Unknown hardware address type.
-	 */
-	Unknown((short) 0, new RawDataUnitDecoder()),
-	/**
-	 * Ethernet protocol.
-	 */
-	Ethernet((short) 1, new EthernetFrameDecoder());
+public class HardwareAddressType implements ProtocolIdentifier {
 
 	/**
 	 * size of a hardware address type in bytes.
 	 */
 	public static final int SIZE = 2;
-	
+
+	/**
+	 * Unknown hardware address type.
+	 */
+	public static final HardwareAddressType UNKOWN =
+			new HardwareAddressType((short) 0,
+					new RawDataUnitDecoder());
+
+	/**
+	 * Ethernet protocol.
+	 */
+	public static final HardwareAddressType ETHERNET =
+			new HardwareAddressType((short) 1,
+					new EthernetFrameDecoder());
+
+	/**
+	 * array of predefined hardware address types.
+	 */
+	public static final HardwareAddressType[] VALUES = {
+			UNKOWN, ETHERNET };
+
 	/**
 	 * decoder for hardware address types.
 	 */
@@ -42,16 +56,37 @@ public enum HardwareAddressType implements ProtocolIdentifier {
 	/**
 	 * id of the hardware address type.
 	 */
-	private short id;
+	private short id = 0;
 
 	/**
 	 * decoder that is used for decoding data units of the protocol specified by
 	 * the hardware address type.
 	 */
-	private DataUnitDecoder<? extends ProtocolDataUnit> protocolDecoder;
+	private DataUnitDecoder<? extends ProtocolDataUnit> protocolDecoder =
+			new RawDataUnitDecoder();
 
 	/**
-	 * Creates a new hardware address type with the specified id.
+	 * creates a new hardware address type with the specified id and a raw data
+	 * unit as protocol decoder.
+	 * 
+	 * @param id
+	 *            ID of the hardware address type
+	 */
+	public HardwareAddressType(final short id) {
+		for (HardwareAddressType hat : VALUES) {
+			if (id == hat.getId()) {
+				setId(id);
+				setProtocolDecoder(hat.getProtocolDecoder());
+				return;
+			}
+		}
+
+		setId(id);
+	}
+
+	/**
+	 * Creates a new hardware address type with the specified id and protocol
+	 * decoder.
 	 * 
 	 * @param id
 	 *            id of the hardware address type
@@ -66,29 +101,52 @@ public enum HardwareAddressType implements ProtocolIdentifier {
 	}
 
 	@Override
-	public DataUnitDecoder<HardwareAddressType> getDecoder() {
+	public final DataUnitDecoder<HardwareAddressType> getDecoder() {
 		return DECODER;
 	}
 
 	@Override
-	public byte[] encode() {
+	public final byte[] encode() {
 		return BitOperator.split(getId());
 	}
-	
+
 	@Override
-	public int size() {
+	public final int size() {
 		return SIZE;
 	}
 
 	@Override
-	public DataUnitDecoder<? extends ProtocolDataUnit> getProtocolDecoder() {
+	public final DataUnitDecoder<? extends ProtocolDataUnit> getProtocolDecoder() {
 		return protocolDecoder;
+	}
+
+	@Override
+	public final boolean equals(final Object obj) {
+		if (obj == null) {
+			return false;
+		}
+
+		if (obj instanceof HardwareAddressType) {
+			HardwareAddressType rhs = (HardwareAddressType) obj;
+			return new EqualsBuilder().append(getId(), rhs.getId())
+					.isEquals();
+		}
+
+		return false;
+	}
+
+	@Override
+	public final int hashCode() {
+		final int initial = 43;
+		final int multiplier = 7;
+		return new HashCodeBuilder(initial, multiplier).append(
+				getId()).hashCode();
 	}
 
 	/**
 	 * @return the id
 	 */
-	public short getId() {
+	public final short getId() {
 		return id;
 	}
 
@@ -96,7 +154,7 @@ public enum HardwareAddressType implements ProtocolIdentifier {
 	 * @param id
 	 *            the id to set
 	 */
-	public final void setId(final short id) {
+	private void setId(final short id) {
 		this.id = id;
 	}
 
@@ -104,7 +162,7 @@ public enum HardwareAddressType implements ProtocolIdentifier {
 	 * @param protocolDecoder
 	 *            the protocolDecoder to set
 	 */
-	public void setProtocolDecoder(
+	private void setProtocolDecoder(
 			final DataUnitDecoder<? extends ProtocolDataUnit> protocolDecoder) {
 		this.protocolDecoder = protocolDecoder;
 	}
