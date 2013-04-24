@@ -3,6 +3,8 @@
  */
 package at.fabianachammer.pdusend.util;
 
+import java.math.BigInteger;
+
 /**
  * This class provides methods for converting byte data into a text
  * representation.
@@ -16,6 +18,38 @@ public final class ByteConverter {
 	 * Private constructor because this is an utility class.
 	 */
 	private ByteConverter() {
+	}
+
+	/**
+	 * Converts an array of bytes that represents a 2's complement (without the
+	 * sign bit) into it's binary representation (as if their had been a one
+	 * sign bit).
+	 * 
+	 * @param array
+	 *            array that represents the 2's complement of a number
+	 * @return byte array that contains the binary representation of a 2's
+	 *         complement number
+	 */
+	public static byte[] toTwosComplement(final byte[] array) {
+		ByteArrayBuilder bab = new ByteArrayBuilder();
+		final byte prefix = (byte) 0b10000000;
+		bab.append(prefix);
+		bab.append(array);
+		BigInteger twosComplementBigInt =
+				new BigInteger(bab.toArray())
+						.subtract(BigInteger.ONE).not();
+
+		byte[] twosComplementWithPrefix =
+				twosComplementBigInt.toByteArray();
+
+		byte[] twosComplement = new byte[array.length];
+
+		System.arraycopy(twosComplementWithPrefix,
+				twosComplementWithPrefix.length
+						- twosComplement.length, twosComplement, 0,
+				twosComplement.length);
+
+		return twosComplement;
 	}
 
 	/**
