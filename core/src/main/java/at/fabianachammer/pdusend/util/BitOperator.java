@@ -57,9 +57,10 @@ public final class BitOperator {
 	public static int merge(final byte lowlowByte,
 			final byte lowHighByte, final byte highLowByte,
 			final byte highHighByte) {
-		return (highHighByte << (Short.SIZE + Byte.SIZE))
-				| (highLowByte << Short.SIZE)
-				| (lowHighByte << Byte.SIZE) | lowlowByte;
+		return ((highHighByte & MAX_BYTE) << (Short.SIZE + Byte.SIZE))
+				| ((highLowByte & MAX_BYTE) << Short.SIZE)
+				| ((lowHighByte & MAX_BYTE) << Byte.SIZE)
+				| (lowlowByte & MAX_BYTE);
 	}
 
 	/**

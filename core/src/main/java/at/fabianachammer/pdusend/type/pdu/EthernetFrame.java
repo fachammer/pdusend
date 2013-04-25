@@ -171,6 +171,11 @@ public class EthernetFrame extends EmbeddingProtocolDataUnit {
 	}
 
 	@Override
+	public void setEmbeddedData(DataUnit dataUnit) {
+		setData(dataUnit);
+	}
+
+	@Override
 	protected final <T extends DataUnit> boolean isEquals(final T obj) {
 		EthernetFrame rhs = (EthernetFrame) obj;
 		return new EqualsBuilder()

@@ -102,11 +102,17 @@ public class MacAddressDecoderTest {
 		decoder.decode(null);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public final void testDecodeWithIllegalSizeByteArrayOnMacAddressDecoderWorks() {
+	@Test
+	public final void testDecodeWithBiggerThanMacAddressSizeByteArrayOnMacAddressDecoderOnlyUsesLastSixBytes() {
 		MacAddressDecoder decoder = new MacAddressDecoder();
-		byte[] illegalSizeInput = new byte[7];
+		byte[] biggerThanMacAddressSizeByteArray =
+				{ 0, 0, 0, 0, 0, 0, 1 };
+		MacAddress expected =
+				new MacAddress(new byte[] { 0, 0, 0, 0, 0, 1 });
 
-		decoder.decode(illegalSizeInput);
+		MacAddress actual =
+				decoder.decode(biggerThanMacAddressSizeByteArray);
+
+		assertEquals(expected, actual);
 	}
 }

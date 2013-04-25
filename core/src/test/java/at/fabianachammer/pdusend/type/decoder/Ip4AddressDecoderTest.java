@@ -70,12 +70,16 @@ public class Ip4AddressDecoderTest {
 		assertEquals(expected, actual);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public final void testDecodeWithIllegalSizeByteArrayOnIp4AddressDecoderThrowsIllegalArgumentException() {
+	@Test
+	public final void testDecodeWithBiggerThanIp4AddressSizeByteArrayOnIp4AddressDecoderOnlyUsesLastBytes() {
 		Ip4AddressDecoder decoder = new Ip4AddressDecoder();
-		byte[] illegalSizeByteArray = new byte[5];
+		byte[] biggerThanIp4AddressSizeByteArray = new byte[5];
+		Ip4Address expected = new Ip4Address(0);
 
-		decoder.decode(illegalSizeByteArray);
+		Ip4Address actual =
+				decoder.decode(biggerThanIp4AddressSizeByteArray);
+
+		assertEquals(expected, actual);
 	}
 
 	@Test(expected = NullPointerException.class)

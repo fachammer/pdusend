@@ -81,7 +81,7 @@ subprojects{
 		}
 
 		if(proj.isGroovyProject){
-			proj.dependencies{ compile "org.codehaus.groovy:groovy-all:2.1.1"}
+			proj.dependencies{ compile "org.codehaus.groovy:groovy-all:2.1.2"}
 			proj.eclipse{
 				project{
 					natures +=[

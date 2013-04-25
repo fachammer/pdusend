@@ -9,12 +9,21 @@ import at.fabianachammer.pdusend.type.DataUnit;
  * @author fabian
  * 
  */
-public abstract class EmbeddingProtocolDataUnit extends ProtocolDataUnit {
-	
+public abstract class EmbeddingProtocolDataUnit extends
+		ProtocolDataUnit {
+
 	/**
 	 * Returns the embedded data unit of the protocol data unit.
 	 * 
 	 * @return embedded data unit of the protocol data unit
 	 */
 	public abstract DataUnit getEmbeddedData();
+
+	/**
+	 * Sets the embedded data of the protocol data unit.
+	 * 
+	 * @param dataUnit
+	 *            data unit to set
+	 */
+	public abstract void setEmbeddedData(DataUnit dataUnit);
 }
