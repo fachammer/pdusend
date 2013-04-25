@@ -13,10 +13,6 @@ import at.fabianachammer.pdusend.type.decoder.DataUnitDecoder;
  */
 public class ArpOperationTest {
 
-	/**
-	 * Test method for
-	 * {@link at.fabianachammer.pdusend.type.ArpOperation#getDecoder()}.
-	 */
 	@Test
 	public final void testGetDecoderOnArpOperationReturnsInstanceOfArpOperationDecoder() {
 		ArpOperation anyArpOperation = ArpOperation.REQUEST;
@@ -27,10 +23,6 @@ public class ArpOperationTest {
 		assertTrue(decoder instanceof ArpOperationDecoder);
 	}
 
-	/**
-	 * Test method for
-	 * {@link at.fabianachammer.pdusend.type.ArpOperation#encode()}.
-	 */
 	@Test
 	public final void testEncodeOnArpOperationWorks() {
 		ArpOperation anyArpOperation = ArpOperation.REQUEST;
@@ -39,6 +31,24 @@ public class ArpOperationTest {
 		byte[] actual = anyArpOperation.encode();
 
 		assertArrayEquals(expected, actual);
+	}
+
+	@Test
+	public final void isEqualsWithArpOperationWithEqualIdReturnsTrue() {
+		ArpOperation arpOperation = new ArpOperation((short) 0);
+		ArpOperation equalIdArpOperation =
+				new ArpOperation((short) 0);
+
+		assertTrue(arpOperation.isEquals(equalIdArpOperation));
+	}
+
+	@Test
+	public final void isEqualsWithArpOperationWithDifferentIdReturnsFalse() {
+		ArpOperation arpOperation = new ArpOperation((short) 0);
+		ArpOperation differentIdArpOperation =
+				new ArpOperation((short) 1);
+
+		assertFalse(arpOperation.isEquals(differentIdArpOperation));
 	}
 
 }

@@ -10,6 +10,7 @@ import net.sf.oval.constraint.AssertFieldConstraints;
 import net.sf.oval.constraint.NotNull;
 import net.sf.oval.guard.Guarded;
 import at.fabianachammer.pdusend.type.ArpOperation;
+import at.fabianachammer.pdusend.type.DataUnit;
 import at.fabianachammer.pdusend.type.EtherType;
 import at.fabianachammer.pdusend.type.HardwareAddressType;
 import at.fabianachammer.pdusend.type.Ip4Address;
@@ -26,7 +27,7 @@ import at.fabianachammer.pdusend.util.ByteArrayBuilder;
  * 
  */
 @Guarded
-public class ArpPacket implements ProtocolDataUnit {
+public class ArpPacket extends ProtocolDataUnit {
 
 	/**
 	 * size of an ARP segment.
@@ -102,15 +103,15 @@ public class ArpPacket implements ProtocolDataUnit {
 	public final byte[] encode() {
 		ByteArrayBuilder bab = new ByteArrayBuilder();
 
-		bab.append(hardwareType.encode());
-		bab.append(protocolType.encode());
-		bab.append(hardwareAddressLength);
-		bab.append(protocolAddressLength);
-		bab.append(operation.encode());
-		bab.append(senderHardwareAddress.encode());
-		bab.append(senderProtocolAddress.encode());
-		bab.append(targetHardwareAddress.encode());
-		bab.append(targetProtocolAddress.encode());
+		bab.append(getHardwareType().encode());
+		bab.append(getProtocolType().encode());
+		bab.append(getHardwareAddressLength());
+		bab.append(getProtocolAddressLength());
+		bab.append(getOperation().encode());
+		bab.append(getSenderHardwareAddress().encode());
+		bab.append(getSenderProtocolAddress().encode());
+		bab.append(getTargetHardwareAddress().encode());
+		bab.append(getTargetProtocolAddress().encode());
 
 		return bab.toArray();
 	}
@@ -126,29 +127,23 @@ public class ArpPacket implements ProtocolDataUnit {
 				+ targetHardwareAddress.size()
 				+ targetProtocolAddress.size();
 	}
-
+	
 	@Override
-	public final boolean equals(final Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (obj instanceof ArpPacket) {
-			ArpPacket rhs = (ArpPacket) obj;
-			return new EqualsBuilder()
-					.append(getHardwareType(), rhs.getHardwareType())
-					.append(getProtocolType(), rhs.getProtocolType())
-					.append(getOperation(), rhs.getOperation())
-					.append(getSenderHardwareAddress(),
-							rhs.getSenderHardwareAddress())
-					.append(getSenderProtocolAddress(),
-							rhs.getSenderProtocolAddress())
-					.append(getTargetHardwareAddress(),
-							rhs.getTargetHardwareAddress())
-					.append(getTargetProtocolAddress(),
-							rhs.getTargetProtocolAddress())
-					.isEquals();
-		}
-		return false;
+	protected final <T extends DataUnit> boolean isEquals(final T obj) {
+		ArpPacket rhs = (ArpPacket) obj;
+		return new EqualsBuilder()
+				.append(getHardwareType(), rhs.getHardwareType())
+				.append(getProtocolType(), rhs.getProtocolType())
+				.append(getOperation(), rhs.getOperation())
+				.append(getSenderHardwareAddress(),
+						rhs.getSenderHardwareAddress())
+				.append(getSenderProtocolAddress(),
+						rhs.getSenderProtocolAddress())
+				.append(getTargetHardwareAddress(),
+						rhs.getTargetHardwareAddress())
+				.append(getTargetProtocolAddress(),
+						rhs.getTargetProtocolAddress())
+				.isEquals();
 	}
 
 	@Override

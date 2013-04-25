@@ -1,7 +1,6 @@
 package at.fabianachammer.pdusend.type.pdu;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 import org.junit.Test;
 
 import at.fabianachammer.pdusend.type.EtherType;

@@ -15,6 +15,11 @@ import java.math.BigInteger;
 public final class ByteConverter {
 
 	/**
+	 * prefix for byte arrays to make BigIntegers to keep leading zero bits.
+	 */
+	private static final byte PREFIX = (byte) 0b00000001;
+
+	/**
 	 * Private constructor because this is an utility class.
 	 */
 	private ByteConverter() {
@@ -31,17 +36,11 @@ public final class ByteConverter {
 	 *         complement number
 	 */
 	public static byte[] toTwosComplement(final byte[] array) {
-		ByteArrayBuilder bab = new ByteArrayBuilder();
-		final byte prefix = (byte) 0b10000000;
-		bab.append(prefix);
-		bab.append(array);
-		BigInteger twosComplementBigInt =
-				new BigInteger(bab.toArray())
+		BigInteger bi =
+				new BigInteger(prefix(array))
 						.subtract(BigInteger.ONE).not();
 
-		byte[] twosComplementWithPrefix =
-				twosComplementBigInt.toByteArray();
-
+		byte[] twosComplementWithPrefix = bi.toByteArray();
 		byte[] twosComplement = new byte[array.length];
 
 		System.arraycopy(twosComplementWithPrefix,
@@ -121,5 +120,22 @@ public final class ByteConverter {
 
 		return Integer.toHexString(halfBytes[0])
 				+ Integer.toHexString(halfBytes[1]);
+	}
+
+	/**
+	 * Appends a prefix-byte (0000 0001 in binary) to a byte array for making a
+	 * BigInteger to keep leading zero bits.
+	 * 
+	 * @param array
+	 *            array to be prefixed
+	 * @return prefixed array
+	 */
+	private static byte[] prefix(byte[] array) {
+		ByteArrayBuilder bab = new ByteArrayBuilder();
+
+		bab.append(PREFIX);
+		bab.append(array);
+
+		return bab.toArray();
 	}
 }

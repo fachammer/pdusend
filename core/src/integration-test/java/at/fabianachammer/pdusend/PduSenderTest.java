@@ -16,7 +16,6 @@ import at.fabianachammer.pdusend.type.Ip4Address;
 import at.fabianachammer.pdusend.type.MacAddress;
 import at.fabianachammer.pdusend.type.pdu.ArpPacket;
 import at.fabianachammer.pdusend.type.pdu.EthernetFrame;
-import at.fabianachammer.pdusend.type.pdu.ProtocolDataUnit;
 import at.fabianachammer.pdusend.type.pdu.RawDataUnit;
 
 /**

@@ -16,7 +16,7 @@ import at.fabianachammer.pdusend.util.BitOperator;
  * @author fabian
  * 
  */
-public class Ip4Address implements DataUnit {
+public class Ip4Address extends DataUnit {
 
 	/**
 	 * size of an IPv4 address in bytes.
@@ -55,19 +55,12 @@ public class Ip4Address implements DataUnit {
 	public final int size() {
 		return SIZE;
 	}
-
+	
 	@Override
-	public final boolean equals(final Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (obj instanceof Ip4Address) {
-			Ip4Address rhs = (Ip4Address) obj;
-			return new EqualsBuilder().append(getValue(),
-					rhs.getValue()).isEquals();
-		}
-
-		return false;
+	protected final <T extends DataUnit> boolean isEquals(final T obj) {
+		Ip4Address rhs = (Ip4Address) obj;
+		return new EqualsBuilder().append(getValue(),
+				rhs.getValue()).isEquals();
 	}
 
 	@Override

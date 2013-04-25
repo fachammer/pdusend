@@ -21,7 +21,7 @@ import at.fabianachammer.pdusend.type.decoder.MacAddressDecoder;
  * 
  */
 @Guarded
-public class MacAddress implements DataUnit {
+public class MacAddress extends DataUnit {
 
 	/**
 	 * size of a MAC address in bytes.
@@ -67,24 +67,17 @@ public class MacAddress implements DataUnit {
 	public final byte[] encode() {
 		return getValue();
 	}
-	
+
 	@Override
 	public final int size() {
 		return SIZE;
 	}
 
 	@Override
-	public final boolean equals(final Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (obj instanceof MacAddress) {
-			MacAddress rhs = (MacAddress) obj;
-			return new EqualsBuilder().append(getValue(),
-					rhs.getValue()).isEquals();
-		}
-
-		return false;
+	protected final <T extends DataUnit> boolean isEquals(final T obj) {
+		MacAddress rhs = (MacAddress) obj;
+		return new EqualsBuilder().append(getValue(), rhs.getValue())
+				.isEquals();
 	}
 
 	@Override

@@ -24,7 +24,7 @@ import at.fabianachammer.pdusend.util.ByteArrayBuilder;
  * 
  */
 @Guarded
-public class EthernetFrame implements EmbeddingProtocolDataUnit {
+public class EthernetFrame extends EmbeddingProtocolDataUnit {
 
 	/**
 	 * hardware address type of the Ethernet protocol.
@@ -105,7 +105,7 @@ public class EthernetFrame implements EmbeddingProtocolDataUnit {
 	 * Creates a new Ethernet frame without any defined attributes.
 	 */
 	public EthernetFrame() {
-		
+
 	}
 
 	@Override
@@ -171,26 +171,18 @@ public class EthernetFrame implements EmbeddingProtocolDataUnit {
 	}
 
 	@Override
-	public final boolean equals(final Object obj) {
-		if (obj == null) {
-			return false;
-		}
-
-		if (obj instanceof EthernetFrame) {
-			EthernetFrame rhs = (EthernetFrame) obj;
-			return new EqualsBuilder()
-					.append(getDestinationMacAddress(),
-							rhs.getDestinationMacAddress())
-					.append(getSourceMacAddress(),
-							rhs.getSourceMacAddress())
-					.append(getEtherType(), rhs.getEtherType())
-					.append(getVlanTag(), rhs.getVlanTag())
-					.append(getData(), rhs.getData())
-					.append(getPadding(), rhs.getPadding())
-					.append(getChecksum(), rhs.getChecksum())
-					.isEquals();
-		}
-		return false;
+	protected final <T extends DataUnit> boolean isEquals(final T obj) {
+		EthernetFrame rhs = (EthernetFrame) obj;
+		return new EqualsBuilder()
+				.append(getDestinationMacAddress(),
+						rhs.getDestinationMacAddress())
+				.append(getSourceMacAddress(),
+						rhs.getSourceMacAddress())
+				.append(getEtherType(), rhs.getEtherType())
+				.append(getVlanTag(), rhs.getVlanTag())
+				.append(getData(), rhs.getData())
+				.append(getPadding(), rhs.getPadding())
+				.append(getChecksum(), rhs.getChecksum()).isEquals();
 	}
 
 	@Override

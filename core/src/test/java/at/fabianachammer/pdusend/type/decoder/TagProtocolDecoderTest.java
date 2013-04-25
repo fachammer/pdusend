@@ -28,7 +28,6 @@ public class TagProtocolDecoderTest {
 		TagProtocolDecoder decoder = new TagProtocolDecoder();
 		TagProtocol expected = TagProtocol.IEEE_802_1Q;
 		byte[] validByteArray = { (byte) 0x81, 0 };
-		short id = (short) 0x8100;
 
 		TagProtocol actual = decoder.decode(validByteArray);
 

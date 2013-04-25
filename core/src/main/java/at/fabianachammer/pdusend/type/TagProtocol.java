@@ -13,7 +13,7 @@ import at.fabianachammer.pdusend.util.BitOperator;
  * @author fabian
  * 
  */
-public class TagProtocol implements DataUnit {
+public class TagProtocol extends DataUnit {
 
 	/**
 	 * Unknown tag protocol.
@@ -73,20 +73,12 @@ public class TagProtocol implements DataUnit {
 	public final int size() {
 		return SIZE;
 	}
-
+	
 	@Override
-	public final boolean equals(final Object obj) {
-		if (obj == null) {
-			return false;
-		}
-
-		if (obj instanceof TagProtocol) {
-			TagProtocol rhs = (TagProtocol) obj;
-			return new EqualsBuilder().append(getId(), rhs.getId())
-					.isEquals();
-		}
-
-		return false;
+	protected final <T extends DataUnit> boolean isEquals(final T obj) {
+		TagProtocol rhs = (TagProtocol) obj;
+		return new EqualsBuilder().append(getId(), rhs.getId())
+				.isEquals();
 	}
 
 	@Override

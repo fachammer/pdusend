@@ -20,7 +20,8 @@ import at.fabianachammer.pdusend.util.BitOperator;
  * @author fabian
  * 
  */
-public class HardwareAddressType implements ProtocolIdentifier {
+public class HardwareAddressType extends DataUnit implements
+		ProtocolIdentifier {
 
 	/**
 	 * size of a hardware address type in bytes.
@@ -121,18 +122,10 @@ public class HardwareAddressType implements ProtocolIdentifier {
 	}
 
 	@Override
-	public final boolean equals(final Object obj) {
-		if (obj == null) {
-			return false;
-		}
-
-		if (obj instanceof HardwareAddressType) {
-			HardwareAddressType rhs = (HardwareAddressType) obj;
-			return new EqualsBuilder().append(getId(), rhs.getId())
-					.isEquals();
-		}
-
-		return false;
+	protected final <T extends DataUnit> boolean isEquals(final T obj) {
+		HardwareAddressType rhs = (HardwareAddressType) obj;
+		return new EqualsBuilder().append(getId(), rhs.getId())
+				.isEquals();
 	}
 
 	@Override

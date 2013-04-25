@@ -16,7 +16,7 @@ import at.fabianachammer.pdusend.util.BitOperator;
  * @author fabian
  * 
  */
-public class EtherType implements ProtocolIdentifier {
+public class EtherType extends DataUnit implements ProtocolIdentifier {
 
 	/**
 	 * Unknown protocol.
@@ -107,23 +107,16 @@ public class EtherType implements ProtocolIdentifier {
 	}
 
 	@Override
-	public final DataUnitDecoder<? extends ProtocolDataUnit> getProtocolDecoder() {
+	public final DataUnitDecoder<? extends ProtocolDataUnit> 
+	getProtocolDecoder() {
 		return protocolDecoder;
 	}
-
+	
 	@Override
-	public final boolean equals(final Object obj) {
-		if (obj == null) {
-			return false;
-		}
-
-		if (obj instanceof EtherType) {
-			EtherType rhs = (EtherType) obj;
-			return new EqualsBuilder().append(getId(), rhs.getId())
-					.isEquals();
-		}
-
-		return false;
+	protected final <T extends DataUnit> boolean isEquals(final T obj) {
+		EtherType rhs = (EtherType) obj;
+		return new EqualsBuilder().append(getId(), rhs.getId())
+				.isEquals();
 	}
 
 	@Override
@@ -157,4 +150,6 @@ public class EtherType implements ProtocolIdentifier {
 			final DataUnitDecoder<? extends ProtocolDataUnit> protocolDecoder) {
 		this.protocolDecoder = protocolDecoder;
 	}
+
+	
 }

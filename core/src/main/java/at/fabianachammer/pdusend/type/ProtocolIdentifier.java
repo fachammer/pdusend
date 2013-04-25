@@ -7,7 +7,7 @@ import at.fabianachammer.pdusend.type.pdu.ProtocolDataUnit;
  * @author fabian
  * 
  */
-public interface ProtocolIdentifier extends DataUnit {
+public interface ProtocolIdentifier {
 
 	/**
 	 * Returns the decoder used for decoding bytes of this protocol.

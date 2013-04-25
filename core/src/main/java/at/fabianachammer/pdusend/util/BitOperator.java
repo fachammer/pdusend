@@ -13,12 +13,12 @@ public final class BitOperator {
 	/**
 	 * Maximum value of a half-byte.
 	 */
-	public static final int MAX_HALF_BYTE = 0xF;
+	private static final int MAX_HALF_BYTE = 0xf;
 
 	/**
 	 * Maximum value of a byte.
 	 */
-	public static final int MAX_BYTE = 0xFF;
+	private static final int MAX_BYTE = 0xff;
 
 	/**
 	 * Private Constructor because this is an utility class.
@@ -38,7 +38,7 @@ public final class BitOperator {
 	 */
 	public static short merge(final byte lowByte, final byte highByte) {
 		short highShift = (short) (highByte << Byte.SIZE);
-		return (short) (highShift | lowByte);
+		return (short) (highShift | (lowByte & MAX_BYTE));
 	}
 
 	/**
@@ -104,18 +104,14 @@ public final class BitOperator {
 	 * @return array with four byte values in Big Endian Order
 	 */
 	public static byte[] split(final int value) {
-
 		byte[] bytes = new byte[Integer.SIZE
 				/ Byte.SIZE];
-
 		for (int i = 0; i < bytes.length; i++) {
-
 			int bitsSet = (-1) >>> (i * Byte.SIZE);
 
 			byte calcByte =
 					(byte) ((value & bitsSet) >>> ((bytes.length
 							- i - 1) * Byte.SIZE));
-
 			bytes[i] = calcByte;
 		}
 
@@ -125,7 +121,8 @@ public final class BitOperator {
 	/**
 	 * Splits an BitInteger value into chunks of bytes and puts them in an array
 	 * with the specified size. If the value needs more space than specified,
-	 * the give array size is ignored.
+	 * the give array size is ignored. The sign of the value is ignored and cut
+	 * off during calculation
 	 * 
 	 * @param value
 	 *            value to split
@@ -139,8 +136,8 @@ public final class BitOperator {
 	public static byte[] split(final BigInteger value,
 			final int arraySize) {
 		ByteArrayBuilder bab = new ByteArrayBuilder();
-		byte[] values = value.toByteArray();
-		if (values.length < arraySize) {
+		byte[] values = split(value);
+		if (arraySize > values.length) {
 			bab.append(new byte[arraySize
 					- values.length]);
 		}
@@ -150,7 +147,8 @@ public final class BitOperator {
 	}
 
 	/**
-	 * Splits a BigInteger value into chunks of byte data.
+	 * Splits a BigInteger value into chunks of byte data. Ignores the sign bit
+	 * and only calculates with the bits after it.
 	 * 
 	 * @param value
 	 *            value to split

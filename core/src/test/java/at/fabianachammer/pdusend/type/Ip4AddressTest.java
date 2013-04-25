@@ -54,6 +54,11 @@ public class Ip4AddressTest {
 	}
 
 	@Test
+	public final void equalsWithNullReturnsFalse() {
+		assertFalse(new Ip4Address().equals(null));
+	}
+
+	@Test
 	public final void testHashCodeWithEqualIp4AddressesReturnsEqualHashCodes() {
 		assertEquals(new Ip4Address(1).hashCode(),
 				new Ip4Address(1).hashCode());

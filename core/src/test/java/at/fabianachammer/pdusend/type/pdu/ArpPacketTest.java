@@ -66,7 +66,7 @@ public class ArpPacketTest {
 
 		assertArrayEquals(expected, actual);
 	}
-
+	
 	@Test(expected = NullPointerException.class)
 	public final void testSetNullHardwareTypeOnArpSegmentThrowsNullPointerException() {
 		ArpPacket arpPacket = new ArpPacket();

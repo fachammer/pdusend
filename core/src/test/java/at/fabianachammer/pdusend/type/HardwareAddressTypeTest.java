@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import at.fabianachammer.pdusend.type.decoder.DataUnitDecoder;
 import at.fabianachammer.pdusend.type.decoder.HardwareAddressTypeDecoder;
+import at.fabianachammer.pdusend.type.pdu.decoder.RawDataUnitDecoder;
 
 /**
  * @author fabian
@@ -22,6 +23,17 @@ public class HardwareAddressTypeTest {
 				anyHardwareAddressType.getDecoder();
 
 		assertTrue(decoder instanceof HardwareAddressTypeDecoder);
+	}
+
+	@Test
+	public final void createHardwareAddressTypeWithNonPredefinedIdReturnsHardwareAddressTypeWithSpecifiedIdAndRawDataUnitDecoderAsProtocolDecoder() {
+		short nonPredefinedId = 2;
+		HardwareAddressType notDefinedHardwareAddressType =
+				new HardwareAddressType(nonPredefinedId);
+
+		assertEquals(nonPredefinedId,
+				notDefinedHardwareAddressType.getId());
+		assertTrue(notDefinedHardwareAddressType.getProtocolDecoder() instanceof RawDataUnitDecoder);
 	}
 
 	@Test

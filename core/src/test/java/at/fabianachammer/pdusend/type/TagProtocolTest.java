@@ -70,4 +70,9 @@ public class TagProtocolTest {
 		assertNotEquals(new TagProtocol((short) 0).hashCode(),
 				new TagProtocol((short) 1).hashCode());
 	}
+
+	@Test
+	public final void sizeOfUnknownTagProtocolReturnsTwo() {
+		assertEquals(2, TagProtocol.UNKNOWN.size());
+	}
 }

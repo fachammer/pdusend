@@ -12,5 +12,5 @@ import at.fabianachammer.pdusend.type.DataUnit;
  * @author fabian
  * 
  */
-public interface ProtocolDataUnit extends DataUnit {
+public abstract class ProtocolDataUnit extends DataUnit {
 }

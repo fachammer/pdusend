@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import at.fabianachammer.pdusend.type.decoder.DataUnitDecoder;
 import at.fabianachammer.pdusend.type.decoder.EtherTypeDecoder;
-import at.fabianachammer.pdusend.type.pdu.decoder.RawDataUnitDecoder;
 
 /**
  * @author fabian

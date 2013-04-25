@@ -3,7 +3,7 @@
  */
 package at.fabianachammer.pdusend.util;
 
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
@@ -30,6 +30,16 @@ public class ByteArrayBuilderTest {
 		arrayBuilder.append((byte) 0, (byte) 0, (byte) 0);
 
 		assertArrayEquals(expectedArray, arrayBuilder.toArray());
+	}
+
+	@Test
+	public final void sizeWithOneByteElementAppendedReturnsOne() {
+		ByteArrayBuilder bab = new ByteArrayBuilder();
+		byte someElement = 0;
+		
+		bab.append(someElement);
+		
+		assertEquals(1, bab.size());
 	}
 
 }

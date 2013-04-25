@@ -7,6 +7,7 @@ import net.sf.oval.constraint.AssertFieldConstraints;
 import net.sf.oval.constraint.Max;
 import net.sf.oval.constraint.Min;
 import net.sf.oval.guard.Guarded;
+import at.fabianachammer.pdusend.type.DataUnit;
 import at.fabianachammer.pdusend.type.TagProtocol;
 import at.fabianachammer.pdusend.type.decoder.DataUnitDecoder;
 import at.fabianachammer.pdusend.type.pdu.decoder.VlanTagDecoder;
@@ -21,7 +22,7 @@ import at.fabianachammer.pdusend.util.ByteArrayBuilder;
  * 
  */
 @Guarded
-public final class VlanTag implements ProtocolDataUnit {
+public class VlanTag extends ProtocolDataUnit {
 
 	/**
 	 * size of a VLAN tag in bytes.
@@ -81,25 +82,18 @@ public final class VlanTag implements ProtocolDataUnit {
 	private short vlanIdentifier = MIN_VLAN_IDENTIFIER;
 
 	@Override
-	public DataUnitDecoder<VlanTag> getDecoder() {
+	public final DataUnitDecoder<VlanTag> getDecoder() {
 		return DECODER;
 	}
 
 	@Override
-	public byte[] encode() {
+	public final byte[] encode() {
 		ByteArrayBuilder bab = new ByteArrayBuilder();
-
 		bab.append(BitOperator.split(tagProtocol.getId()));
 
-		byte canonicalBit = 1;
-
-		if (canonicalFormat) {
-			canonicalBit = 0;
-		}
-
+		byte canonicalBit = getCanonicalBit();
 		byte thirdHighHalfByte = (byte) ((priorityCodePoint << 1)
 				+ (canonicalBit) << (Byte.SIZE / 2));
-
 		byte[] vid = BitOperator.split(vlanIdentifier);
 
 		bab.append((byte) (thirdHighHalfByte + vid[0]));
@@ -107,34 +101,26 @@ public final class VlanTag implements ProtocolDataUnit {
 
 		return bab.toArray();
 	}
-	
+
 	@Override
-	public int size() {
+	public final int size() {
 		return SIZE;
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (obj instanceof VlanTag) {
-			VlanTag rhs = (VlanTag) obj;
-			return new EqualsBuilder()
-					.append(getTagProtocol(), rhs.getTagProtocol())
-					.append(getPriorityCodePoint(),
-							rhs.getPriorityCodePoint())
-					.append(isCanonicalFormat(),
-							rhs.isCanonicalFormat())
-					.append(getVlanIdentifier(),
-							rhs.getVlanIdentifier()).isEquals();
-		}
-
-		return false;
+	protected final <T extends DataUnit> boolean isEquals(final T obj) {
+		VlanTag rhs = (VlanTag) obj;
+		return new EqualsBuilder()
+				.append(getTagProtocol(), rhs.getTagProtocol())
+				.append(getPriorityCodePoint(),
+						rhs.getPriorityCodePoint())
+				.append(isCanonicalFormat(), rhs.isCanonicalFormat())
+				.append(getVlanIdentifier(), rhs.getVlanIdentifier())
+				.isEquals();
 	}
 
 	@Override
-	public int hashCode() {
+	public final int hashCode() {
 		final int initial = 163;
 		final int multiplier = 105;
 		return new HashCodeBuilder(initial, multiplier)
@@ -147,7 +133,7 @@ public final class VlanTag implements ProtocolDataUnit {
 	/**
 	 * @return the tagProtocol
 	 */
-	public TagProtocol getTagProtocol() {
+	public final TagProtocol getTagProtocol() {
 		return tagProtocol;
 	}
 
@@ -155,14 +141,14 @@ public final class VlanTag implements ProtocolDataUnit {
 	 * @param tagProtocol
 	 *            the tagProtocol to set
 	 */
-	public void setTagProtocol(final TagProtocol tagProtocol) {
+	public final void setTagProtocol(final TagProtocol tagProtocol) {
 		this.tagProtocol = tagProtocol;
 	}
 
 	/**
 	 * @return the priorityCodePoint
 	 */
-	public byte getPriorityCodePoint() {
+	public final byte getPriorityCodePoint() {
 		return priorityCodePoint;
 	}
 
@@ -170,7 +156,7 @@ public final class VlanTag implements ProtocolDataUnit {
 	 * @param priorityCodePoint
 	 *            the priorityCodePoint to set
 	 */
-	public void setPriorityCodePoint(
+	public final void setPriorityCodePoint(
 			@AssertFieldConstraints final byte priorityCodePoint) {
 		this.priorityCodePoint = priorityCodePoint;
 	}
@@ -178,7 +164,7 @@ public final class VlanTag implements ProtocolDataUnit {
 	/**
 	 * @return the canonicalFormat
 	 */
-	public boolean isCanonicalFormat() {
+	public final boolean isCanonicalFormat() {
 		return canonicalFormat;
 	}
 
@@ -186,14 +172,14 @@ public final class VlanTag implements ProtocolDataUnit {
 	 * @param canonicalFormat
 	 *            the canonicalFormat to set
 	 */
-	public void setCanonicalFormat(final boolean canonicalFormat) {
+	public final void setCanonicalFormat(final boolean canonicalFormat) {
 		this.canonicalFormat = canonicalFormat;
 	}
 
 	/**
 	 * @return the vlanIdentifier
 	 */
-	public short getVlanIdentifier() {
+	public final short getVlanIdentifier() {
 		return vlanIdentifier;
 	}
 
@@ -201,8 +187,21 @@ public final class VlanTag implements ProtocolDataUnit {
 	 * @param vlanIdentifier
 	 *            the vlanIdentifier to set
 	 */
-	public void setVlanIdentifier(
+	public final void setVlanIdentifier(
 			@AssertFieldConstraints final short vlanIdentifier) {
 		this.vlanIdentifier = vlanIdentifier;
+	}
+
+	/**
+	 * Returns the canonical bit from the canonical format.
+	 * 
+	 * @return 0 if canonical format is true, 1 otherwise
+	 */
+	private byte getCanonicalBit() {
+		if (canonicalFormat) {
+			return 0;
+		}
+
+		return 1;
 	}
 }

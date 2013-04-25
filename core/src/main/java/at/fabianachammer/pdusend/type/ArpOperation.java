@@ -3,17 +3,20 @@
  */
 package at.fabianachammer.pdusend.type;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import at.fabianachammer.pdusend.type.decoder.ArpOperationDecoder;
 import at.fabianachammer.pdusend.type.decoder.DataUnitDecoder;
 import at.fabianachammer.pdusend.util.BitOperator;
 
 /**
- * Represents an operation of an ARP segment.
+ * Represents an operation of an ARP packet.
  * 
  * @author fabian
  * 
  */
-public class ArpOperation implements DataUnit {
+public class ArpOperation extends DataUnit {
 
 	/**
 	 * Unknown ARP operation.
@@ -78,6 +81,22 @@ public class ArpOperation implements DataUnit {
 	@Override
 	public final int size() {
 		return SIZE;
+	}
+
+	@Override
+	protected final <T extends DataUnit> boolean isEquals(final T obj) {
+		ArpOperation rhs = (ArpOperation) obj;
+		return new EqualsBuilder().append(getId(), rhs.getId())
+				.isEquals();
+	}
+
+	@Override
+	public final int hashCode() {
+		final int initial = 113;
+		final int multiplier = 15;
+
+		return new HashCodeBuilder(initial, multiplier).append(
+				getId()).hashCode();
 	}
 
 	/**

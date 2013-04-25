@@ -12,7 +12,6 @@ public final class ArrayOperator {
 	 * private constructor because this is a utility class.
 	 */
 	private ArrayOperator() {
-
 	}
 
 	/**

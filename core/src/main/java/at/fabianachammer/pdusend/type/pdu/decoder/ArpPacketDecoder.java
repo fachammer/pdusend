@@ -26,7 +26,7 @@ public class ArpPacketDecoder implements DataUnitDecoder<ArpPacket> {
 	/**
 	 * minimum size of the input array.
 	 */
-	private static final int MIN_SIZE = 28;
+	private static final int	MIN_SIZE	= 28;
 
 	@Override
 	public final ArpPacket decode(
@@ -82,6 +82,10 @@ public class ArpPacketDecoder implements DataUnitDecoder<ArpPacket> {
 				.decode(protocolAddressTypeBytes));
 		arpPacket.setOperation(new ArpOperationDecoder()
 				.decode(arpOperationBytes));
+		arpPacket
+				.setHardwareAddressLength((byte) senderHardwareAddressBytes.length);
+		arpPacket
+				.setProtocolAddressLength((byte) senderProtocolAddressBytes.length);
 		arpPacket.setSenderHardwareAddress(new MacAddressDecoder()
 				.decode(senderHardwareAddressBytes));
 		arpPacket.setSenderProtocolAddress(new Ip4AddressDecoder()

@@ -13,26 +13,53 @@ import at.fabianachammer.pdusend.type.decoder.DataUnitDecoder;
  * @author fabian
  * 
  */
-public interface DataUnit {
+public abstract class DataUnit {
 
 	/**
 	 * Returns the decoder of the data unit.
 	 * 
 	 * @return decoder of the data unit
 	 */
-	DataUnitDecoder<? extends DataUnit> getDecoder();
+	public abstract DataUnitDecoder<? extends DataUnit> getDecoder();
 
 	/**
 	 * Encodes the data unit into a byte array.
 	 * 
 	 * @return the encoded data unit
 	 */
-	byte[] encode();
+	public abstract byte[] encode();
 
 	/**
 	 * Returns the size of the data unit in bytes.
 	 * 
 	 * @return size of the data unit in bytes
 	 */
-	int size();
+	public abstract int size();
+
+	/**
+	 * determines whether this object is equal to a given data unit.
+	 * 
+	 * @param <T>
+	 *            type of the object that gets compared
+	 * @param obj
+	 *            data unit to which equality is checked
+	 * @return true, if the data unit is equal, false otherwise
+	 */
+	protected abstract <T extends DataUnit> boolean isEquals(T obj);
+
+	@Override
+	public final boolean equals(final Object obj) {
+		if (obj == null) {
+			return false;
+		}
+
+		if (obj.getClass() == this.getClass()) {
+			return isEquals(this.getClass().cast(obj));
+		}
+
+		return false;
+	}
+
+	@Override
+	public abstract int hashCode();
 }
