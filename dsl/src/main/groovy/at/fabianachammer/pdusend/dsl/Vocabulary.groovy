@@ -2,7 +2,7 @@ package at.fabianachammer.pdusend.dsl
 
 import java.net.NetworkInterface;
 
-import at.fabianachammer.pdusend.PduSender
+import at.fabianachammer.pdusend.Sender
 import at.fabianachammer.pdusend.type.DataUnit
 import at.fabianachammer.pdusend.type.pdu.ArpPacket
 import at.fabianachammer.pdusend.type.pdu.EmbeddingProtocolDataUnit
@@ -17,7 +17,7 @@ import at.fabianachammer.pdusend.util.BitOperator
  * @author fabian
  *
  */
-class PduSendVocabulary {
+class Vocabulary {
 	
 	final def allowedNumberTypes = [
 		Byte.class,
@@ -137,14 +137,14 @@ class PduSendVocabulary {
 		methods
 	}
 
-	PduSendVocabulary(){
+	Vocabulary(){
 		networkInterfaces = getNetworkInterfaceBinding()
 		pduObjects = getPduBinding()
 		pduMethods = getMethodBinding()
 	}
 
-	PduSender sender = new PduSender()
-	DataUnit du = null
+	Sender sender = new Sender()
+	DataUnit dataUnitToSend = null
 
 	def binding(){
 		networkInterfaces +
@@ -161,15 +161,15 @@ class PduSendVocabulary {
 	}
 
 	def send(DataUnit du){
-		this.du = du
+		this.dataUnitToSend = du
 		this
 	}
 
 	def on(NetworkInterface ni){
-		if(du != null){
-			sender.send ni, du
-			du = null
-			this
+		if(dataUnitToSend != null){
+			sender.send ni, dataUnitToSend
+			dataUnitToSend = null
+			return this
 		}
 
 		throw new NullPointerException("the data unit couldn't be sent because it was null")

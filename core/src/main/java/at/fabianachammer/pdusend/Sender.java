@@ -8,38 +8,37 @@ import java.net.NetworkInterface;
 import at.fabianachammer.pdusend.type.DataUnit;
 
 /**
- * Class for sending arbitrary data wrapped in an Ethernet frame.
+ * Class for sending arbitrary data.
  * 
  * @author fabian
  * 
  */
-public class PduSender {
+public class Sender {
 
 	/**
-	 * Specifies the path to the pdusener native library.
+	 * Specifies the path to the native library.
 	 */
-	private static final String NSENDER_LIB_PATH = "native";
+	private static final String LIB_PATH = "native";
 
 	static {
-		System.loadLibrary(NSENDER_LIB_PATH);
+		System.loadLibrary(LIB_PATH);
 	}
 
 	/**
-	 * Sends a protocol data unit from a specified network interface.
+	 * Sends a data unit from a specified network interface.
 	 * 
 	 * @param networkInterface
 	 *            network interface to send the PDU from
 	 * @param data
-	 *            PDU to be sent
+	 *            data unit to be sent
 	 */
-	public final void send(final NetworkInterface networkInterface,
+	public void send(final NetworkInterface networkInterface,
 			final DataUnit data) {
 		send(networkInterface.getIndex(), data.encode());
 	}
 
 	/**
-	 * Sends an arbitrary array of data wrapped in an Ethernet frame from a
-	 * specific network interface.
+	 * Sends a data unit from a specific network interface.
 	 * 
 	 * @param interfaceIndex
 	 *            id of the network interface that should send the data

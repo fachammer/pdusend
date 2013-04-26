@@ -2,7 +2,7 @@ package at.fabianachammer.pdusend.dsl;
 
 import org.codehaus.groovy.control.CompilerConfiguration
 
-def vocabulary = new PduSendVocabulary()
+def vocabulary = new Vocabulary()
 
 
 def binding = new Binding(vocabulary.binding()+[send: vocabulary.&send,

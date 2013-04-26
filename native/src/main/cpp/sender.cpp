@@ -11,9 +11,9 @@
 #include <netinet/ether.h>
 #include <netinet/in.h>
 #include <unistd.h>
-#include "pdusender.h"
+#include "sender.h"
 
-JNIEXPORT void JNICALL Java_at_fabianachammer_pdusend_PduSender_send(
+JNIEXPORT void JNICALL Java_at_fabianachammer_pdusend_Sender_send(
 		JNIEnv * env, jobject obj, jint interfaceId, jbyteArray data) {
 
 	int socketDomain = AF_PACKET;

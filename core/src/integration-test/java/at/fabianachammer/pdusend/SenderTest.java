@@ -7,7 +7,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import at.fabianachammer.pdusend.PduSender;
+import at.fabianachammer.pdusend.Sender;
 import at.fabianachammer.pdusend.type.ArpOperation;
 import at.fabianachammer.pdusend.type.DataUnit;
 import at.fabianachammer.pdusend.type.EtherType;
@@ -23,7 +23,7 @@ import at.fabianachammer.pdusend.type.pdu.RawDataUnit;
  * 
  * @author fabian
  */
-public class PduSenderTest {
+public class SenderTest {
 
 	/**
 	 * Loopback Interface for testing purposes.
@@ -46,7 +46,7 @@ public class PduSenderTest {
 
 	@Test
 	public final void testSendRawTwoByteDataOnLoopbackInterface() {
-		PduSender sender = new PduSender();
+		Sender sender = new Sender();
 		final byte[] anyData =
 				new byte[] { (byte) 0x10, (byte) 0x01 };
 		DataUnit anyDataUnit = new RawDataUnit(anyData);
@@ -56,7 +56,7 @@ public class PduSenderTest {
 
 	@Test
 	public final void testSendEthernetFrameOnLoopbackInterface() {
-		PduSender sender = new PduSender();
+		Sender sender = new Sender();
 
 		final byte[] anySMac =
 				new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
@@ -77,7 +77,7 @@ public class PduSenderTest {
 
 	@Test
 	public final void testSendRawArpSegmentOnLoopbackInterface() {
-		PduSender sender = new PduSender();
+		Sender sender = new Sender();
 
 		ArpPacket arpSegment = new ArpPacket();
 		arpSegment.setHardwareType(HardwareAddressType.ETHERNET);
@@ -95,7 +95,7 @@ public class PduSenderTest {
 
 	@Test
 	public final void testSendArpSegmentInEthernetFrameOnLoopbackInterface() {
-		PduSender sender = new PduSender();
+		Sender sender = new Sender();
 
 		ArpPacket arpSegment = new ArpPacket();
 		arpSegment.setHardwareType(HardwareAddressType.ETHERNET);
