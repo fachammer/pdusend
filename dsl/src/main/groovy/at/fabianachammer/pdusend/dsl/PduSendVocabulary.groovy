@@ -60,7 +60,7 @@ class PduSendVocabulary {
 
 			else if(allowedNumberTypes.any{n -> n == input.class}){
 				if(fieldClass == byte[].class){
-					pdu."$it" = BitOperator.split(input, pdu."$it".length)
+					pdu."$it" = BitOperator.split(input as BigInteger, pdu."$it".length)
 				}
 
 				else if(pdu."$it" instanceof DataUnit){

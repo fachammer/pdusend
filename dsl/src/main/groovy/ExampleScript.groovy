@@ -2,7 +2,7 @@ import at.fabianachammer.pdusend.PduSender
 import at.fabianachammer.pdusend.type.*
 
 def ef = ethernet(
-		destinationMacAddress: 0x0011223344550000,
+		destinationMacAddress: 0x001122334455,
 		sourceMacAddress: 0xffeeddccbbaa,
 		etherType: EtherType.ARP){ 
 		arp(hardwareType: HardwareAddressType.ETHERNET,
@@ -12,4 +12,4 @@ def ef = ethernet(
 			targetProtocolAddress: 0xc0a80002)
 }
 		
-send 0x7f2233 on lo
+send ef on lo

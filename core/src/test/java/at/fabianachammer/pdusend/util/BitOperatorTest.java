@@ -99,7 +99,7 @@ public class BitOperatorTest {
 	@Test
 	public final void bigIntegerSplitWithArraySizeWithMinusOneBigIntegerAndTwoArraySizeReturnsByteArrayWithAllBitsOfSecondByteSet() {
 		BigInteger minusOne =
-				new BigInteger(new byte[] { (byte) 0b11111111 });
+				new BigInteger(1, new byte[] { (byte) 0b11111111 });
 
 		byte[] expected = { 0, (byte) 0b11111111 };
 
@@ -109,10 +109,10 @@ public class BitOperatorTest {
 	}
 
 	@Test
-	public final void bigIntegerSplitWithArraySizeWithNineByteAllBitsSetExceptSignBitBigIntegerAndTenArraySizeReturnsByteArrayWithLastSeventyOneBitsSet() {
+	public final void bigIntegerSplitWithArraySizeWithNineByteAllBitsSetExceptSignBitBigIntegerAndTenArraySizeReturnsByteArrayWithLastSeventyTwoBitsSet() {
 		BigInteger nineByteAllBitsSet =
-				new BigInteger(new byte[] {
-						(byte) 0b01111111, (byte) 0b11111111,
+				new BigInteger(1, new byte[] {
+						(byte) 0b11111111, (byte) 0b11111111,
 						(byte) 0b11111111, (byte) 0b11111111,
 						(byte) 0b11111111, (byte) 0b11111111,
 						(byte) 0b11111111, (byte) 0b11111111,
@@ -120,7 +120,7 @@ public class BitOperatorTest {
 
 		byte[] expected =
 				{
-						0, (byte) 0b01111111, (byte) 0b11111111,
+						0, (byte) 0b11111111, (byte) 0b11111111,
 						(byte) 0b11111111, (byte) 0b11111111,
 						(byte) 0b11111111, (byte) 0b11111111,
 						(byte) 0b11111111, (byte) 0b11111111,
@@ -134,7 +134,7 @@ public class BitOperatorTest {
 	@Test
 	public final void bigIntegerSplitWithArraySizeWithArraySizeSmallerThanArrayLengthIgnoresGivenArraySize() {
 		BigInteger someTwoByteBigInteger =
-				new BigInteger(new byte[] { 1, 0, 0 });
+				new BigInteger(1, new byte[] { 1, 0, 0 });
 
 		byte[] expected = { 1, 0, 0 };
 

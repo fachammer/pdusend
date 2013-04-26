@@ -102,17 +102,12 @@ public class MacAddressDecoderTest {
 		decoder.decode(null);
 	}
 
-	@Test
-	public final void testDecodeWithBiggerThanMacAddressSizeByteArrayOnMacAddressDecoderOnlyUsesLastSixBytes() {
+	@Test(expected = IllegalArgumentException.class)
+	public final void testDecodeWithBiggerThanMacAddressSizeByteArrayOnMacAddressDecoderThrowsIllegalArgumentException() {
 		MacAddressDecoder decoder = new MacAddressDecoder();
 		byte[] biggerThanMacAddressSizeByteArray =
 				{ 0, 0, 0, 0, 0, 0, 1 };
-		MacAddress expected =
-				new MacAddress(new byte[] { 0, 0, 0, 0, 0, 1 });
 
-		MacAddress actual =
-				decoder.decode(biggerThanMacAddressSizeByteArray);
-
-		assertEquals(expected, actual);
+		decoder.decode(biggerThanMacAddressSizeByteArray);
 	}
 }

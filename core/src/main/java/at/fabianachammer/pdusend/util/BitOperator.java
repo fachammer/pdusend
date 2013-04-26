@@ -156,6 +156,23 @@ public final class BitOperator {
 	 * @return byte array containing the split BigInteger
 	 */
 	public static byte[] split(final BigInteger value) {
+		int length = value.bitLength();
+		int lengthRemainder = length
+				% Byte.SIZE;
+
+		if (lengthRemainder != 0) {
+			length += Byte.SIZE
+					- (length % Byte.SIZE);
+		}
+
+		if (value.signum() == 1
+				&& value.testBit(length - 1)) {
+			byte[] returnValue =
+					new byte[value.toByteArray().length - 1];
+			System.arraycopy(value.toByteArray(), 1, returnValue, 0,
+					returnValue.length);
+			return returnValue;
+		}
 		return value.toByteArray();
 	}
 

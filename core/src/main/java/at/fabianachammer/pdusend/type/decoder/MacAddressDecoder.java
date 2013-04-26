@@ -4,6 +4,7 @@
 package at.fabianachammer.pdusend.type.decoder;
 
 import net.sf.oval.constraint.NotNull;
+import net.sf.oval.constraint.Size;
 import net.sf.oval.guard.Guarded;
 import at.fabianachammer.pdusend.type.MacAddress;
 
@@ -17,7 +18,8 @@ import at.fabianachammer.pdusend.type.MacAddress;
 public class MacAddressDecoder implements DataUnitDecoder<MacAddress> {
 
 	@Override
-	public final MacAddress decode(@NotNull final byte... data) {
+	public final MacAddress decode(@NotNull @Size(
+			max = MacAddress.SIZE) final byte... data) {
 
 		byte[] mac = new byte[MacAddress.SIZE];
 		int j = Math.max(0, data.length

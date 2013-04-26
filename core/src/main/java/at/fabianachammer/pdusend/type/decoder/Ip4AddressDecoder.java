@@ -4,6 +4,7 @@
 package at.fabianachammer.pdusend.type.decoder;
 
 import net.sf.oval.constraint.NotNull;
+import net.sf.oval.constraint.Size;
 import net.sf.oval.guard.Guarded;
 import at.fabianachammer.pdusend.type.Ip4Address;
 import at.fabianachammer.pdusend.util.BitOperator;
@@ -18,7 +19,8 @@ import at.fabianachammer.pdusend.util.BitOperator;
 public class Ip4AddressDecoder implements DataUnitDecoder<Ip4Address> {
 
 	@Override
-	public final Ip4Address decode(@NotNull final byte... data) {
+	public final Ip4Address decode(@NotNull @Size(
+			max = Ip4Address.SIZE) final byte... data) {
 
 		byte[] ip4Address = new byte[Ip4Address.SIZE];
 		int j = Math.max(0, data.length
