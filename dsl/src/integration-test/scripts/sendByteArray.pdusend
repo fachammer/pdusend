@@ -1,0 +1,2 @@
+byte[] array = [1]
+send array on lo

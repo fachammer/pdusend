@@ -18,90 +18,19 @@ import at.fabianachammer.pdusend.util.BitOperator
  *
  */
 class Vocabulary {
-	
-	final def allowedNumberTypes = [
-		Byte.class,
-		Short.class,
-		Integer.class,
-		Long.class,
-		BigInteger.class
-	]
 
-	final def resolveMapArguments = {Object key, Map map ->
-		def pdu = pduObjects[key]()
+	private def networkInterfaces = [:]
+	private Objects objects
+	private Methods methods
+	private def sender
+	private DataUnit dataUnitToSend
 
-		map.keySet().each{
-			def input = map[it]
-			def fieldClass = pdu."$it".class
-
-			if(input.class == fieldClass){
-				pdu."$it" = input
-			}
-
-			else if(input.class == byte[].class){
-				if(allowedNumberTypes.any{it.class == fieldClass}){
-					pdu."$it" = BitOperator.merge input
-				}
-				else if(pdu."$it" instanceof DataUnit){
-					pdu."$it" = pdu."$it".decoder.decode input
-				}
-			}
-
-			else if(input instanceof DataUnit){
-				if(fieldClass == byte[].class){
-					pdu."$it" = input.encode
-					pdu
-				}
-
-				else{
-					throw new IllegalArgumentException(input + " cannot be converted to "+ fieldClass.toString())
-				}
-			}
-
-			else if(allowedNumberTypes.any{n -> n == input.class}){
-				if(fieldClass == byte[].class){
-					pdu."$it" = BitOperator.split(input as BigInteger, pdu."$it".length)
-				}
-
-				else if(pdu."$it" instanceof DataUnit){
-					byte[] b = BitOperator.split(input as BigInteger)
-					pdu."$it" = pdu."$it".decoder.decode b
-				}
-			}
-
-			else{
-				throw new IllegalArgumentException(input + " cannot be converted to "+ fieldClass.toString())
-			}
-		}
-
-		pdu
+	Vocabulary(){
+		networkInterfaces = getNetworkInterfaceBinding()
+		objects = new Objects()
+		methods = new Methods(objects)
+		sender = new Sender()
 	}
-
-	final def resolveClosure = {Object key, Map map, Closure c ->
-		def pdu = resolveMapArguments key, map
-
-		def dataResult = c()
-
-		if(dataResult instanceof DataUnit){
-			pdu.embeddedData = dataResult
-		}
-
-		else if(dataResult instanceof byte[]){
-			pdu.embeddedData = new RawDataUnit(dataResult)
-		}
-
-		else if(allowedNumberTypes.any{it.class == dataResult.class}){
-			pdu.embeddedData = new RawDataUnit(BitOperator.split(dataResult))
-		}
-
-		pdu
-	}
-
-	def networkInterfaces = [:]
-
-	def pduObjects = [:]
-
-	def pduMethods = [:]
 
 	private Map getNetworkInterfaceBinding(){
 		def netIfs = [:]
@@ -110,50 +39,17 @@ class Vocabulary {
 		netIfs
 	}
 
-	private Map getPduBinding(){
-		[
-			ethernetObj: { new EthernetFrame() },
-			arpObj: { new ArpPacket() },
-			vlanTagObj: { new VlanTag() }
-		]
-	}
-	
-	class PduMethods{
-		
-	}
-
-	private Map getMethodBinding(){
-		def methods = [:]
-		pduObjects.keySet().each{ key ->
-			def methodName = "$key"-"Obj"
-			PduMethods.metaClass."$methodName" << resolveMapArguments.curry(key)
-
-			if(pduObjects[key]() instanceof EmbeddingProtocolDataUnit){
-				PduMethods.metaClass."$methodName" << resolveClosure.curry(key)
-			}
-			methods."$methodName" = PduMethods.&"$methodName"
-		}
-
-		methods
-	}
-
-	Vocabulary(){
-		networkInterfaces = getNetworkInterfaceBinding()
-		pduObjects = getPduBinding()
-		pduMethods = getMethodBinding()
-	}
-
-	Sender sender = new Sender()
-	DataUnit dataUnitToSend = null
-
 	def binding(){
 		networkInterfaces +
-				pduObjects +
-				pduMethods
+				objects.binding +
+				methods.binding + [on: this.&on, send: this.&send]
 	}
 
 	def send(BigInteger bi){
-		send(bi.toByteArray())
+		if(bi.signum() < 0){
+			throw new IllegalArgumentException("negative numbers are not allowed to send")
+		}
+		send(BitOperator.split(bi))
 	}
 
 	def send(byte[] data){
@@ -169,7 +65,7 @@ class Vocabulary {
 		if(dataUnitToSend != null){
 			sender.send ni, dataUnitToSend
 			dataUnitToSend = null
-			return this
+			return
 		}
 
 		throw new NullPointerException("the data unit couldn't be sent because it was null")

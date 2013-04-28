@@ -48,7 +48,7 @@ public abstract class DataUnit {
 	protected abstract <T extends DataUnit> boolean isEquals(T obj);
 
 	@Override
-	public final boolean equals(final Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj == null) {
 			return false;
 		}
