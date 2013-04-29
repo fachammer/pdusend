@@ -38,7 +38,7 @@ public class EthernetFrameTest {
 		ef.setDestinationMacAddress(new MacAddress(destinationMac));
 		ef.setEtherType(etherType);
 		ef.setVlanTag(vlanTag);
-		ef.setData(pdu);
+		ef.setEmbeddedData(pdu);
 
 		final byte[] actual = ef.encode();
 		final byte[] expected =
@@ -116,7 +116,7 @@ public class EthernetFrameTest {
 	public final void testEqualsWithDifferentEthernetFramesOnEthernetFrameReturnsFalse() {
 		EthernetFrame ethernetFrame = new EthernetFrame();
 		EthernetFrame differentEthernetFrame = new EthernetFrame();
-		differentEthernetFrame.setData(new RawDataUnit());
+		differentEthernetFrame.setEmbeddedData(new RawDataUnit());
 
 		assertFalse(ethernetFrame.equals(differentEthernetFrame));
 	}
@@ -141,7 +141,7 @@ public class EthernetFrameTest {
 	public final void testHashCodeWithDifferentEthernetFramesOnEthernetFrameReturnsDifferentHashCodes() {
 		EthernetFrame ethernetFrame = new EthernetFrame();
 		EthernetFrame differentEthernetFrame = new EthernetFrame();
-		differentEthernetFrame.setData(new RawDataUnit());
+		differentEthernetFrame.setEmbeddedData(new RawDataUnit());
 
 		assertNotEquals(ethernetFrame, differentEthernetFrame);
 	}
@@ -167,9 +167,9 @@ public class EthernetFrameTest {
 	@Test
 	public final void getEmbeddedDataCallsGetData() {
 		EthernetFrame ethernetFrame = new EthernetFrame();
-		ethernetFrame.setData(new RawDataUnit());
+		ethernetFrame.setEmbeddedData(new RawDataUnit());
 
-		assertEquals(ethernetFrame.getData(),
+		assertEquals(ethernetFrame.getEmbeddedData(),
 				ethernetFrame.getEmbeddedData());
 	}
 }

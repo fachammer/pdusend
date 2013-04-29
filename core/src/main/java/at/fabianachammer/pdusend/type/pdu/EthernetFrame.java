@@ -167,12 +167,12 @@ public class EthernetFrame extends EmbeddingProtocolDataUnit {
 
 	@Override
 	public final DataUnit getEmbeddedData() {
-		return getData();
+		return data;
 	}
 
 	@Override
-	public void setEmbeddedData(DataUnit dataUnit) {
-		setData(dataUnit);
+	public final void setEmbeddedData(final DataUnit dataUnit) {
+		this.data = dataUnit;
 	}
 
 	@Override
@@ -185,7 +185,7 @@ public class EthernetFrame extends EmbeddingProtocolDataUnit {
 						rhs.getSourceMacAddress())
 				.append(getEtherType(), rhs.getEtherType())
 				.append(getVlanTag(), rhs.getVlanTag())
-				.append(getData(), rhs.getData())
+				.append(getEmbeddedData(), rhs.getEmbeddedData())
 				.append(getPadding(), rhs.getPadding())
 				.append(getChecksum(), rhs.getChecksum()).isEquals();
 	}
@@ -197,7 +197,7 @@ public class EthernetFrame extends EmbeddingProtocolDataUnit {
 		return new HashCodeBuilder(initial, multiplier)
 				.append(getDestinationMacAddress())
 				.append(getSourceMacAddress()).append(getEtherType())
-				.append(getVlanTag()).append(getData())
+				.append(getVlanTag()).append(getEmbeddedData())
 				.append(getPadding()).append(getChecksum())
 				.hashCode();
 	}
@@ -263,21 +263,6 @@ public class EthernetFrame extends EmbeddingProtocolDataUnit {
 	public final void setEtherType(
 			@AssertFieldConstraints final EtherType etherType) {
 		this.etherType = etherType;
-	}
-
-	/**
-	 * @return the data
-	 */
-	public final DataUnit getData() {
-		return data;
-	}
-
-	/**
-	 * @param data
-	 *            the data to set
-	 */
-	public final void setData(final DataUnit data) {
-		this.data = data;
 	}
 
 	/**

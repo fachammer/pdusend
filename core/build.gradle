@@ -11,7 +11,8 @@ configurations{
 dependencies{ compile "net.sf.oval:oval:1.81","commons-lang:commons-lang:2.6", configurations.ajc }
 
 sourceSets{
-	main{ java{ srcDir "src/main/aspectj" } }
+	main{ java{ srcDir "src/main/aspectj"
+		} }
 	integrationTest{
 		java.srcDirs "src/integration-test/java"
 		compileClasspath += main.output
@@ -35,7 +36,6 @@ task compileAspects(dependsOn: JavaPlugin.PROCESS_RESOURCES_TASK_NAME, overwrite
 			forkclasspath: project.configurations.ajc.asPath,
 			showWeaveInfo: true,
 			verbose: true) {
-
 				sourceRoots {
 					sourceSets.main.java.srcDirs.each {
 						pathelement(location: it.absolutePath)
@@ -47,3 +47,7 @@ task compileAspects(dependsOn: JavaPlugin.PROCESS_RESOURCES_TASK_NAME, overwrite
 compileIntegrationTestJava.dependsOn(project(":native").tasks.assemble)
 build.dependsOn(compileIntegrationTestJava)
 test.dependsOn(compileAspects)
+test.dependsOn(project(":native").tasks.assemble)
+test{
+	systemProperty "java.library.path", project(":native").buildDir.path + "/binaries/"
+}

@@ -1,0 +1,1 @@
+send ethernet(sourceMacAddress: 0x004422) on lo

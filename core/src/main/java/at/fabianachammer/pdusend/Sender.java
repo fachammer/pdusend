@@ -5,6 +5,9 @@ package at.fabianachammer.pdusend;
 
 import java.net.NetworkInterface;
 
+import net.sf.oval.constraint.NotNull;
+import net.sf.oval.guard.Guarded;
+
 import at.fabianachammer.pdusend.type.DataUnit;
 
 /**
@@ -13,6 +16,7 @@ import at.fabianachammer.pdusend.type.DataUnit;
  * @author fabian
  * 
  */
+@Guarded
 public class Sender {
 
 	/**
@@ -32,8 +36,9 @@ public class Sender {
 	 * @param data
 	 *            data unit to be sent
 	 */
-	public void send(final NetworkInterface networkInterface,
-			final DataUnit data) {
+	public void send(
+			@NotNull final NetworkInterface networkInterface,
+			@NotNull final DataUnit data) {
 		send(networkInterface.getIndex(), data.encode());
 	}
 

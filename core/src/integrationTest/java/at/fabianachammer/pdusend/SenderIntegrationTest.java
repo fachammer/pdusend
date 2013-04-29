@@ -23,7 +23,7 @@ import at.fabianachammer.pdusend.type.pdu.RawDataUnit;
  * 
  * @author fabian
  */
-public class SenderTest {
+public class SenderIntegrationTest {
 
 	/**
 	 * Loopback Interface for testing purposes.
@@ -70,7 +70,7 @@ public class SenderTest {
 		anyFrame.setSourceMacAddress(new MacAddress(anySMac));
 		anyFrame.setDestinationMacAddress(new MacAddress(anyDMac));
 		anyFrame.setEtherType(anyEtherType);
-		anyFrame.setData(anyDataUnit);
+		anyFrame.setEmbeddedData(anyDataUnit);
 
 		sender.send(loopbackInterface, anyFrame);
 	}
@@ -118,7 +118,7 @@ public class SenderTest {
 		anyFrame.setSourceMacAddress(new MacAddress(anySMac));
 		anyFrame.setDestinationMacAddress(new MacAddress(anyDMac));
 		anyFrame.setEtherType(anyEtherType);
-		anyFrame.setData(arpSegment);
+		anyFrame.setEmbeddedData(arpSegment);
 
 		sender.send(loopbackInterface, anyFrame);
 	}

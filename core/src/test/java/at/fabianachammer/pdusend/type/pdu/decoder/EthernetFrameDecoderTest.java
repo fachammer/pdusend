@@ -18,7 +18,7 @@ public class EthernetFrameDecoderTest {
 	public final void testDecodeWithValidByteArrayWithDefaultEthernetFrameValuesContainingNoDataNoVlanTagOnEthernetFrameDecoderWorks() {
 		EthernetFrameDecoder decoder = new EthernetFrameDecoder();
 		EthernetFrame expected = new EthernetFrame();
-		expected.setData(new RawDataUnit(new byte[46]));
+		expected.setEmbeddedData(new RawDataUnit(new byte[46]));
 		expected.setPadding(new byte[0]);
 		expected.setChecksum(new byte[4]);
 		byte[] input =
@@ -45,7 +45,7 @@ public class EthernetFrameDecoderTest {
 		EthernetFrame expected = new EthernetFrame();
 		VlanTag expectedVlanTag = new VlanTag();
 		expected.setVlanTag(expectedVlanTag);
-		expected.setData(new RawDataUnit(new byte[42]));
+		expected.setEmbeddedData(new RawDataUnit(new byte[42]));
 		expected.setPadding(new byte[0]);
 		expected.setChecksum(new byte[4]);
 		byte[] input =

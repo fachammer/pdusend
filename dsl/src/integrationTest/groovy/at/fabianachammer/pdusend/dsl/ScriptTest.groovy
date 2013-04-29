@@ -38,7 +38,7 @@ class ScriptTest {
 		config.addCompilationCustomizers(importCustomizer)
 
 		def shell = new GroovyShell(binding, config)
-		shell.evaluate(new File("src/integration-test/scripts/" + scriptName + ".pdusend"))
+		shell.evaluate(new File("src/integrationTest/scripts/" + scriptName + ".pdusend"))
 	}
 
 	private final void verifySendOnMockSender(DataUnit expected, String scriptName){

@@ -92,7 +92,7 @@ public class EthernetFrameDecoder implements
 		DataUnit embeddedData =
 				etherType.getProtocolDecoder().decode(
 						embeddedDataBytes);
-		ethernetFrame.setData(embeddedData);
+		ethernetFrame.setEmbeddedData(embeddedData);
 		counter += embeddedData.size();
 
 		paddingBytes = new byte[Math.max(EthernetFrame.MIN_SIZE

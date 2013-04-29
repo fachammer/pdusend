@@ -2,14 +2,22 @@ isGroovyProject = true
 usesJunit = true
 usesMockito = true
 
-dependencies{ compile project(":core") }
+configurations{ integrationTestCompile.extendsFrom testCompile }
+
+dependencies{
+	compile project(":core")
+	integrationTestCompile project(":dsl")
+}
 
 sourceSets{
-	integrationTest{ java{ srcDir "src/integration-test/groovy" } }
+	integrationTest{ compileClasspath += configurations.integrationTestCompile }
 }
 
 test.dependsOn(project(":native").tasks.assemble)
 test{
-
 	systemProperty "java.library.path", project(":native").buildDir.path + "/binaries/"
 }
+
+println sourceSets.integrationTest.output.classesDir
+
+build.dependsOn(compileIntegrationTestGroovy)
