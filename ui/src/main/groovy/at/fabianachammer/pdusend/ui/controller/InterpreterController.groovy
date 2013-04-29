@@ -22,12 +22,15 @@ public abstract class InterpreterController {
 	/**
 	 * view that shows the interpreter data.
 	 */
-	private InterpreterView view
-	
-	InterpreterController(final InterpreterView view){
+	InterpreterView view
+
+	InterpreterController(){
 		interpreter = new Interpreter()
-		this.view = view
-		interpreter.addObserver(view)
+	}
+
+	InterpreterController(final InterpreterView view){
+		this()
+		setView(view)
 	}
 
 	/**
@@ -37,6 +40,14 @@ public abstract class InterpreterController {
 	void process(String[] input){
 		GroovyCodeSource source = processInput(input)
 		interpreter.interpret(source)
+	}
+
+	void setView(InterpreterView view){
+		if(this.view!=null) {
+			interpreter.removeObserver(this.view)
+		}
+		this.view = view
+		interpreter.addObserver(view)
 	}
 
 	/**

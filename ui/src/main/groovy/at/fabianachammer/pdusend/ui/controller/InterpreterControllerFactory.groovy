@@ -1,5 +1,7 @@
 package at.fabianachammer.pdusend.ui.controller
 
+import at.fabianachammer.pdusend.ui.view.CommandLineView
+
 /**
  * Factory class that creates InterpreterControllers based on the command-line
  * input.

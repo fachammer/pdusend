@@ -16,6 +16,10 @@ import net.sf.oval.guard.Guarded
 class FileInputInterpreterController extends
 InterpreterController {
 
+	FileInputInterpreterController(){
+		super()
+	}
+	
 	FileInputInterpreterController(InterpreterView view){
 		super(view)
 	}

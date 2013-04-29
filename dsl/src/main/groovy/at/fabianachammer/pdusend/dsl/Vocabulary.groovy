@@ -22,7 +22,7 @@ class Vocabulary {
 	private def networkInterfaces = [:]
 	private Objects objects
 	private Methods methods
-	private def sender
+	def sender
 	private DataUnit dataUnitToSend
 
 	Vocabulary(){
@@ -39,7 +39,7 @@ class Vocabulary {
 		netIfs
 	}
 
-	def binding(){
+	Map binding(){
 		networkInterfaces +
 				objects.binding +
 				methods.binding + [on: this.&on, send: this.&send]

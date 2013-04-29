@@ -2,13 +2,14 @@ usesJunit = true
 usesMockito = true
 usesJavaPlugin = true
 isAspectJProject = true
+usesOval = true
 
 configurations{
 	integrationTestCompile.extendsFrom testCompile
 	integrationTestRuntime.extendsFrom testRuntime
 }
 
-dependencies{ compile "net.sf.oval:oval:1.81","commons-lang:commons-lang:2.6", configurations.ajc }
+dependencies{ compile "commons-lang:commons-lang:2.6", configurations.ajc }
 
 sourceSets{
 	main{ java{ srcDir "src/main/aspectj"
