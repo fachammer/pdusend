@@ -1,1 +1,1 @@
-include "native", "core", "dsl"
+include "native", "core", "dsl", "ui"

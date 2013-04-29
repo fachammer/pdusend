@@ -4,7 +4,10 @@ def final JAVA_PLUGIN_PROJECTS = [project(":core")]
 
 def final C_PLUGIN_PROJECTS = [project(":native")]
 def final ASPECTJ_PROJECTS = [project(":core")]
-def final GROOVY_PROJECTS = [project(":dsl")]
+def final GROOVY_PROJECTS = [
+	project(":dsl"),
+	project(":ui")
+]
 
 // Plugins
 JAVA_PLUGIN_PROJECTS.each{
@@ -39,6 +42,7 @@ subprojects{
 		proj.ext.usesJavaPlugin = false
 		proj.ext.usesJunit = false
 		proj.ext.usesMockito = false
+		proj.ext.usesOval = false
 	}
 
 	afterEvaluate{ proj ->
@@ -112,6 +116,10 @@ subprojects{
 				}
 			}
 		}
+
+		if(proj.usesOval){
+			proj.dependencies{ compile "net.sf.oval:oval:1.81" }
+		}
 	}
 }
 
@@ -120,4 +128,3 @@ allprojects{proj->
 		proj.eclipse.project.natures "org.springsource.ide.eclipse.gradle.core.nature"
 	}
 }
-

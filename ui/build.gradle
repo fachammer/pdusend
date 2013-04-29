@@ -1,0 +1,11 @@
+isGroovyProject = true
+usesMockito = true
+usesJunit = true
+
+dependencies{
+	compile project(":core"), project(":dsl")
+}
+
+test{
+	systemProperty "java.library.path", project(":native").buildDir.path + "/binaries/"
+}

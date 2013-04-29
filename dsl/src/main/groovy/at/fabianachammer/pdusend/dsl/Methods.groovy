@@ -24,6 +24,9 @@ class Methods {
 		BigInteger.class
 	]
 
+	/**
+	 * resolves a method returning a pdu without any arguments or a closure.
+	 */
 	private final def resolveNoArguments = {Object key ->
 		objects.binding[key]()
 	}
@@ -81,6 +84,9 @@ class Methods {
 		pdu
 	}
 
+	/**
+	 * resolves a closure for a method returning a pdu. The closure represents an embedded data unit.
+	 */
 	private final def resolveClosure = {Object key, Closure c ->
 		def pdu = resolveNoArguments(key)
 

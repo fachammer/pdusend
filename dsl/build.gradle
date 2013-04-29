@@ -18,6 +18,4 @@ test{
 	systemProperty "java.library.path", project(":native").buildDir.path + "/binaries/"
 }
 
-println sourceSets.integrationTest.output.classesDir
-
 build.dependsOn(compileIntegrationTestGroovy)

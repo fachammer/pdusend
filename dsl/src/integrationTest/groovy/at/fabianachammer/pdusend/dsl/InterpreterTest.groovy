@@ -17,28 +17,16 @@ import static org.mockito.Mockito.*;
  * @author fabian
  *
  */
-class ScriptTest {
+class InterpreterTest {
 
 	Vocabulary vocabulary = new Vocabulary()
 	Sender mockSender = mock(Sender.class)
 	NetworkInterface loopback = NetworkInterface.getByName("lo")
 
 	private final void testScript(String scriptName){
-		vocabulary.sender = mockSender
-		def binding = new Binding(vocabulary.binding())
-		def config = new CompilerConfiguration()
-		def importCustomizer = new ImportCustomizer()
-
-		importCustomizer.addImport("at.fabianachammer.pdusend.Sender")
-		importCustomizer.addStarImport("at.fabianachammer.pdusend.type")
-		importCustomizer.addStaticStar("at.fabianachammer.pdusend.type.HardwareAddressType")
-		importCustomizer.addStaticStar("at.fabianachammer.pdusend.type.EtherType")
-		importCustomizer.addStaticStar("at.fabianachammer.pdusend.type.ArpOperation")
-
-		config.addCompilationCustomizers(importCustomizer)
-
-		def shell = new GroovyShell(binding, config)
-		shell.evaluate(new File("src/integrationTest/scripts/" + scriptName + ".pdusend"))
+		Interpreter interpreter = new Interpreter()
+		interpreter.vocabulary.sender = mockSender
+		interpreter.interpret(new File("src/integrationTest/scripts/" + scriptName + ".pdusend"))
 	}
 
 	private final void verifySendOnMockSender(DataUnit expected, String scriptName){
