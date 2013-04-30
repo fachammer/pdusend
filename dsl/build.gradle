@@ -1,4 +1,3 @@
-isGroovyProject = true
 usesJunit = true
 usesMockito = true
 

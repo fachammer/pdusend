@@ -1,4 +1,3 @@
-isCProject = true
 libraries{
 	main{
 		spec{ args "-x c -fPIC" }

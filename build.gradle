@@ -1,24 +1,27 @@
 apply plugin: "eclipse"
+apply plugin: "application"
+
+ext.JVM_PROJECTS = [
+	project(":core"),
+	project(":dsl"),
+	project(":ui")
+]
 
 def final JAVA_PLUGIN_PROJECTS = [project(":core")]
 
-def final C_PLUGIN_PROJECTS = [project(":native")]
+def final C_PROJECTS = [project(":native")]
 def final ASPECTJ_PROJECTS = [project(":core")]
 def final GROOVY_PROJECTS = [
 	project(":dsl"),
 	project(":ui")
 ]
 
-// Plugins
-JAVA_PLUGIN_PROJECTS.each{
-	it.apply plugin: "java"
-	it.apply plugin: "eclipse"
-}
+subprojects.each{ it.apply plugin: "eclipse" }
 
-C_PLUGIN_PROJECTS.each{
-	it.apply plugin: "cpp-lib"
-	it.apply plugin: "eclipse"
-}
+// Plugins
+JAVA_PLUGIN_PROJECTS.each{ it.apply plugin: "java" }
+
+C_PROJECTS.each{ it.apply plugin: "cpp-lib" }
 
 ASPECTJ_PROJECTS.each{
 	it.configurations{
@@ -28,29 +31,22 @@ ASPECTJ_PROJECTS.each{
 	}
 }
 
-GROOVY_PROJECTS.each{
-	it.apply plugin: "groovy"
-	it.apply plugin: "eclipse"
-}
+GROOVY_PROJECTS.each{ it.apply plugin: "groovy" }
 
 // Property Evaluation
 subprojects{
 	beforeEvaluate{ proj ->
-		proj.ext.isAspectJProject = false
-		proj.ext.isCProject = false
-		proj.ext.isGroovyProject = false
-		proj.ext.usesJavaPlugin = false
 		proj.ext.usesJunit = false
 		proj.ext.usesMockito = false
 		proj.ext.usesOval = false
 	}
 
 	afterEvaluate{ proj ->
-		if(proj.usesJunit || proj.usesMockito || proj.isAspectJProject || proj.isGroovyProject){
+		if(proj.usesJunit || proj.usesMockito || proj.usesOval){
 			proj.repositories{ mavenCentral() }
 		}
 
-		if(proj.isAspectJProject){
+		if(ASPECTJ_PROJECTS.contains(proj)){
 			proj.dependencies{
 				ajc "org.aspectj:aspectjrt:1.7.2", "org.aspectj:aspectjtools:1.7.2"
 				compile configurations.ajc
@@ -69,7 +65,7 @@ subprojects{
 			}
 		}
 
-		if(proj.isCProject){
+		if(C_PROJECTS.contains(proj)){
 			proj.eclipse{
 				project{
 					natures += [
@@ -84,7 +80,7 @@ subprojects{
 			}
 		}
 
-		if(proj.isGroovyProject){
+		if(GROOVY_PROJECTS.contains(proj)){
 			proj.dependencies{ compile "org.codehaus.groovy:groovy-all:2.1.2"}
 			proj.eclipse{
 				project{
@@ -103,7 +99,7 @@ subprojects{
 			proj.dependencies{ testCompile "org.mockito:mockito-all:1.9.5" }
 		}
 
-		if(proj.usesJavaPlugin){
+		if(JAVA_PLUGIN_PROJECTS.contains(proj)){
 			proj.tasks.test.forkEvery = 0
 			proj.convention.plugins.java.sourceCompatibility = 1.7
 			proj.convention.plugins.java.targetCompatibility = 1.7
@@ -128,3 +124,55 @@ allprojects{proj->
 		proj.eclipse.project.natures "org.springsource.ide.eclipse.gradle.core.nature"
 	}
 }
+
+task buildJVMProjects{ dependsOn JVM_PROJECTS*.tasks.build }
+
+task buildAll{ dependsOn subprojects*.tasks.assemble }
+
+task cleanAll{ dependsOn subprojects*.tasks.clean }
+
+task cleanAllEclipse{ dependsOn subprojects*.tasks.cleanEclipse }
+
+task allEclipse{ dependsOn subprojects*.tasks.eclipse }
+
+def getAllArtifacts(){
+	def allArtifacts = []
+	def jvmProjectArtifacts = JVM_PROJECTS*.configurations.runtime.artifacts.files.files.sum()
+	def nonJvmProjectArtifacts = file(project(":native").buildDir.path + "/binaries/").listFiles()
+	def projectDependencies = JVM_PROJECTS*.configurations.runtime.resolvedConfiguration.resolvedArtifacts.file
+	def uniqueProjectDependencies = projectDependencies.sum().unique()
+	allArtifacts = uniqueProjectDependencies - jvmProjectArtifacts
+	jvmProjectArtifacts.each{ allArtifacts << it }
+	nonJvmProjectArtifacts.each{ allArtifacts << it }
+
+	allArtifacts
+}
+
+mainClassName = "at.fabianachammer.pdusend.pdusend"
+
+startScripts{
+	doFirst{	
+		getAllArtifacts().each{
+			classpath += files(it)
+		}
+	}
+	
+	doLast {
+		unixScript.text = unixScript.text.replace('DEFAULT_JVM_OPTS=""', 'DEFAULT_JVM_OPTS="-Djava.library.path=../lib/"')
+		unixScript.text = unixScript.text.replace('exec "$JAVACMD"', 'exec sudo "$JAVACMD"')
+		windowsScript.text = windowsScript.text.replace('DEFAULT_JVM_OPTS=', 'DEFAULT_JVM_OPTS="-Djava.library.path=../lib/"')
+	}
+}
+
+distZip {
+	doFirst{
+		getAllArtifacts().each{
+			applicationDistribution.from(it.parent){
+				into "/lib"
+			}
+		}
+		
+	}
+}
+
+
