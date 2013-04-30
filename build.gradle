@@ -81,7 +81,10 @@ subprojects{
 		}
 
 		if(GROOVY_PROJECTS.contains(proj)){
-			proj.dependencies{ compile "org.codehaus.groovy:groovy-all:2.1.2"}
+			proj.dependencies{
+				groovy "org.codehaus.groovy:groovy-all:2.1.2"
+				compile "org.codehaus.groovy:groovy-all:2.1.2"
+			}
 			proj.eclipse{
 				project{
 					natures +=[
@@ -151,12 +154,10 @@ def getAllArtifacts(){
 mainClassName = "at.fabianachammer.pdusend.pdusend"
 
 startScripts{
-	doFirst{	
-		getAllArtifacts().each{
-			classpath += files(it)
-		}
+	doFirst{
+		getAllArtifacts().each{ classpath += files(it) }
 	}
-	
+
 	doLast {
 		unixScript.text = unixScript.text.replace('DEFAULT_JVM_OPTS=""', 'DEFAULT_JVM_OPTS="-Djava.library.path=../lib/"')
 		unixScript.text = unixScript.text.replace('exec "$JAVACMD"', 'exec sudo "$JAVACMD"')
@@ -167,12 +168,10 @@ startScripts{
 distZip {
 	doFirst{
 		getAllArtifacts().each{
-			applicationDistribution.from(it.parent){
-				into "/lib"
-			}
+			applicationDistribution.from(it.parent){ into "/lib" }
 		}
-		
+
 	}
 }
 
-
+distZip.dependsOn(subprojects*.assemble)
