@@ -166,6 +166,8 @@ startScripts{
 	}
 }
 
+defaultTasks "distZip"
+
 distZip {
 	doFirst{
 		getAllArtifacts().each{
@@ -176,3 +178,7 @@ distZip {
 }
 
 distZip.dependsOn(subprojects*.assemble)
+
+task wrapper(type: Wrapper){
+	gradleVersion = "1.5"
+}

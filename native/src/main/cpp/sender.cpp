@@ -1,5 +1,5 @@
 /*
- * pdusender.c
+ * pdusender.cpp
  *
  *  Created on: Apr 7, 2013
  *      Author: fabian
