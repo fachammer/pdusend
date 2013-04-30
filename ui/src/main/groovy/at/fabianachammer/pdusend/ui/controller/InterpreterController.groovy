@@ -22,15 +22,23 @@ public abstract class InterpreterController {
 	/**
 	 * view that shows the interpreter data.
 	 */
-	InterpreterView view
+	ArrayList<InterpreterView> views
 
+	/**
+	 * creates a new InterpreterController without any views.
+	 */
 	InterpreterController(){
 		interpreter = new Interpreter()
+		views = new ArrayList<InterpreterView>()
 	}
 
+	/**
+	 * creates a new InterpreterController with the specified view.
+	 * @param view view to add to the controller
+	 */
 	InterpreterController(final InterpreterView view){
 		this()
-		setView(view)
+		addView(view)
 	}
 
 	/**
@@ -42,12 +50,22 @@ public abstract class InterpreterController {
 		interpreter.interpret(source)
 	}
 
-	void setView(InterpreterView view){
-		if(this.view!=null) {
-			interpreter.removeObserver(this.view)
-		}
-		this.view = view
+	/**
+	 * adds a new view to this controller.
+	 * @param view view to add
+	 */
+	void addView(InterpreterView view){
+		this.views.add(view)
 		interpreter.addObserver(view)
+	}
+	
+	/**
+	 * removes a view from this controller.
+	 * @param view view to remove
+	 */
+	void removeView(InterpreterView view){
+		this.views.remove(view)
+		interpreter.removeObserver(view)
 	}
 
 	/**
