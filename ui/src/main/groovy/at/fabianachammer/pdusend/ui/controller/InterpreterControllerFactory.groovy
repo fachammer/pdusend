@@ -22,9 +22,21 @@ final class InterpreterControllerFactory {
 	 * 
 	 * @param input
 	 *            command-line input of the application
-	 * @return InterpreterController that can handle the command-line input
+	 * @return InterpreterController that can handle the command-line input, or nu
 	 */
 	static InterpreterController create(final String[] input) {
-		return new FileInputInterpreterController()
+		if(input == null) {
+			throw new NullPointerException("input may not be null")
+		}
+
+		if(input.length == 0){
+			throw new IllegalArgumentException("input length must be greater than zero")
+		}
+
+		if(input[0].equalsIgnoreCase("-f")){
+			return new FileInputInterpreterController()
+		}
+
+		return new TextInputInterpreterController()
 	}
 }
