@@ -61,15 +61,15 @@ class FileInputInterpreterControllerTest {
 	@Test(expected = NullPointerException.class)
 	void processWithNullThrowsNullPointerException(){
 		FileInputInterpreterController controller = new FileInputInterpreterController(mock(InterpreterView.class))
-		
+
 		controller.process(null)
 	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	void processWithTooLessParameterInputThrowsIllegalArgumentException(){
 		String[] tooLessParameterInput = ["-f"]
 		InterpreterController controller = new FileInputInterpreterController(mock(InterpreterView.class))
-		
+
 		controller.process(tooLessParameterInput)
 	}
 }

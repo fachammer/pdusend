@@ -7,7 +7,7 @@ import at.fabianachammer.pdusend.dsl.InterpreterException
  * @author fabian
  *
  */
-class CommandLineView implements InterpreterView {
+class CommandLineInterpreterView implements InterpreterView {
 
 	@Override
 	public void onInterpretationFinished() {

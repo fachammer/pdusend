@@ -39,6 +39,32 @@ subprojects{
 		proj.ext.usesJunit = false
 		proj.ext.usesMockito = false
 		proj.ext.usesOval = false
+		if(ASPECTJ_PROJECTS.contains(proj)){
+			proj.tasks.add("compileAspects"){
+				doLast{
+					ant.taskdef(
+							resource: "org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties",
+							classpath: configurations.ajc.asPath)
+					ant.iajc(
+							classpath: sourceSets.main.compileClasspath.asPath,
+							destDir: sourceSets.main.output.classesDir.absolutePath,
+							source: project.convention.plugins.java.sourceCompatibility,
+							target: project.convention.plugins.java.targetCompatibility,
+							sourceRootCopyFilter: '**/*.java',
+							aspectPath: configurations.aspectPath.asPath,
+							fork: true,
+							forkclasspath: project.configurations.ajc.asPath,
+							showWeaveInfo: true,
+							verbose: true) {
+								inpath {
+									pathelement(location: configurations.aspectPath.asPath)
+									pathelement(location: sourceSets.main.output.classesDir)
+								}
+							}
+
+				}
+			}
+		}
 	}
 
 	afterEvaluate{ proj ->
@@ -63,6 +89,15 @@ subprojects{
 					buildCommand "org.eclipse.ajdt.core.ajbuilder"
 				}
 			}
+
+			if(GROOVY_PROJECTS.contains(proj)){
+				proj.tasks.compileAspects.dependsOn(proj.tasks.compileGroovy)
+			}
+			else{
+				proj.tasks.compileAspects.dependsOn(proj.tasks.compileJava)
+			}
+
+			proj.tasks.test.dependsOn(proj.tasks.compileAspects)
 		}
 
 		if(C_PROJECTS.contains(proj)){
@@ -130,7 +165,7 @@ allprojects{proj->
 
 task buildJVMProjects{ dependsOn JVM_PROJECTS*.tasks.build }
 
-task buildAll{ dependsOn subprojects*.tasks.assemble }
+task assembleAll{ dependsOn subprojects*.tasks.assemble }
 
 task cleanAll{ dependsOn subprojects*.tasks.clean }
 
@@ -179,6 +214,4 @@ distZip {
 
 distZip.dependsOn(subprojects*.assemble)
 
-task wrapper(type: Wrapper){
-	gradleVersion = "1.5"
-}
+task wrapper(type: Wrapper){ gradleVersion = "1.5" }

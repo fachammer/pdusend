@@ -1,6 +1,8 @@
 package at.fabianachammer.pdusend.ui.controller
 
 import groovy.lang.GroovyCodeSource
+import at.fabianachammer.pdusend.ui.controller.validation.Validator
+import at.fabianachammer.pdusend.ui.view.InterpreterView;
 
 /**
  * @author fabian
@@ -10,15 +12,20 @@ class TextInputInterpreterController extends InterpreterController {
 
 	private static final String SCRIPT_CLASS_NAME = "SendText"
 
+	private static final MIN_SIZE = 1
+	
+	TextInputInterpreterController(){
+		super()
+	}
+	
+	TextInputInterpreterController(InterpreterView view){
+		super(view)
+	}
+
 	@Override
 	protected GroovyCodeSource processInput(String... input) {
-		if(input == null) {
-			throw new NullPointerException("input may not be null")
-		}
-
-		if(input.length < 1){
-			throw new IllegalArgumentException("input must be greater than zero elements")
-		}
+		Validator.validateNotNull(input, "input")
+		Validator.validateGreaterThanEquals(MIN_SIZE, input.length, "input length")
 
 		StringBuilder sb = new StringBuilder()
 		input.each{

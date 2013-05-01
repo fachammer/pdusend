@@ -4,6 +4,9 @@ import groovy.lang.GroovyCodeSource
 import at.fabianachammer.pdusend.dsl.Interpreter
 import at.fabianachammer.pdusend.ui.view.InterpreterView
 import groovy.transform.PackageScope
+import net.sf.oval.Check
+import net.sf.oval.ConstraintViolation
+import net.sf.oval.guard.Guard
 
 /**
  * abstract class for handling command-line arguments and returning a Groovy
@@ -12,12 +15,12 @@ import groovy.transform.PackageScope
  * @author fabian
  * 
  */
-public abstract class InterpreterController {
+public abstract class InterpreterController implements Controller{
 
 	/**
 	 * interpreter that interprets the input scripts.
 	 */
-	@PackageScope Interpreter interpreter
+	Interpreter interpreter
 
 	/**
 	 * view that shows the interpreter data.
@@ -41,11 +44,8 @@ public abstract class InterpreterController {
 		addView(view)
 	}
 
-	/**
-	 * processes the given input from the command-line.
-	 * @param input command-line input to be processed
-	 */
-	void process(String[] input){
+	@Override
+	void process(String... input){
 		GroovyCodeSource source = processInput(input)
 		interpreter.interpret(source)
 	}
@@ -58,7 +58,7 @@ public abstract class InterpreterController {
 		this.views.add(view)
 		interpreter.addObserver(view)
 	}
-	
+
 	/**
 	 * removes a view from this controller.
 	 * @param view view to remove
