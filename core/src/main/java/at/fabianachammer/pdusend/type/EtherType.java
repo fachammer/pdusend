@@ -2,6 +2,8 @@ package at.fabianachammer.pdusend.type;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 import at.fabianachammer.pdusend.type.decoder.DataUnitDecoder;
 import at.fabianachammer.pdusend.type.decoder.EtherTypeDecoder;
@@ -107,11 +109,10 @@ public class EtherType extends DataUnit implements ProtocolIdentifier {
 	}
 
 	@Override
-	public final DataUnitDecoder<? extends ProtocolDataUnit> 
-	getProtocolDecoder() {
+	public final DataUnitDecoder<? extends ProtocolDataUnit> getProtocolDecoder() {
 		return protocolDecoder;
 	}
-	
+
 	@Override
 	protected final <T extends DataUnit> boolean isEquals(final T obj) {
 		EtherType rhs = (EtherType) obj;
@@ -125,6 +126,15 @@ public class EtherType extends DataUnit implements ProtocolIdentifier {
 		final int multiplier = 23;
 		return new HashCodeBuilder(initial, multiplier).append(
 				getId()).hashCode();
+	}
+
+	@Override
+	public final String toString() {
+		return new ToStringBuilder(this,
+				ToStringStyle.SHORT_PREFIX_STYLE)
+				.append("id", getId())
+				.append("protocolDecoder", getProtocolDecoder())
+				.toString();
 	}
 
 	/**
@@ -150,6 +160,4 @@ public class EtherType extends DataUnit implements ProtocolIdentifier {
 			final DataUnitDecoder<? extends ProtocolDataUnit> protocolDecoder) {
 		this.protocolDecoder = protocolDecoder;
 	}
-
-	
 }

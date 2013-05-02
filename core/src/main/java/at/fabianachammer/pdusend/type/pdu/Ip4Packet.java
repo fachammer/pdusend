@@ -70,4 +70,10 @@ public class Ip4Packet extends EmbeddingProtocolDataUnit {
 		
 	}
 
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

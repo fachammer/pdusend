@@ -5,6 +5,7 @@ package at.fabianachammer.pdusend.type;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 import at.fabianachammer.pdusend.type.decoder.ArpOperationDecoder;
 import at.fabianachammer.pdusend.type.decoder.DataUnitDecoder;
@@ -97,6 +98,12 @@ public class ArpOperation extends DataUnit {
 
 		return new HashCodeBuilder(initial, multiplier).append(
 				getId()).hashCode();
+	}
+
+	@Override
+	public final String toString() {
+		return new ToStringBuilder(this).append("id", getId())
+				.toString();
 	}
 
 	/**

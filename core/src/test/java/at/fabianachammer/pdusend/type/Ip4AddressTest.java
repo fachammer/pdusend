@@ -69,4 +69,13 @@ public class Ip4AddressTest {
 		assertNotEquals(new Ip4Address(1).hashCode(), new Ip4Address(
 				2).hashCode());
 	}
+	
+	@Test
+	public final void testToStringWithZeroIPAddressReturnsDecimalPointRepresentation(){
+		Ip4Address address = new Ip4Address();
+		String expected = "0.0.0.0";
+		
+		assertEquals(expected, address.toString());
+		
+	}
 }

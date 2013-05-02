@@ -106,4 +106,12 @@ public class MacAddressTest {
 				new MacAddress(new byte[] { 0, 0, 0, 0, 0, 2 })
 						.hashCode());
 	}
+	
+	@Test
+	public final void toStringWithZeroValueReturnsHexadecimalColonRepresentation(){
+		MacAddress address = new MacAddress();
+		String expected = "00:00:00:00:00:00";
+		
+		assertEquals(expected, address.toString());
+	}
 }

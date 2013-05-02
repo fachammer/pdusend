@@ -99,7 +99,7 @@ public final class ByteConverter {
 	 *            data to be converted
 	 * @return hexadecimal representation of the data
 	 */
-	public static String toHexString(final byte[] data) {
+	public static String toHexString(final byte... data) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < data.length; i++) {
 			sb.append(convertByteToHexString(data[i]));

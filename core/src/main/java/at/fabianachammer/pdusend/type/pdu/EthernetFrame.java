@@ -4,6 +4,8 @@ import java.util.zip.CRC32;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 import net.sf.oval.constraint.AssertFieldConstraints;
 import net.sf.oval.constraint.NotNull;
 import net.sf.oval.constraint.Size;
@@ -46,12 +48,6 @@ public class EthernetFrame extends EmbeddingProtocolDataUnit
 	 * size of the cyclic redundancy check in bytes.
 	 */
 	public static final int CRC_SIZE = 4;
-
-	/**
-	 * Specifies the default Ether type for the Ethernet frame.
-	 */
-	private static final EtherType DEFAULT_ETHER_TYPE =
-			EtherType.UNKNOWN;
 
 	/**
 	 * the decoder used for decoding data units of this type.
@@ -131,8 +127,6 @@ public class EthernetFrame extends EmbeddingProtocolDataUnit
 			etherType = EtherType.UNKNOWN;
 		}
 
-		// TODO: ether type from embedded data unit
-
 		bab.append(etherType.encode());
 
 		if (data != null) {
@@ -199,6 +193,19 @@ public class EthernetFrame extends EmbeddingProtocolDataUnit
 				.append(getVlanTag()).append(getEmbeddedData())
 				.append(getPadding()).append(getChecksum())
 				.hashCode();
+	}
+
+	@Override
+	public final String toString() {
+		return new ToStringBuilder(this)
+				.append("destinationMacAddress",
+						getDestinationMacAddress())
+				.append("sourceMacAddress", getSourceMacAddress())
+				.append("vlanTag", getVlanTag())
+				.append("etherType", getEtherType())
+				.append("embeddedData", getEmbeddedData())
+				.append("padding", getPadding())
+				.append("checksum", getChecksum()).toString();
 	}
 
 	/**

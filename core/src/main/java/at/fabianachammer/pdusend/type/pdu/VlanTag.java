@@ -2,6 +2,7 @@ package at.fabianachammer.pdusend.type.pdu;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 import net.sf.oval.constraint.AssertFieldConstraints;
 import net.sf.oval.constraint.Max;
@@ -128,6 +129,16 @@ public class VlanTag extends ProtocolDataUnit {
 				.append(getPriorityCodePoint())
 				.append(isCanonicalFormat())
 				.append(getVlanIdentifier()).hashCode();
+	}
+
+	@Override
+	public final String toString() {
+		return new ToStringBuilder(this)
+				.append("tagProtocol", getTagProtocol())
+				.append("priorityCodePoint", getPriorityCodePoint())
+				.append("canonicalFormat", isCanonicalFormat())
+				.append("vlanIdentifier", getVlanIdentifier())
+				.toString();
 	}
 
 	/**

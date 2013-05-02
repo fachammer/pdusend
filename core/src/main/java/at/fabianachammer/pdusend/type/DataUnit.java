@@ -62,4 +62,7 @@ public abstract class DataUnit {
 
 	@Override
 	public abstract int hashCode();
+	
+	@Override
+	public abstract String toString();
 }

@@ -24,7 +24,6 @@ public class SenderTest {
 		try {
 			loopback = NetworkInterface.getByName("lo");
 		} catch (SocketException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

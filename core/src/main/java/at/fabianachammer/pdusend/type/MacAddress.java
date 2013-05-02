@@ -13,6 +13,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import at.fabianachammer.pdusend.type.decoder.DataUnitDecoder;
 import at.fabianachammer.pdusend.type.decoder.MacAddressDecoder;
+import at.fabianachammer.pdusend.util.ByteConverter;
 
 /**
  * Represents a Media Access Control (MAC) address.
@@ -86,6 +87,18 @@ public class MacAddress extends DataUnit {
 		final int multiplier = 63;
 		return new HashCodeBuilder(intial, multiplier).append(
 				getValue()).hashCode();
+	}
+
+	@Override
+	public final String toString() {
+		StringBuilder sb = new StringBuilder();
+
+		for (int i = 0; i < value.length; i++) {
+			sb.append(ByteConverter.toHexString(value[i]));
+			sb.append(":");
+		}
+
+		return sb.substring(0, sb.length() - 1).toString();
 	}
 
 	/**

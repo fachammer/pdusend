@@ -5,6 +5,7 @@ package at.fabianachammer.pdusend.type.pdu;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 import net.sf.oval.constraint.AssertFieldConstraints;
 import net.sf.oval.constraint.NotNull;
@@ -27,7 +28,8 @@ import at.fabianachammer.pdusend.util.ByteArrayBuilder;
  * 
  */
 @Guarded
-public class ArpPacket extends ProtocolDataUnit implements NetworkProtocol {
+public class ArpPacket extends ProtocolDataUnit implements
+		NetworkProtocol {
 
 	/**
 	 * size of an ARP segment.
@@ -127,12 +129,12 @@ public class ArpPacket extends ProtocolDataUnit implements NetworkProtocol {
 				+ targetHardwareAddress.size()
 				+ targetProtocolAddress.size();
 	}
-	
+
 	@Override
 	public final EtherType getEtherType() {
 		return EtherType.ARP;
 	}
-	
+
 	@Override
 	protected final <T extends DataUnit> boolean isEquals(final T obj) {
 		ArpPacket rhs = (ArpPacket) obj;
@@ -147,8 +149,7 @@ public class ArpPacket extends ProtocolDataUnit implements NetworkProtocol {
 				.append(getTargetHardwareAddress(),
 						rhs.getTargetHardwareAddress())
 				.append(getTargetProtocolAddress(),
-						rhs.getTargetProtocolAddress())
-				.isEquals();
+						rhs.getTargetProtocolAddress()).isEquals();
 	}
 
 	@Override
@@ -162,6 +163,26 @@ public class ArpPacket extends ProtocolDataUnit implements NetworkProtocol {
 				.append(getSenderProtocolAddress())
 				.append(getTargetHardwareAddress())
 				.append(getTargetProtocolAddress()).hashCode();
+	}
+
+	@Override
+	public final String toString() {
+		return new ToStringBuilder(this)
+				.append("hardwareType", getHardwareType())
+				.append("protocolType", getProtocolType())
+				.append("operation", getOperation())
+				.append("hardwareAddressLength",
+						getHardwareAddressLength())
+				.append("protocolAddressLength",
+						getProtocolAddressLength())
+				.append("senderHardwareAddress",
+						getSenderHardwareAddress())
+				.append("senderProtocolAddress",
+						getSenderProtocolAddress())
+				.append("targetHardwareAddress",
+						getTargetHardwareAddress())
+				.append("targetProtocolAddress",
+						getTargetProtocolAddress()).toString();
 	}
 
 	/**

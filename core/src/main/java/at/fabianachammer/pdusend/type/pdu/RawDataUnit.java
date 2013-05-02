@@ -79,6 +79,11 @@ public class RawDataUnit extends ProtocolDataUnit {
 		return new HashCodeBuilder(initial, multiplier).append(
 				getData()).hashCode();
 	}
+	
+	@Override
+	public final String toString() {
+		return data.toString();
+	}
 
 	/**
 	 * @return the data
