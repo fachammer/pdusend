@@ -1,6 +1,13 @@
 package at.fabianachammer.pdusend.dsl;
 
+import java.security.CodeSource
+import org.aspectj.org.eclipse.jdt.core.dom.CompilationUnit
+import org.codehaus.groovy.ast.ClassNode;
+import org.codehaus.groovy.classgen.GeneratorContext;
+import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilerConfiguration
+import org.codehaus.groovy.control.SourceUnit;
+import org.codehaus.groovy.control.CompilationUnit.PrimaryClassNodeOperation
 import org.codehaus.groovy.control.customizers.ImportCustomizer
 
 /**
@@ -10,9 +17,9 @@ import org.codehaus.groovy.control.customizers.ImportCustomizer
  */
 class Interpreter{
 
-	def vocabulary
-	def shell
-	def observers
+	Vocabulary vocabulary
+	GroovyShell shell
+	List<InterpreterObserver> observers
 
 	/**
 	 * creates a new interpreter for interpreting pdusend dsl scripts.
