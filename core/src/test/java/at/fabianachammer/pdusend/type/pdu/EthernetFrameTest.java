@@ -50,8 +50,8 @@ public class EthernetFrameTest {
 						0x08, 0x06, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 						0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 						0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-						0, (byte) 0xaa, (byte) 0x5e, (byte) 0x46,
-						(byte) 0xe0 };
+						0, (byte) 0xe0, (byte) 0x46, (byte) 0x5e,
+						(byte) 0xaa };
 
 		assertArrayEquals(expected, actual);
 	}
@@ -80,8 +80,26 @@ public class EthernetFrameTest {
 						0x06, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 						0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 						0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-						0, 0, 0, (byte) 0xec, (byte) 0x3e,
-						(byte) 0xee, (byte) 0x91 };
+						0, 0, 0, (byte) 0x91, (byte) 0xee,
+						(byte) 0x3e, (byte) 0xec };
+
+		assertArrayEquals(expected, actual);
+	}
+
+	@Test
+	public final void encodeWithEmbeddedArpPacketSetsEtherTypeOnEthernetFrame() {
+		EthernetFrame ef = new EthernetFrame();
+		ef.setEmbeddedData(new ArpPacket());
+		ef.setChecksum(new byte[4]);
+		byte[] expected =
+				{
+						0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x08,
+						0x06, 0, 0, 0, 0, 6, 4, 0, 0, 0, 0, 0, 0, 0,
+						0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+						0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+						0, 0, 0, 0, 0, 0, 0 };
+
+		byte[] actual = ef.encode();
 
 		assertArrayEquals(expected, actual);
 	}
@@ -98,13 +116,6 @@ public class EthernetFrameTest {
 		EthernetFrame ef = new EthernetFrame();
 
 		ef.setSourceMacAddress(null);
-	}
-
-	@Test(expected = NullPointerException.class)
-	public final void testSetNullEtherTypeOnEthernetFrameThrowsNullPointerException() {
-		EthernetFrame ef = new EthernetFrame();
-
-		ef.setEtherType(null);
 	}
 
 	@Test
@@ -147,16 +158,16 @@ public class EthernetFrameTest {
 	}
 
 	@Test
-	public final void sizeWithDefaultArgumentsReturns18() {
-		assertEquals(18, new EthernetFrame().size());
+	public final void sizeWithDefaultArgumentsReturns64() {
+		assertEquals(64, new EthernetFrame().size());
 	}
 
 	@Test
-	public final void sizeWithDefaultArgumentsAndVlanTagReturns22() {
+	public final void sizeWithDefaultArgumentsAndVlanTagReturns64() {
 		EthernetFrame ef = new EthernetFrame();
 		ef.setVlanTag(new VlanTag());
 
-		assertEquals(22, ef.size());
+		assertEquals(64, ef.size());
 	}
 
 	@Test

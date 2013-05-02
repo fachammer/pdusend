@@ -27,7 +27,7 @@ import at.fabianachammer.pdusend.util.ByteArrayBuilder;
  * 
  */
 @Guarded
-public class ArpPacket extends ProtocolDataUnit {
+public class ArpPacket extends ProtocolDataUnit implements NetworkProtocol {
 
 	/**
 	 * size of an ARP segment.
@@ -126,6 +126,11 @@ public class ArpPacket extends ProtocolDataUnit {
 				+ senderProtocolAddress.size()
 				+ targetHardwareAddress.size()
 				+ targetProtocolAddress.size();
+	}
+	
+	@Override
+	public final EtherType getEtherType() {
+		return EtherType.ARP;
 	}
 	
 	@Override

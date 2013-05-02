@@ -4,13 +4,13 @@ import java.util.zip.CRC32;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import net.sf.oval.constraint.AssertFieldConstraints;
 import net.sf.oval.constraint.NotNull;
 import net.sf.oval.constraint.Size;
 import net.sf.oval.guard.Guarded;
 import at.fabianachammer.pdusend.type.DataUnit;
 import at.fabianachammer.pdusend.type.EtherType;
+import at.fabianachammer.pdusend.type.HardwareAddressType;
 import at.fabianachammer.pdusend.type.MacAddress;
 import at.fabianachammer.pdusend.type.decoder.DataUnitDecoder;
 import at.fabianachammer.pdusend.type.pdu.decoder.EthernetFrameDecoder;
@@ -24,7 +24,8 @@ import at.fabianachammer.pdusend.util.ByteArrayBuilder;
  * 
  */
 @Guarded
-public class EthernetFrame extends EmbeddingProtocolDataUnit {
+public class EthernetFrame extends EmbeddingProtocolDataUnit
+		implements DataLinkProtocol {
 
 	/**
 	 * hardware address type of the Ethernet protocol.
@@ -81,8 +82,7 @@ public class EthernetFrame extends EmbeddingProtocolDataUnit {
 	 * EtherType. Describes the protocol for which this Ethernet frame is the
 	 * carrier.
 	 */
-	@NotNull
-	private EtherType etherType = DEFAULT_ETHER_TYPE;
+	private EtherType etherType = null;
 
 	/**
 	 * Describes the protocol data unit that encapsulates the data which the
@@ -124,6 +124,15 @@ public class EthernetFrame extends EmbeddingProtocolDataUnit {
 			bab.append(vlanTag.encode());
 		}
 
+		if (data != null
+				&& data instanceof NetworkProtocol) {
+			etherType = ((NetworkProtocol) data).getEtherType();
+		} else if (etherType == null) {
+			etherType = EtherType.UNKNOWN;
+		}
+
+		// TODO: ether type from embedded data unit
+
 		bab.append(etherType.encode());
 
 		if (data != null) {
@@ -147,22 +156,7 @@ public class EthernetFrame extends EmbeddingProtocolDataUnit {
 
 	@Override
 	public final int size() {
-		int vlanTagSize = 0, dataSize = 0, paddingSize = 0;
-		if (vlanTag != null) {
-			vlanTagSize = vlanTag.size();
-		}
-
-		if (data != null) {
-			dataSize = data.size();
-		}
-
-		if (padding != null) {
-			paddingSize = padding.length;
-		}
-
-		return destinationMacAddress.size()
-				+ sourceMacAddress.size() + etherType.size()
-				+ vlanTagSize + dataSize + paddingSize + CRC_SIZE;
+		return encode().length;
 	}
 
 	@Override
@@ -173,6 +167,11 @@ public class EthernetFrame extends EmbeddingProtocolDataUnit {
 	@Override
 	public final void setEmbeddedData(final DataUnit dataUnit) {
 		this.data = dataUnit;
+	}
+
+	@Override
+	public final HardwareAddressType getHardwareAddressType() {
+		return HardwareAddressType.ETHERNET;
 	}
 
 	@Override
@@ -308,8 +307,14 @@ public class EthernetFrame extends EmbeddingProtocolDataUnit {
 		CRC32 crc = new CRC32();
 		crc.update(data);
 		byte[] checksum = BitOperator.split((int) crc.getValue());
+		byte[] reversedChecksum = new byte[checksum.length];
 
-		return checksum;
+		for (int i = 0; i < checksum.length; i++) {
+			reversedChecksum[i] = checksum[checksum.length
+					- 1 - i];
+		}
+
+		return reversedChecksum;
 	}
 
 	/**

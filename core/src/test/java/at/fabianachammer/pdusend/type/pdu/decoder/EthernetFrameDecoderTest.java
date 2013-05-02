@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import at.fabianachammer.pdusend.type.EtherType;
 import at.fabianachammer.pdusend.type.pdu.EthernetFrame;
 import at.fabianachammer.pdusend.type.pdu.RawDataUnit;
 import at.fabianachammer.pdusend.type.pdu.VlanTag;
@@ -21,6 +22,7 @@ public class EthernetFrameDecoderTest {
 		expected.setEmbeddedData(new RawDataUnit(new byte[46]));
 		expected.setPadding(new byte[0]);
 		expected.setChecksum(new byte[4]);
+		expected.setEtherType(EtherType.UNKNOWN);
 		byte[] input =
 				{
 						0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -48,6 +50,7 @@ public class EthernetFrameDecoderTest {
 		expected.setEmbeddedData(new RawDataUnit(new byte[42]));
 		expected.setPadding(new byte[0]);
 		expected.setChecksum(new byte[4]);
+		expected.setEtherType(EtherType.UNKNOWN);
 		byte[] input =
 				{
 						0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
