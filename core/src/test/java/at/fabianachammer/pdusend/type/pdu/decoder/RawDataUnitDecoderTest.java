@@ -13,7 +13,7 @@ import at.fabianachammer.pdusend.type.pdu.RawDataUnit;
 public class RawDataUnitDecoderTest {
 
 	@Test
-	public final void testDecodeWithZeroBitsByteArrayOnRawDataUnitDecoderWorks() {
+	public final void decodeWithZeroBitsByteArrayReturnsOneZeroByteRawDataUnit() {
 		RawDataUnitDecoder decoder = new RawDataUnitDecoder();
 		RawDataUnit expected = new RawDataUnit((byte) 0);
 		byte[] input = { 0 };
@@ -24,7 +24,7 @@ public class RawDataUnitDecoderTest {
 	}
 
 	@Test(expected = NullPointerException.class)
-	public final void testDecodeWithNullOnRawDataUnitDecoderThrowsNullPointerException() {
+	public final void decodeWithNullThrowsNullPointerException() {
 		new RawDataUnitDecoder().decode(null);
 	}
 }

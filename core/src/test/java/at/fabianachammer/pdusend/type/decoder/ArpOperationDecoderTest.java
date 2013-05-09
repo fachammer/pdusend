@@ -13,10 +13,10 @@ import at.fabianachammer.pdusend.type.ArpOperation;
 public class ArpOperationDecoderTest {
 
 	@Test
-	public final void testDecodeWithValidOneByteIdOnArpOperationDecoderWorks() {
+	public final void decodeWithZeroOneByteIdReturnsUnknownArpOperation() {
 		ArpOperationDecoder decoder = new ArpOperationDecoder();
-		byte validOneByteId = 1;
-		ArpOperation expected = ArpOperation.REQUEST;
+		byte validOneByteId = 0;
+		ArpOperation expected = ArpOperation.UNKNOWN;
 
 		ArpOperation actual = decoder.decode(validOneByteId);
 
@@ -24,10 +24,10 @@ public class ArpOperationDecoderTest {
 	}
 
 	@Test
-	public final void testDecodeWithValidTwoByteIdOnArpOperationDecoderWorks() {
+	public final void decodeWithZeroTwoByteIdReturnsUnknownArpOperation() {
 		ArpOperationDecoder decoder = new ArpOperationDecoder();
-		byte[] validTwoByteId = { 0, (byte) 1 };
-		ArpOperation expected = ArpOperation.REQUEST;
+		byte[] validTwoByteId = { 0, 0 };
+		ArpOperation expected = ArpOperation.UNKNOWN;
 
 		ArpOperation actual = decoder.decode(validTwoByteId);
 

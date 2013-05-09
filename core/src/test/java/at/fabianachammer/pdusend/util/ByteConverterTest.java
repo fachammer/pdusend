@@ -17,7 +17,7 @@ import at.fabianachammer.pdusend.util.ByteConverter;
 public class ByteConverterTest {
 
 	@Test
-	public final void testToHexStringWithAnyDataWorks() {
+	public final void toHexStringWithAnyDataWorks() {
 		final byte[] anyData =
 				{ (byte) 0x00, (byte) 0x11, (byte) 0x22, (byte) 0x33 };
 		final String expected = "00112233";
@@ -28,7 +28,7 @@ public class ByteConverterTest {
 	}
 
 	@Test
-	public final void testToPrimitiveByteArrayWithAnyDataWorks() {
+	public final void toPrimitiveByteArrayWithAnyDataWorks() {
 		Byte[] anyInput = { (byte) 0, (byte) 0, (byte) 0 };
 		byte[] expected = { (byte) 0, (byte) 0, (byte) 0 };
 
@@ -38,7 +38,7 @@ public class ByteConverterTest {
 	}
 
 	@Test
-	public final void testToPrimitiveByteArrayWithNullInputReturnsNull() {
+	public final void toPrimitiveByteArrayWithNullInputReturnsNull() {
 		Byte[] input = null;
 
 		assertNull(ByteConverter.toByteArray(input));

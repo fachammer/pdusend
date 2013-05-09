@@ -15,7 +15,7 @@ import at.fabianachammer.pdusend.type.pdu.decoder.EthernetFrameDecoder;
 public class EthernetFrameTest {
 
 	@Test
-	public final void testEncodeOnEthernetFrameWithVlanTagWorks() {
+	public final void encodeWithVlanTagReturnsProperByteRepresentation() {
 		final EthernetFrame ef = new EthernetFrame();
 		final byte[] destinationMac =
 				{ 0x00, 0x11, 0x22, 0x33, 0x44, 0x55 };
@@ -57,7 +57,7 @@ public class EthernetFrameTest {
 	}
 
 	@Test
-	public final void testEncodeOnEthernetFrameWithoutVlanTagWorks() {
+	public final void encodeWithoutVlanTagReturnsProperByteRepresentation() {
 		final EthernetFrame ef = new EthernetFrame();
 		final byte[] destinationMac =
 				{ 0x00, 0x11, 0x22, 0x33, 0x44, 0x55 };
@@ -101,30 +101,30 @@ public class EthernetFrameTest {
 
 		byte[] actual = ef.encode();
 
-		assertArrayEquals(expected, actual);
+		assertEquals(EtherType.ARP, ef.getEtherType());
 	}
 
 	@Test(expected = NullPointerException.class)
-	public final void testSetNullDestinationMacAddressOnEthernetFrameThrowsNullPointerException() {
+	public final void setNullDestinationMacAddressThrowsNullPointerException() {
 		EthernetFrame ef = new EthernetFrame();
 
 		ef.setDestinationMacAddress(null);
 	}
 
 	@Test(expected = NullPointerException.class)
-	public final void testSetNullSourceMacAddressOnEthernetFrameThrowsNullPointerException() {
+	public final void setNullSourceMacAddressThrowsNullPointerException() {
 		EthernetFrame ef = new EthernetFrame();
 
 		ef.setSourceMacAddress(null);
 	}
 
 	@Test
-	public final void testEqualsWithEqualEthernetFramesOnEthernetFrameReturnsTrue() {
+	public final void equalsWithEqualDefaultEthernetFramesReturnsTrue() {
 		assertTrue(new EthernetFrame().equals(new EthernetFrame()));
 	}
 
 	@Test
-	public final void testEqualsWithDifferentEthernetFramesOnEthernetFrameReturnsFalse() {
+	public final void equalsWithDifferentEthernetFramesReturnsFalse() {
 		EthernetFrame ethernetFrame = new EthernetFrame();
 		EthernetFrame differentEthernetFrame = new EthernetFrame();
 		differentEthernetFrame.setEmbeddedData(new RawDataUnit());
@@ -133,23 +133,23 @@ public class EthernetFrameTest {
 	}
 
 	@Test
-	public final void testEqualsWithNullOnEthernetFrameReturnsFalse() {
+	public final void equalsWithNullReturnsFalse() {
 		assertFalse(new EthernetFrame().equals(null));
 	}
 
 	@Test
-	public final void testEqualsWithDifferentTypesOnEthernetFrameReturnsFalse() {
+	public final void equalsWithDifferentTypesReturnsFalse() {
 		assertFalse(new EthernetFrame().equals(new Object()));
 	}
 
 	@Test
-	public final void testHashCodeWithEqualEthernetFramesOnEthernetFrameReturnsEqualHashCodes() {
+	public final void hashCodeWithEqualDefaultEthernetFramesReturnsEqualHashCodes() {
 		assertEquals(new EthernetFrame().hashCode(),
 				new EthernetFrame().hashCode());
 	}
 
 	@Test
-	public final void testHashCodeWithDifferentEthernetFramesOnEthernetFrameReturnsDifferentHashCodes() {
+	public final void hashCodeWithDifferentEthernetFramesReturnsDifferentHashCodes() {
 		EthernetFrame ethernetFrame = new EthernetFrame();
 		EthernetFrame differentEthernetFrame = new EthernetFrame();
 		differentEthernetFrame.setEmbeddedData(new RawDataUnit());
@@ -158,7 +158,7 @@ public class EthernetFrameTest {
 	}
 
 	@Test
-	public final void sizeWithDefaultArgumentsReturns64() {
+	public final void sizeOfDefaultEthernetFrameReturns64() {
 		assertEquals(64, new EthernetFrame().size());
 	}
 
@@ -173,14 +173,5 @@ public class EthernetFrameTest {
 	@Test
 	public final void getDecoderReturnsInstanceOfEthernetFrameDecoder() {
 		assertTrue(new EthernetFrame().getDecoder() instanceof EthernetFrameDecoder);
-	}
-
-	@Test
-	public final void getEmbeddedDataCallsGetData() {
-		EthernetFrame ethernetFrame = new EthernetFrame();
-		ethernetFrame.setEmbeddedData(new RawDataUnit());
-
-		assertEquals(ethernetFrame.getEmbeddedData(),
-				ethernetFrame.getEmbeddedData());
 	}
 }

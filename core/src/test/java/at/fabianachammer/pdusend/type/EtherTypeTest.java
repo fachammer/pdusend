@@ -13,12 +13,8 @@ import at.fabianachammer.pdusend.type.decoder.EtherTypeDecoder;
  */
 public class EtherTypeTest {
 
-	/**
-	 * Test method for
-	 * {@link at.fabianachammer.pdusend.type.EtherType#getDecoder()}.
-	 */
 	@Test
-	public final void testGetDecoderOnEtherTypeReturnsInstanceOfEtherTypeDecoder() {
+	public final void getDecoderReturnsInstanceOfEtherTypeDecoder() {
 		EtherType anyEtherType = EtherType.UNKNOWN;
 
 		DataUnitDecoder<EtherType> decoder =
@@ -27,12 +23,8 @@ public class EtherTypeTest {
 		assertTrue(decoder instanceof EtherTypeDecoder);
 	}
 
-	/**
-	 * Test method for {@link at.fabianachammer.pdusend.type.EtherType#encode()}
-	 * .
-	 */
 	@Test
-	public final void testEncodeOnEtherTypeWorks() {
+	public final void encodeWithUnknownEtherTypeReturnsAllZeroByteArray() {
 		EtherType anyEtherType = EtherType.UNKNOWN;
 		byte[] expected = { 0, 0 };
 
@@ -42,7 +34,7 @@ public class EtherTypeTest {
 	}
 
 	@Test
-	public final void testEqualsWithEtherTypesWithEqualIdsOnEtherTypeReturnsTrue() {
+	public final void equalsWithEtherTypesWithEqualIdsReturnsTrue() {
 		EtherType etherType = new EtherType((short) 0);
 		EtherType equalEtherType = new EtherType((short) 0);
 
@@ -50,7 +42,7 @@ public class EtherTypeTest {
 	}
 
 	@Test
-	public final void testEqualsWithEtherTypesWithDifferentIdsOnEtherTypeReturnsFalse() {
+	public final void equalsWithEtherTypesWithDifferentIdsReturnsFalse() {
 		EtherType etherType = new EtherType((short) 0);
 		EtherType differentEtherType = new EtherType((short) 1);
 
@@ -58,24 +50,29 @@ public class EtherTypeTest {
 	}
 
 	@Test
-	public final void testEqualsWithDifferentTypesOnEtherTypeReturnsFalse() {
+	public final void equalsWithDifferentTypesOnEtherTypeReturnsFalse() {
 		assertFalse(new EtherType((short) 0).equals(new Object()));
 	}
 
 	@Test
-	public final void testEqualsWithNullOnEtherTypeReturnsFalse() {
+	public final void equalsWithNullOnEtherTypeReturnsFalse() {
 		assertFalse(new EtherType((short) 0).equals(null));
 	}
 
 	@Test
-	public final void testHashCodeWithEtherTypesWithEqualIdsOnEtherTypeReturnsEqualHashCodes() {
+	public final void hashCodeWithEtherTypesWithEqualIdsReturnsEqualHashCodes() {
 		assertEquals(new EtherType((short) 0).hashCode(),
 				new EtherType((short) 0).hashCode());
 	}
 
 	@Test
-	public final void testHashCodeWithEtherTypesWithDifferentIdsOnEtherTypeReturnsDifferentHashCodes() {
-		assertNotEquals(new EtherType((short) 0).hashCode(), new EtherType(
-				(short) 1).hashCode());
+	public final void hashCodeWithEtherTypesWithDifferentIdsReturnsDifferentHashCodes() {
+		assertNotEquals(new EtherType((short) 0).hashCode(),
+				new EtherType((short) 1).hashCode());
+	}
+	
+	@Test
+	public final void sizeOfUnknownEtherTypeReturnsTwo(){
+		assertEquals(2, EtherType.UNKNOWN.size());
 	}
 }

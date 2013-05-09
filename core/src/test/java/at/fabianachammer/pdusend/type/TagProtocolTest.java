@@ -14,7 +14,7 @@ import at.fabianachammer.pdusend.type.decoder.TagProtocolDecoder;
 public class TagProtocolTest {
 
 	@Test
-	public final void testGetDecoderOnTagProtocolReturnsInstanceOfTagProtocolDecoder() {
+	public final void getDecoderReturnsInstanceOfTagProtocolDecoder() {
 		TagProtocol anyTagProtocol = TagProtocol.IEEE_802_1Q;
 
 		DataUnitDecoder<TagProtocol> decoder =
@@ -24,9 +24,9 @@ public class TagProtocolTest {
 	}
 
 	@Test
-	public final void testEncodeOnTagProtocolWorks() {
-		TagProtocol anyTagProtocol = TagProtocol.IEEE_802_1Q;
-		byte[] expected = { (byte) 0x81, 0x00 };
+	public final void encodeWithUnknownTagProtocolReturnsAllZeroByteArray() {
+		TagProtocol anyTagProtocol = TagProtocol.UNKNOWN;
+		byte[] expected = { 0, 0 };
 
 		byte[] actual = anyTagProtocol.encode();
 
@@ -34,7 +34,7 @@ public class TagProtocolTest {
 	}
 
 	@Test
-	public final void testEqualsWithEqualIdTagProtocolsOnTagProtocolReturnsTrue() {
+	public final void equalsWithEqualIdTagProtocolsReturnsTrue() {
 		TagProtocol tp = new TagProtocol((short) 0);
 		TagProtocol equalTp = new TagProtocol((short) 0);
 
@@ -42,7 +42,7 @@ public class TagProtocolTest {
 	}
 
 	@Test
-	public final void testEqualsWithDiffertenIdTagProtocolsOnTagProtocolReturnsFalse() {
+	public final void equalsWithDiffertenIdTagProtocolsReturnsFalse() {
 		TagProtocol tp = new TagProtocol((short) 0);
 		TagProtocol differentTp = new TagProtocol((short) 1);
 
@@ -50,23 +50,23 @@ public class TagProtocolTest {
 	}
 
 	@Test
-	public final void testEqualsWithDifferentTypesOnTagProtocolReturnsFalse() {
+	public final void equalsWithDifferentTypesReturnsFalse() {
 		assertFalse(new TagProtocol((short) 0).equals(new Object()));
 	}
 
 	@Test
-	public final void testEqualsWithNullOnTagProtocolReturnsFalse() {
+	public final void equalsWithNullReturnsFalse() {
 		assertFalse(new TagProtocol((short) 0).equals(null));
 	}
 
 	@Test
-	public final void testHashCodeWithEqualIdTagProtocolsReturnsEqualHashCodes() {
+	public final void hashCodeWithEqualIdTagProtocolsReturnsEqualHashCodes() {
 		assertEquals(new TagProtocol((short) 0).hashCode(),
 				new TagProtocol((short) 0).hashCode());
 	}
 
 	@Test
-	public final void testHashCodeWithDifferentIdTagProtocolsReturnsDifferentHashCodes() {
+	public final void hashCodeWithDifferentIdTagProtocolsReturnsDifferentHashCodes() {
 		assertNotEquals(new TagProtocol((short) 0).hashCode(),
 				new TagProtocol((short) 1).hashCode());
 	}

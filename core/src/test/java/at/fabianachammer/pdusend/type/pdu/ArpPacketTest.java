@@ -22,7 +22,7 @@ import at.fabianachammer.pdusend.type.pdu.decoder.ArpPacketDecoder;
 public class ArpPacketTest {
 
 	@Test
-	public final void testEncodeWithUnknownAsProtocolTypeOnArpSegmentWithRequestWorks() {
+	public final void encodeWithUnknownProtocolTypeOnRequestArpPacketReturnsProperByteRepresentation() {
 		ArpPacket arpPacket = new ArpPacket();
 		arpPacket.setHardwareType(HardwareAddressType.ETHERNET);
 		arpPacket.setProtocolType(EtherType.UNKNOWN);
@@ -45,7 +45,7 @@ public class ArpPacketTest {
 	}
 
 	@Test
-	public final void testEncodeWithUnknownAsProtocolTypeOnArpSegmentWithReplyWorks() {
+	public final void encodeWithUnknownProtocolTypeOnReplyArpPacketReturnsProperByteRepresentation() {
 		ArpPacket arpPacket = new ArpPacket();
 		arpPacket.setHardwareType(HardwareAddressType.ETHERNET);
 		arpPacket.setProtocolType(EtherType.UNKNOWN);
@@ -68,61 +68,61 @@ public class ArpPacketTest {
 	}
 	
 	@Test(expected = NullPointerException.class)
-	public final void testSetNullHardwareTypeOnArpSegmentThrowsNullPointerException() {
+	public final void setNullHardwareTypeThrowsNullPointerException() {
 		ArpPacket arpPacket = new ArpPacket();
 
 		arpPacket.setHardwareType(null);
 	}
 
 	@Test(expected = NullPointerException.class)
-	public final void testSetNullProtocolTypeOnArpSegmentThrowsNullPointerException() {
+	public final void setNullProtocolTypeThrowsNullPointerException() {
 		ArpPacket arpPacket = new ArpPacket();
 
 		arpPacket.setProtocolType(null);
 	}
 
 	@Test(expected = NullPointerException.class)
-	public final void testSetNullOperationOnArpSegmentThrowsNullPointerException() {
+	public final void setNullOperationThrowsNullPointerException() {
 		ArpPacket arpPacket = new ArpPacket();
 
 		arpPacket.setOperation(null);
 	}
 
 	@Test(expected = NullPointerException.class)
-	public final void testSetNullSenderHardwareAddressOnArpSegmentThrowsNullPointerException() {
+	public final void setNullSenderHardwareAddressThrowsNullPointerException() {
 		ArpPacket arpPacket = new ArpPacket();
 
 		arpPacket.setSenderHardwareAddress(null);
 	}
 
 	@Test(expected = NullPointerException.class)
-	public final void testSetNullSenderProtocolAddressOnArpSegmentThrowsNullPointerException() {
+	public final void setNullSenderProtocolAddressThrowsNullPointerException() {
 		ArpPacket arpPacket = new ArpPacket();
 
 		arpPacket.setSenderProtocolAddress(null);
 	}
 
 	@Test(expected = NullPointerException.class)
-	public final void testSetNullTargetHardwareAddressOnArpSegmentThrowsNullPointerException() {
+	public final void setNullTargetHardwareAddressThrowsNullPointerException() {
 		ArpPacket arpPacket = new ArpPacket();
 
 		arpPacket.setTargetHardwareAddress(null);
 	}
 
 	@Test(expected = NullPointerException.class)
-	public final void testSetNullTargetProtocolAddressOnArpSegmentThrowsNullPointerException() {
+	public final void setNullTargetProtocolAddressThrowsNullPointerException() {
 		ArpPacket arpPacket = new ArpPacket();
 
 		arpPacket.setTargetProtocolAddress(null);
 	}
 
 	@Test
-	public final void testEqualsWithEqualArpSegmentsOnArpSegmentReturnsTrue() {
+	public final void equalsWithEqualDefaultArpPacketsReturnsTrue() {
 		assertTrue(new ArpPacket().equals(new ArpPacket()));
 	}
 
 	@Test
-	public final void testEqualsWithDifferentArpSegmentsOnArpSegmentReturnsFalse() {
+	public final void equalsWithDifferentArpPacketsReturnsFalse() {
 		ArpPacket arpPacket = new ArpPacket();
 		ArpPacket differentArpPacket = new ArpPacket();
 		differentArpPacket.setProtocolType(EtherType.ARP);
@@ -131,23 +131,23 @@ public class ArpPacketTest {
 	}
 
 	@Test
-	public final void testEqualsWithNullOnArpSegmentReturnsFalse() {
+	public final void equalsWithNullReturnsFalse() {
 		assertFalse(new ArpPacket().equals(null));
 	}
 
 	@Test
-	public final void testEqualsWithDifferentTypesOnArpSegmentReturnsFalse() {
+	public final void equalsWithDifferentTypesReturnsFalse() {
 		assertFalse(new ArpPacket().equals(new Object()));
 	}
 
 	@Test
-	public final void testHashCodeWithEqualArpSegmentsOnArpSegmentReturnsEqualHashCodes() {
+	public final void hashCodeWithEqualDefaultArpPacketsReturnsEqualHashCodes() {
 		assertEquals(new ArpPacket().hashCode(),
 				new ArpPacket().hashCode());
 	}
 
 	@Test
-	public final void testHashCodeWithDifferentArpSegmentsOnArpSegmentReturnsDifferentHashCodes() {
+	public final void hashCodeWithDifferentArpPacketsReturnsDifferentHashCodes() {
 		ArpPacket arpPacket = new ArpPacket();
 		ArpPacket differentArpPacket = new ArpPacket();
 		differentArpPacket.setProtocolType(EtherType.ARP);

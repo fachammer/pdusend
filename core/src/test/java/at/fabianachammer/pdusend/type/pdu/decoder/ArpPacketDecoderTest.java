@@ -12,13 +12,13 @@ import at.fabianachammer.pdusend.type.pdu.ArpPacket;
 public class ArpPacketDecoderTest {
 
 	@Test
-	public final void testDecodeWithDefaultValuesOfArpSegmentOnArpSegmentDecoderReturnsDefaultArpSegment() {
+	public final void decodeWithDefaultValuesOfArpPacketReturnsDefaultArpPacket() {
 		ArpPacketDecoder decoder = new ArpPacketDecoder();
-		ArpPacket expected = new ArpPacket();
 		byte[] input =
-				{
-						0, 0, 0, 0, 6, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-						0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+			{
+					0, 0, 0, 0, 6, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		ArpPacket expected = new ArpPacket();
 
 		ArpPacket actual = decoder.decode(input);
 
@@ -26,12 +26,12 @@ public class ArpPacketDecoderTest {
 	}
 
 	@Test(expected = NullPointerException.class)
-	public final void testDecodeWithNullOnArpSegmentDecoderThrowsNullPointerException() {
+	public final void decodeWithNullThrowsNullPointerException() {
 		new ArpPacketDecoder().decode(null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public final void testDecodeWithLowerThanMinimumSizeInputThrowsIllegalArgumentException() {
+	public final void decodeWithLowerThanMinimumSizeInputThrowsIllegalArgumentException() {
 		new ArpPacketDecoder().decode(new byte[27]);
 	}
 }

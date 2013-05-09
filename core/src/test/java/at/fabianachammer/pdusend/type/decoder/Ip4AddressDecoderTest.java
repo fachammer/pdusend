@@ -16,7 +16,8 @@ import at.fabianachammer.pdusend.type.Ip4Address;
  */
 public class Ip4AddressDecoderTest {
 
-	public final void testDecodeWithZeroLengthByteArrayInputOnIp4AddressDecoderWorks() {
+	@Test
+	public final void decodeWithZeroLengthByteArrayInputReturnsDefaultIp4Address() {
 		Ip4AddressDecoder decoder = new Ip4AddressDecoder();
 		Ip4Address expected = new Ip4Address();
 		byte[] input = new byte[0];
@@ -27,10 +28,10 @@ public class Ip4AddressDecoderTest {
 	}
 
 	@Test
-	public final void testDecodeWithOneByteInputOnIp4AddressDecoderWorks() {
+	public final void decodeWithZeroOneByteInputReturnsZeroIp4Address() {
 		Ip4AddressDecoder decoder = new Ip4AddressDecoder();
-		Ip4Address expected = new Ip4Address(1);
-		byte input = 1;
+		Ip4Address expected = new Ip4Address(0);
+		byte input = 0;
 
 		Ip4Address actual = decoder.decode(input);
 
@@ -38,10 +39,10 @@ public class Ip4AddressDecoderTest {
 	}
 
 	@Test
-	public final void testDecodeWithTwoByteInputOnIp4AddressDecoderWorks() {
+	public final void decodeWithZeroTwoByteInputReturnsZeroIp4Address() {
 		Ip4AddressDecoder decoder = new Ip4AddressDecoder();
-		Ip4Address expected = new Ip4Address(1);
-		byte[] input = { 0, 1 };
+		Ip4Address expected = new Ip4Address(0);
+		byte[] input = { 0, 0 };
 
 		Ip4Address actual = decoder.decode(input);
 
@@ -49,10 +50,10 @@ public class Ip4AddressDecoderTest {
 	}
 
 	@Test
-	public final void testDecodeWithThreeByteInputOnIp4AddressDecoderWorks() {
+	public final void testDecodeWithZeroThreeByteInputReturnsZeroIp4Address() {
 		Ip4AddressDecoder decoder = new Ip4AddressDecoder();
-		Ip4Address expected = new Ip4Address(1);
-		byte[] input = { 0, 0, 1 };
+		Ip4Address expected = new Ip4Address(0);
+		byte[] input = { 0, 0, 0 };
 
 		Ip4Address actual = decoder.decode(input);
 
@@ -60,10 +61,10 @@ public class Ip4AddressDecoderTest {
 	}
 
 	@Test
-	public final void testDecodeWithFourByteInputOnIp4AddressDecoderWorks() {
+	public final void decodeWithZeroFourByteInputReturnsZeroIp4Address() {
 		Ip4AddressDecoder decoder = new Ip4AddressDecoder();
-		Ip4Address expected = new Ip4Address(1);
-		byte[] input = { 0, 0, 0, 1 };
+		Ip4Address expected = new Ip4Address(0);
+		byte[] input = { 0, 0, 0, 0 };
 
 		Ip4Address actual = decoder.decode(input);
 
@@ -71,7 +72,7 @@ public class Ip4AddressDecoderTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public final void testDecodeWithBiggerThanIp4AddressSizeByteArrayOnIp4AddressThrowsIllegalArgumentException() {
+	public final void decodeWithBiggerThanIp4AddressSizeByteArrayThrowsIllegalArgumentException() {
 		Ip4AddressDecoder decoder = new Ip4AddressDecoder();
 		byte[] biggerThanIp4AddressSizeByteArray = new byte[5];
 
@@ -79,7 +80,7 @@ public class Ip4AddressDecoderTest {
 	}
 
 	@Test(expected = NullPointerException.class)
-	public final void testDecodeWithNullOnIp4AddressDecoderThrowsNullPointerException() {
+	public final void decodeWithNullThrowsNullPointerException() {
 		new Ip4AddressDecoder().decode(null);
 	}
 }

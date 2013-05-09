@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import at.fabianachammer.pdusend.type.TagProtocol;
 import at.fabianachammer.pdusend.type.pdu.VlanTag;
 
 /**
@@ -13,10 +14,11 @@ import at.fabianachammer.pdusend.type.pdu.VlanTag;
 public class VlanTagDecoderTest {
 
 	@Test
-	public final void testDecodeWithZeroBitsInputOnVlanTagDecoderWorks() {
+	public final void decodeWithZeroBitsInputReturnsVlanTagWithUnknownTagProtocol() {
 		VlanTagDecoder decoder = new VlanTagDecoder();
 		VlanTag expected = new VlanTag();
-		byte[] input = { (byte) 0x81, 0, 0, 0 };
+		expected.setTagProtocol(TagProtocol.UNKNOWN);
+		byte[] input = { 0, 0, 0, 0 };
 
 		VlanTag actual = decoder.decode(input);
 
@@ -24,7 +26,7 @@ public class VlanTagDecoderTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public final void testDecodeWithIllegalSizeInputOnVlanTagDecoderThrowsIllegalArgumentException() {
+	public final void decodeWithIllegalSizeInputThrowsIllegalArgumentException() {
 		VlanTagDecoder decoder = new VlanTagDecoder();
 		byte[] illegalSizeInput = new byte[5];
 
@@ -32,7 +34,7 @@ public class VlanTagDecoderTest {
 	}
 
 	@Test(expected = NullPointerException.class)
-	public final void testDecodeWithNullInputOnVlanTagDecoderThrowsNullPointerException() {
+	public final void decodeWithNullThrowsNullPointerException() {
 		new VlanTagDecoder().decode(null);
 	}
 

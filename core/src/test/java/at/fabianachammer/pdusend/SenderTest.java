@@ -20,7 +20,7 @@ public class SenderTest {
 	private NetworkInterface loopback;
 
 	@Before
-	public final void setUp() {
+	public void setUp() {
 		try {
 			loopback = NetworkInterface.getByName("lo");
 		} catch (SocketException e) {

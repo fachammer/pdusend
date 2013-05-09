@@ -14,11 +14,8 @@ import at.fabianachammer.pdusend.type.pdu.decoder.VlanTagDecoder;
  */
 public class VlanTagTest {
 
-	/**
-	 * Test method for {@link at.fabianachammer.pdusend.type.pdu.VlanTag#()}.
-	 */
 	@Test
-	public final void testEncodeOnVlanTagWorks() {
+	public final void encodeWithOnePriorityCodePointAndOneVlanIdentifierReturnsProperByteRepresentation() {
 		final VlanTag tag = new VlanTag();
 		tag.setPriorityCodePoint((byte) 1);
 		tag.setVlanIdentifier((short) 1);
@@ -30,12 +27,8 @@ public class VlanTagTest {
 		assertArrayEquals(expected, actual);
 	}
 
-	/**
-	 * Test method for {@link at.fabianachammer.pdusend.type.pdu.VlanTag#()}
-	 * when the canonical format indicator is set to false.
-	 */
 	@Test
-	public final void testWithFalseCanonicalFormatWorks() {
+	public final void encodeWithFalseCanonicalFormatAndMaximumPriorityCodePointAnd4000VlanIdentifierReturnsProperByteRepresentation() {
 		final VlanTag tag = new VlanTag();
 		tag.setTagProtocol(TagProtocol.IEEE_802_1Q);
 		tag.setPriorityCodePoint((byte) 7);
@@ -50,7 +43,7 @@ public class VlanTagTest {
 	}
 
 	@Test
-	public final void testSetValidPriorityCodePointOnVlanTagWorks() {
+	public final void setValidPriorityCodePointPasses() {
 		final byte validPriorityCodePoint = 0;
 		VlanTag tag = new VlanTag();
 
@@ -60,7 +53,7 @@ public class VlanTagTest {
 	}
 
 	@Test
-	public final void testSetValidVlanIdentifierOnVlanTagWorks() {
+	public final void setValidVlanIdentifierPasses() {
 		final short validVlanIdentifier = 0;
 		VlanTag tag = new VlanTag();
 
@@ -70,7 +63,7 @@ public class VlanTagTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public final void testSetIllegalPriorityCodePointOnVlanTagThrowsIllegalArgumentException() {
+	public final void setIllegalPriorityCodePointThrowsIllegalArgumentException() {
 		final byte illegalPriorityCodePoint = 8;
 		final VlanTag tag = new VlanTag();
 
@@ -78,7 +71,7 @@ public class VlanTagTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public final void testSetIllegalVlanIdentifierThrowsIllegalArgumentException() {
+	public final void setIllegalVlanIdentifierThrowsIllegalArgumentException() {
 		final short illegalVlanIdentifier = 4097;
 		final VlanTag tag = new VlanTag();
 
@@ -86,7 +79,7 @@ public class VlanTagTest {
 	}
 
 	@Test
-	public final void testEqualsWithEqualVlanTagsOnVlanTagReturnsTrue() {
+	public final void equalsWithEqualDefaultVlanTagsReturnsTrue() {
 		VlanTag vlanTag = new VlanTag();
 		VlanTag sameVlanTag = new VlanTag();
 
@@ -94,7 +87,7 @@ public class VlanTagTest {
 	}
 
 	@Test
-	public final void testEqualsWithDifferentVlanTagsOnVlanTagReturnsFalse() {
+	public final void equalsWithDifferentVlanTagsReturnsFalse() {
 		VlanTag vlanTag = new VlanTag();
 		VlanTag differentVlanTag = new VlanTag();
 		differentVlanTag.setPriorityCodePoint((byte) 1);
@@ -103,23 +96,23 @@ public class VlanTagTest {
 	}
 
 	@Test
-	public final void testEqualsWithDifferentTypesOnVlanTagReturnsFalse() {
+	public final void equalsWithDifferentTypesReturnsFalse() {
 		assertFalse(new VlanTag().equals(new Object()));
 	}
 
 	@Test
-	public final void testEqualsWithNullOnVlanTagReturnsFalse() {
+	public final void equalsWithNullReturnsFalse() {
 		assertFalse(new VlanTag().equals(null));
 	}
 
 	@Test
-	public final void testHashCodeWithEqualVlanTagsReturnsEqualHashCodes() {
+	public final void hashCodeWithEqualDefaultVlanTagsReturnsEqualHashCodes() {
 		assertEquals(new VlanTag().hashCode(),
 				new VlanTag().hashCode());
 	}
 
 	@Test
-	public final void testHashCodeWithDifferentVlanTagsReturnsDifferentHashCodes() {
+	public final void hashCodeWithDifferentVlanTagsReturnsDifferentHashCodes() {
 		VlanTag vlanTag = new VlanTag();
 		VlanTag differentVlanTag = new VlanTag();
 		differentVlanTag.setPriorityCodePoint((byte) 1);
@@ -128,14 +121,14 @@ public class VlanTagTest {
 	}
 
 	@Test
-	public final void testGetDecoderReturnsInstanceOfVlanTagDecoder() {
+	public final void getDecoderReturnsInstanceOfVlanTagDecoder() {
 		VlanTag vlanTag = new VlanTag();
 
 		assertTrue(vlanTag.getDecoder() instanceof VlanTagDecoder);
 	}
 
 	@Test
-	public final void testSizeReturnsFour() {
+	public final void sizeReturnsFour() {
 		assertEquals(4, new VlanTag().size());
 	}
 }

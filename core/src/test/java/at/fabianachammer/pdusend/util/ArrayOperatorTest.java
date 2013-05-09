@@ -11,7 +11,7 @@ import org.junit.Test;
 public class ArrayOperatorTest {
 
 	@Test
-	public final void testArrayEqualsWithDifferentArrayElementsOnArrayOperatorReturnsFalse() {
+	public final void arrayEqualsWithDifferentArrayElementsReturnsFalse() {
 		Byte[] comparableArray = { 0, 1 };
 		Byte[] differentArray = { 0, 2 };
 
@@ -20,7 +20,7 @@ public class ArrayOperatorTest {
 	}
 
 	@Test
-	public final void testArrayEqualsWithEqualArrayElementsOnArrayOperatorReturnsTrue() {
+	public final void arrayEqualsWithEqualArrayElementsReturnsTrue() {
 		Byte[] comparableArray = { 0, 1 };
 		Byte[] sameArray = { 0, 1 };
 
@@ -29,7 +29,7 @@ public class ArrayOperatorTest {
 	}
 
 	@Test
-	public final void testArrayEqualsWithDifferentSizeArraysOnArrayOperatorReturnsFalse() {
+	public final void arrayEqualsWithDifferentSizeArraysReturnsFalse() {
 		Byte[] comparableArray = { 0, 1 };
 		Byte[] differentSizeArray = { 0, 1, 0 };
 
@@ -38,7 +38,7 @@ public class ArrayOperatorTest {
 	}
 
 	@Test
-	public final void testArrayEqualsWithEqualByteArrayElementsOnArrayOperatorReturnsTrue() {
+	public final void arrayEqualsWithEqualByteArrayElementsReturnsTrue() {
 		byte[] comparableArray = { 0, 1 };
 		byte[] sameArray = { 0, 1 };
 
@@ -47,7 +47,7 @@ public class ArrayOperatorTest {
 	}
 
 	@Test
-	public final void testArrayEqualsWithDifferentByteArrayElementsOnArrayOperatorReturnsFalse() {
+	public final void arrayEqualsWithDifferentByteArrayElementsOnArrayOperatorReturnsFalse() {
 		byte[] comparableArray = { 0, 1 };
 		byte[] differentArray = { 0, 2 };
 

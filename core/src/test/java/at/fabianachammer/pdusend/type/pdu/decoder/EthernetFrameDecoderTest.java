@@ -16,7 +16,7 @@ import at.fabianachammer.pdusend.type.pdu.VlanTag;
 public class EthernetFrameDecoderTest {
 
 	@Test
-	public final void testDecodeWithValidByteArrayWithDefaultEthernetFrameValuesContainingNoDataNoVlanTagOnEthernetFrameDecoderWorks() {
+	public final void decodeWithValidByteArrayWithDefaultEthernetFrameValuesWithNoVlanTagReturnsDefaultEthernetFrameAndSetData() {
 		EthernetFrameDecoder decoder = new EthernetFrameDecoder();
 		EthernetFrame expected = new EthernetFrame();
 		expected.setEmbeddedData(new RawDataUnit(new byte[46]));
@@ -42,7 +42,7 @@ public class EthernetFrameDecoderTest {
 	}
 
 	@Test
-	public final void testDecodeWithValidByteArrayWithDefaultEthernetFrameValuesContainingNoDataWithIEEE8021QVlanTagOnEthernetFrameDecoderWorks() {
+	public final void decodeWithValidByteArrayWithDefaultEthernetFrameValuesWithIEEE8021QVlanTagReturnsEthernetFrameWithVlanTagAndSetData() {
 		EthernetFrameDecoder decoder = new EthernetFrameDecoder();
 		EthernetFrame expected = new EthernetFrame();
 		VlanTag expectedVlanTag = new VlanTag();
@@ -70,7 +70,7 @@ public class EthernetFrameDecoderTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public final void testDecodeWithIllegalByteArraySizeOnEthernetFrameDecoderThrowsIllegalArgumentException() {
+	public final void decodeWithIllegalByteArraySizeThrowsIllegalArgumentException() {
 		EthernetFrameDecoder decoder = new EthernetFrameDecoder();
 		byte[] illegalSizeInput = new byte[1523];
 
@@ -78,7 +78,7 @@ public class EthernetFrameDecoderTest {
 	}
 
 	@Test(expected = NullPointerException.class)
-	public final void testDecodeWithNullOnEthernetFrameDecoderThrowsNullPointerException() {
+	public final void decodeWithNullThrowsNullPointerException() {
 		new EthernetFrameDecoder().decode(null);
 	}
 }

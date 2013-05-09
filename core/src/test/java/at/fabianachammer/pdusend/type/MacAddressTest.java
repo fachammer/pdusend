@@ -18,7 +18,7 @@ import at.fabianachammer.pdusend.type.decoder.MacAddressDecoder;
 public class MacAddressTest {
 
 	@Test(expected = IllegalArgumentException.class)
-	public final void testSetIllegalSizeByteArrayOnMacAddressThrowsIllegalArgumentException() {
+	public final void setIllegalSizeByteArrayThrowsIllegalArgumentException() {
 		MacAddress macAddress = new MacAddress();
 		byte[] illegalSizeByteArray = new byte[7];
 
@@ -26,26 +26,28 @@ public class MacAddressTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public final void testConstructMacAddressWithIllegalSizeByteArrayThrowsIllegalArgumentException() {
+	public final void constructMacAddressWithIllegalSizeByteArrayThrowsIllegalArgumentException() {
+		// TODO: decoupling of creation and logic
 		byte[] illegalSizeByteArray = new byte[7];
 
 		new MacAddress(illegalSizeByteArray);
 	}
 
 	@Test(expected = NullPointerException.class)
-	public final void testSetNullByteArrayOnMacAddressThrowsNullPointerException() {
+	public final void setNullByteArrayThrowsNullPointerException() {
 		MacAddress macAddress = new MacAddress();
 
 		macAddress.setValue(null);
 	}
 
 	@Test(expected = NullPointerException.class)
-	public final void testConstructMacAddressWithNullByteArrayThrowsNullPointerException() {
+	public final void constructMacAddressWithNullByteArrayThrowsNullPointerException() {
+		// TODO: decoupling of creation and logic
 		new MacAddress(null);
 	}
 
 	@Test
-	public final void testSetValidByteArrayOnMacAddressWorks() {
+	public final void setValidByteArrayPasses() {
 		MacAddress macAddress = new MacAddress();
 		byte[] validMacByteArray = new byte[6];
 
@@ -53,14 +55,15 @@ public class MacAddressTest {
 	}
 
 	@Test
-	public final void testConstructMacAddressWithValidByteArrayWorks() {
+	public final void constructMacAddressWithValidByteArrayPasses() {
+		// TODO: decoupling of creation and logic
 		byte[] validMacByteArray = new byte[6];
 
 		new MacAddress(validMacByteArray);
 	}
 
 	@Test
-	public final void testGetDecoderOnMacAddressReturnsInstanceOfMacAddressDecoder() {
+	public final void getDecoderReturnsInstanceOfMacAddressDecoder() {
 		MacAddress anyMacAddress = new MacAddress();
 
 		DataUnitDecoder<MacAddress> decoder =
@@ -70,28 +73,28 @@ public class MacAddressTest {
 	}
 
 	@Test
-	public final void testEqualsWithEqualMacAddressesOnMacAddressReturnsTrue() {
+	public final void equalsWithEqualMacAddressesReturnsTrue() {
 		assertTrue(new MacAddress().equals(new MacAddress()));
 	}
 
 	@Test
-	public final void testEqualsWithDifferentMacAddressesOnMacAddressReturnsFalse() {
+	public final void equalsWithDifferentMacAddressesReturnsFalse() {
 		assertFalse(new MacAddress().equals(new MacAddress(
 				new byte[] { 0, 0, 0, 0, 0, 1 })));
 	}
 
 	@Test
-	public final void testEqualsWithDifferentTypesOnMacAddressReturnsFalse() {
+	public final void equalsWithDifferentTypesReturnsFalse() {
 		assertFalse(new MacAddress().equals(new Object()));
 	}
 
 	@Test
-	public final void testEqualsWithNullOnMacAddressReturnsFalse() {
+	public final void equalsWithNullReturnsFalse() {
 		assertFalse(new MacAddress().equals(null));
 	}
 
 	@Test
-	public final void testHashCodeWithEqualMacAddressesOnMacAddressReturnsEqualHashCodes() {
+	public final void hashCodeWithEqualMacAddressesReturnsEqualHashCodes() {
 		assertEquals(
 				new MacAddress(new byte[] { 0, 0, 0, 0, 0, 1 })
 						.hashCode(),
@@ -100,18 +103,23 @@ public class MacAddressTest {
 	}
 
 	@Test
-	public final void testHashCodeWithDifferentMacAddressesOnMacAddressReturnsDifferentHashCodes() {
+	public final void hashCodeWithDifferentMacAddressesReturnsDifferentHashCodes() {
 		assertNotEquals(new MacAddress(
 				new byte[] { 0, 0, 0, 0, 0, 1 }).hashCode(),
 				new MacAddress(new byte[] { 0, 0, 0, 0, 0, 2 })
 						.hashCode());
 	}
-	
+
 	@Test
-	public final void toStringWithZeroValueReturnsHexadecimalColonRepresentation(){
+	public final void toStringWithZeroValueReturnsHexadecimalColonRepresentation() {
 		MacAddress address = new MacAddress();
 		String expected = "00:00:00:00:00:00";
-		
+
 		assertEquals(expected, address.toString());
+	}
+	
+	@Test
+	public final void sizeOfMacAddressReturnsSix(){
+		assertEquals(6, new MacAddress().size());
 	}
 }

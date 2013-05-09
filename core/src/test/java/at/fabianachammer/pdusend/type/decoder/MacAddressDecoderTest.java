@@ -13,10 +13,9 @@ import at.fabianachammer.pdusend.type.MacAddress;
 public class MacAddressDecoderTest {
 
 	@Test
-	public final void testDecodeWithZeroLengthByteArrayOnMacAddressDecoderWorks() {
+	public final void decodeWithZeroLengthByteArrayReturnsDefaultMacAddress() {
 		MacAddressDecoder decoder = new MacAddressDecoder();
-		MacAddress expected =
-				new MacAddress(new byte[] { 0, 0, 0, 0, 0, 0 });
+		MacAddress expected = new MacAddress();
 		byte[] input = new byte[0];
 
 		MacAddress actual = decoder.decode(input);
@@ -25,11 +24,11 @@ public class MacAddressDecoderTest {
 	}
 
 	@Test
-	public final void testDecodeWithOneByteOnMacAddressDecoderWorks() {
+	public final void decodeWithOneZeroByteReturnsZeroMacAddress() {
 		MacAddressDecoder decoder = new MacAddressDecoder();
 		MacAddress expected =
-				new MacAddress(new byte[] { 0, 0, 0, 0, 0, 1 });
-		byte input = 1;
+				new MacAddress(new byte[] { 0, 0, 0, 0, 0, 0 });
+		byte input = 0;
 
 		MacAddress actual = decoder.decode(input);
 
@@ -37,11 +36,11 @@ public class MacAddressDecoderTest {
 	}
 
 	@Test
-	public final void testDecodeWithTwoBytesOnMacAddressDecoderWorks() {
+	public final void decodeWithTwoZeroBytesReturnsZeroMacAddress() {
 		MacAddressDecoder decoder = new MacAddressDecoder();
 		MacAddress expected =
-				new MacAddress(new byte[] { 0, 0, 0, 0, 0, 1 });
-		byte[] input = { 0, 1 };
+				new MacAddress(new byte[] { 0, 0, 0, 0, 0, 0 });
+		byte[] input = { 0, 0 };
 
 		MacAddress actual = decoder.decode(input);
 
@@ -49,11 +48,11 @@ public class MacAddressDecoderTest {
 	}
 
 	@Test
-	public final void testDecodeWithThreeBytesOnMacAddressDecoderWorks() {
+	public final void decodeWithThreeZeroBytesReturnsZeroMacAddress() {
 		MacAddressDecoder decoder = new MacAddressDecoder();
 		MacAddress expected =
-				new MacAddress(new byte[] { 0, 0, 0, 0, 0, 1 });
-		byte[] input = { 0, 0, 1 };
+				new MacAddress(new byte[] { 0, 0, 0, 0, 0, 0 });
+		byte[] input = { 0, 0, 0 };
 
 		MacAddress actual = decoder.decode(input);
 
@@ -61,11 +60,11 @@ public class MacAddressDecoderTest {
 	}
 
 	@Test
-	public final void testDecodeWithFourBytesOnMacAddressDecoderWorks() {
+	public final void decodeWithFourZeroBytesReturnsZeroMacAddress() {
 		MacAddressDecoder decoder = new MacAddressDecoder();
 		MacAddress expected =
-				new MacAddress(new byte[] { 0, 0, 0, 0, 0, 1 });
-		byte[] input = { 0, 0, 0, 1 };
+				new MacAddress(new byte[] { 0, 0, 0, 0, 0, 0 });
+		byte[] input = { 0, 0, 0, 0 };
 
 		MacAddress actual = decoder.decode(input);
 
@@ -73,11 +72,11 @@ public class MacAddressDecoderTest {
 	}
 
 	@Test
-	public final void testDecodeWithFiveBytesOnMacAddressDecoderWorks() {
+	public final void decodeWithFiveZeroBytesReturnsZeroMacAddress() {
 		MacAddressDecoder decoder = new MacAddressDecoder();
 		MacAddress expected =
-				new MacAddress(new byte[] { 0, 0, 0, 0, 0, 1 });
-		byte[] input = { 0, 0, 0, 0, 1 };
+				new MacAddress(new byte[] { 0, 0, 0, 0, 0, 0 });
+		byte[] input = { 0, 0, 0, 0, 0 };
 
 		MacAddress actual = decoder.decode(input);
 
@@ -85,11 +84,11 @@ public class MacAddressDecoderTest {
 	}
 
 	@Test
-	public final void testDecodeWithSixBytesOnMacAddressDecoderWorks() {
+	public final void decodeWithSixZeroBytesReturnsZeroMacAddress() {
 		MacAddressDecoder decoder = new MacAddressDecoder();
 		MacAddress expected =
-				new MacAddress(new byte[] { 0, 0, 0, 0, 0, 1 });
-		byte[] input = { 0, 0, 0, 0, 0, 1 };
+				new MacAddress(new byte[] { 0, 0, 0, 0, 0, 0 });
+		byte[] input = { 0, 0, 0, 0, 0, 0 };
 
 		MacAddress actual = decoder.decode(input);
 
@@ -97,16 +96,15 @@ public class MacAddressDecoderTest {
 	}
 
 	@Test(expected = NullPointerException.class)
-	public final void testDecodeWithNullOnMacAddressDecoderWorks() {
+	public final void decodeWithNullThrowsNullPointerException() {
 		MacAddressDecoder decoder = new MacAddressDecoder();
 		decoder.decode(null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public final void testDecodeWithBiggerThanMacAddressSizeByteArrayOnMacAddressDecoderThrowsIllegalArgumentException() {
+	public final void decodeWithBiggerThanMacAddressSizeByteArrayThrowsIllegalArgumentException() {
 		MacAddressDecoder decoder = new MacAddressDecoder();
-		byte[] biggerThanMacAddressSizeByteArray =
-				{ 0, 0, 0, 0, 0, 0, 1 };
+		byte[] biggerThanMacAddressSizeByteArray = new byte[7];
 
 		decoder.decode(biggerThanMacAddressSizeByteArray);
 	}

@@ -18,7 +18,7 @@ import at.fabianachammer.pdusend.util.ByteArrayBuilder;
 public class ByteArrayBuilderTest {
 
 	@Test
-	public final void testAppendWithAnyDataWorks() {
+	public final void appendWithAnyDataWorks() {
 		byte[] expectedArray = new byte[3];
 
 		expectedArray[0] = (byte) 0;

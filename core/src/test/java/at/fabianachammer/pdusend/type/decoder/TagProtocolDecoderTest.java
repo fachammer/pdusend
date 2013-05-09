@@ -13,10 +13,10 @@ import at.fabianachammer.pdusend.type.TagProtocol;
 public class TagProtocolDecoderTest {
 
 	@Test
-	public final void testDecodeWithOneByteInputOnTagProtocolDecoderWorks() {
+	public final void decodeWithOneZeroByteReturnsUnknownTagProtocol() {
 		TagProtocolDecoder decoder = new TagProtocolDecoder();
-		byte input = 1;
-		TagProtocol expected = new TagProtocol((short) 1);
+		byte input = 0;
+		TagProtocol expected = TagProtocol.UNKNOWN;
 
 		TagProtocol actual = decoder.decode(input);
 
@@ -24,18 +24,18 @@ public class TagProtocolDecoderTest {
 	}
 
 	@Test
-	public final void testDecodeWithTwoByteInputOnTagProtocolDecoderWorks() {
+	public final void decodeWithTwoZeroBytesReturnsUnkownTagProtocol() {
 		TagProtocolDecoder decoder = new TagProtocolDecoder();
-		TagProtocol expected = TagProtocol.IEEE_802_1Q;
-		byte[] validByteArray = { (byte) 0x81, 0 };
+		byte[] input = { 0, 0 };
+		TagProtocol expected = TagProtocol.UNKNOWN;
 
-		TagProtocol actual = decoder.decode(validByteArray);
+		TagProtocol actual = decoder.decode(input);
 
 		assertEquals(expected, actual);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public final void testDecodeWithIllegalSizeByteArrayOnTagProtoclThrowsIllegalArgumentException() {
+	public final void decodeWithIllegalSizeByteArrayThrowsIllegalArgumentException() {
 		TagProtocolDecoder decoder = new TagProtocolDecoder();
 		byte[] illegalSizeArray = new byte[3];
 
@@ -43,7 +43,7 @@ public class TagProtocolDecoderTest {
 	}
 
 	@Test(expected = NullPointerException.class)
-	public final void testDecodeWithNullOnTagProtocolThrowsNullPointerException() {
+	public final void decodeWithNullThrowsNullPointerException() {
 		new TagProtocolDecoder().decode(null);
 	}
 

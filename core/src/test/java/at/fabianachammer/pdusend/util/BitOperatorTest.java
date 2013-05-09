@@ -18,7 +18,7 @@ import at.fabianachammer.pdusend.util.BitOperator;
 public class BitOperatorTest {
 
 	@Test
-	public final void testMergeToShortWorks() {
+	public final void mergeToShortWithLowAndHighByteOneReturnsShortWithEighthAndSixteenthBitSet() {
 		final byte lowByte = 0x01;
 		final byte highByte = (byte) 0x01;
 		final short expected = (short) 0x0101;
@@ -29,7 +29,7 @@ public class BitOperatorTest {
 	}
 
 	@Test
-	public final void testMergeToShortWithMaximumBytesWorks() {
+	public final void mergeToShortWithMaximumBytesReturnsShortWithAllBitsSet() {
 		final byte lowByte = (byte) 0xff;
 		final byte highByte = (byte) 0xff;
 		final short expected = (short) 0xffff;
@@ -40,7 +40,7 @@ public class BitOperatorTest {
 	}
 
 	@Test
-	public final void testMergeToIntWorks() {
+	public final void mergeToIntWithAllBytesOneReturnsIntWithEachEigthBitSet() {
 		byte lowlowByte = 0x01;
 		byte lowHighByte = 0x01;
 		byte highLowByte = 0x01;
@@ -55,7 +55,7 @@ public class BitOperatorTest {
 	}
 
 	@Test
-	public final void testShortSplitWorks() {
+	public final void shortSplitWithEachEigthBitSetReturnsByteArrayWithBothElementsSetToOne() {
 		final short value = (short) 0x0101;
 		final byte[] expected = { (byte) 0x01, (byte) 0x01 };
 
@@ -65,7 +65,7 @@ public class BitOperatorTest {
 	}
 
 	@Test
-	public final void testByteSplitWorks() {
+	public final void byteSplitWithOneReturnsByteArrayWithFirstElementEqualsZeroAndSecondElementEqualsOne() {
 		final byte value = (byte) 0x01;
 		final byte[] expected = { 0x0, 0x1 };
 
@@ -75,7 +75,7 @@ public class BitOperatorTest {
 	}
 
 	@Test
-	public final void testIntToByteSplitWorks() {
+	public final void intToByteSplitWithEachEighthBitSetReturnsByteArrayWithAllFourElementsSetToOne() {
 		final int value = 0x01010101;
 
 		final byte[] expected =
@@ -87,12 +87,12 @@ public class BitOperatorTest {
 	}
 
 	@Test
-	public final void testIsSetWorks() {
+	public final void isSetWithOneAndZeroIndexReturnsTrue() {
 		assertEquals(true, BitOperator.isSet(1, 0));
 	}
 
 	@Test
-	public final void testIsNotSetWorks() {
+	public final void isSetWithZeroAndZeroIndexReturnsFalse() {
 		assertEquals(false, BitOperator.isSet(0, 0));
 	}
 

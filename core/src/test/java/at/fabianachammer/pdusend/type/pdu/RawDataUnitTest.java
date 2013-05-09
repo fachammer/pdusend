@@ -15,7 +15,7 @@ import at.fabianachammer.pdusend.type.pdu.decoder.RawDataUnitDecoder;
 public class RawDataUnitTest {
 
 	@Test
-	public final void testGetDecoderOnRawDataUnitReturnsInstanceOfRawDataUnitDecoder() {
+	public final void getDecoderReturnsInstanceOfRawDataUnitDecoder() {
 		RawDataUnit anyRawDataUnit = new RawDataUnit();
 
 		DataUnitDecoder<RawDataUnit> decoder =
@@ -25,7 +25,7 @@ public class RawDataUnitTest {
 	}
 
 	@Test
-	public final void testEncodeOnRawDataUnitWorks() {
+	public final void encodeWithOneZeroByteArrayReturnsByteArrayWithOneZeroByte() {
 		RawDataUnit anyRawDataUnit =
 				new RawDataUnit(new byte[] { 0 });
 		byte[] expected = { 0 };
@@ -36,7 +36,7 @@ public class RawDataUnitTest {
 	}
 
 	@Test
-	public final void testEncodeWithNullDataOnRawDataUnitReturnsEmptyByteArray() {
+	public final void encodeWithNullReturnsEmptyByteArray() {
 		RawDataUnit anyRawDataUnit = new RawDataUnit(null);
 		byte[] expected = new byte[0];
 
@@ -46,43 +46,48 @@ public class RawDataUnitTest {
 	}
 
 	@Test
-	public final void testSetNonNullDataOnRawDataUnitWorks() {
+	public final void setNonNullDataPasses() {
 		RawDataUnit anyRawDataUnit = new RawDataUnit();
 		byte[] nonNullData = new byte[] { 0 };
 		anyRawDataUnit.setData(nonNullData);
 	}
 
 	@Test
-	public final void testEqualsWithEqualRawDataUnitsOnRawDataUnitReturnsTrue() {
-		assertTrue(new RawDataUnit((byte) 1).equals(new RawDataUnit(
+	public final void equalsWithEqualOneZeroByteRawDataUnitsReturnsTrue() {
+		assertTrue(new RawDataUnit((byte) 0).equals(new RawDataUnit(
+				(byte) 0)));
+	}
+
+	@Test
+	public final void equalsWithDifferentRawDataUnitsReturnsFalse() {
+		assertFalse(new RawDataUnit((byte) 0).equals(new RawDataUnit(
 				(byte) 1)));
 	}
 
 	@Test
-	public final void testEqualsWithDifferentRawDataUnitsOnRawDataUnitReturnsFalse() {
-		assertFalse(new RawDataUnit((byte) 1).equals(new RawDataUnit(
-				(byte) 2)));
-	}
-
-	@Test
-	public final void testEqualsWithDifferentTypesOnRawDataUnitReturnsFalse() {
+	public final void equalsWithDifferentTypesReturnsFalse() {
 		assertFalse(new RawDataUnit().equals(new Object()));
 	}
 
 	@Test
-	public final void testEqualsWithNullOnRawDataUnitReturnsFalse() {
+	public final void equalsWithNullReturnsFalse() {
 		assertFalse(new RawDataUnit().equals(null));
 	}
 
 	@Test
-	public final void testHashCodeWithEqualRawDataUnitsOnRawDataUnitReturnsEqualHashCodes() {
-		assertEquals(new RawDataUnit((byte) 1).hashCode(),
+	public final void hashCodeWithEqualOneZeroByteRawDataUnitsReturnsEqualHashCodes() {
+		assertEquals(new RawDataUnit((byte) 0).hashCode(),
+				new RawDataUnit((byte) 0).hashCode());
+	}
+
+	@Test
+	public final void hashCodeWithDifferentRawDataUnitsReturnsDifferentHashCodes() {
+		assertNotEquals(new RawDataUnit((byte) 0).hashCode(),
 				new RawDataUnit((byte) 1).hashCode());
 	}
 
 	@Test
-	public final void testHashCodeWithDifferentRawDataUnitsOnRawDataUnitReturnsDifferentHashCodes() {
-		assertNotEquals(new RawDataUnit((byte) 1).hashCode(),
-				new RawDataUnit((byte) 2).hashCode());
+	public final void sizeOfOneByteRawDataUnitReturnsOne() {
+		assertEquals(1, new RawDataUnit((byte) 0).size());
 	}
 }

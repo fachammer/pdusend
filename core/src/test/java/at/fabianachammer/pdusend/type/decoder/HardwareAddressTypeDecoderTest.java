@@ -13,11 +13,11 @@ import at.fabianachammer.pdusend.type.HardwareAddressType;
 public class HardwareAddressTypeDecoderTest {
 
 	@Test
-	public final void testDecodeWithValidTwoByteIdOnHardwareAddressTypeDecoderWorks() {
+	public final void decodeWithZeroTwoByteIdReturnsUnknownHardwareAddressType() {
 		HardwareAddressTypeDecoder decoder =
 				new HardwareAddressTypeDecoder();
-		byte[] validTwoByteId = { 0, 1 };
-		HardwareAddressType expected = HardwareAddressType.ETHERNET;
+		byte[] validTwoByteId = { 0, 0 };
+		HardwareAddressType expected = HardwareAddressType.UNKOWN;
 
 		HardwareAddressType actual = decoder.decode(validTwoByteId);
 
@@ -25,11 +25,11 @@ public class HardwareAddressTypeDecoderTest {
 	}
 
 	@Test
-	public final void testDecodeWithValidOneByteIdOnHardwareAddressTypeDecoderWorks() {
+	public final void decodeWithZeroOneByteIdReturnsUnknownHardwareAddressType() {
 		HardwareAddressTypeDecoder decoder =
 				new HardwareAddressTypeDecoder();
-		byte validOneByteId = 1;
-		HardwareAddressType expected = HardwareAddressType.ETHERNET;
+		byte validOneByteId = 0;
+		HardwareAddressType expected = HardwareAddressType.UNKOWN;
 
 		HardwareAddressType actual = decoder.decode(validOneByteId);
 
@@ -37,7 +37,7 @@ public class HardwareAddressTypeDecoderTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public final void testDecodeWithIllegalSizeByteArrayOnHardwareAddressTypeDecoderThrowsIllegalArgumentException() {
+	public final void decodeWithIllegalSizeByteArrayThrowsIllegalArgumentException() {
 		HardwareAddressTypeDecoder decoder =
 				new HardwareAddressTypeDecoder();
 		byte[] illegalSizeByteArray = new byte[3];
@@ -46,7 +46,7 @@ public class HardwareAddressTypeDecoderTest {
 	}
 
 	@Test(expected = NullPointerException.class)
-	public final void testDecodeWithNullOnHardwareAddressTypeDecoderThrowsNullPointerException() {
+	public final void decodeWithNullThrowsNullPointerException() {
 		HardwareAddressTypeDecoder decoder =
 				new HardwareAddressTypeDecoder();
 

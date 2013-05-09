@@ -14,7 +14,7 @@ import at.fabianachammer.pdusend.type.decoder.DataUnitDecoder;
 public class ArpOperationTest {
 
 	@Test
-	public final void testGetDecoderOnArpOperationReturnsInstanceOfArpOperationDecoder() {
+	public final void getDecoderOnArpOperationReturnsInstanceOfArpOperationDecoder() {
 		ArpOperation anyArpOperation = ArpOperation.REQUEST;
 
 		DataUnitDecoder<ArpOperation> decoder =
@@ -24,9 +24,9 @@ public class ArpOperationTest {
 	}
 
 	@Test
-	public final void testEncodeOnArpOperationWorks() {
-		ArpOperation anyArpOperation = ArpOperation.REQUEST;
-		byte[] expected = { 0, 1 };
+	public final void encodeWithUnknownArpOperationReturnsAllZeroByteArray() {
+		ArpOperation anyArpOperation = ArpOperation.UNKNOWN;
+		byte[] expected = { 0, 0 };
 
 		byte[] actual = anyArpOperation.encode();
 
@@ -34,21 +34,48 @@ public class ArpOperationTest {
 	}
 
 	@Test
-	public final void isEqualsWithArpOperationWithEqualIdReturnsTrue() {
+	public final void equalsWithArpOperationWithEqualIdReturnsTrue() {
 		ArpOperation arpOperation = new ArpOperation((short) 0);
 		ArpOperation equalIdArpOperation =
 				new ArpOperation((short) 0);
 
-		assertTrue(arpOperation.isEquals(equalIdArpOperation));
+		assertTrue(arpOperation.equals(equalIdArpOperation));
 	}
 
 	@Test
-	public final void isEqualsWithArpOperationWithDifferentIdReturnsFalse() {
+	public final void equalsWithArpOperationWithDifferentIdReturnsFalse() {
 		ArpOperation arpOperation = new ArpOperation((short) 0);
 		ArpOperation differentIdArpOperation =
 				new ArpOperation((short) 1);
 
-		assertFalse(arpOperation.isEquals(differentIdArpOperation));
+		assertFalse(arpOperation.equals(differentIdArpOperation));
+	}
+
+	@Test
+	public final void equalsWithDifferentTypeReturnsFalse() {
+		assertFalse(ArpOperation.UNKNOWN.equals(new Object()));
+	}
+
+	@Test
+	public final void equalsWithNullReturnsFalse() {
+		assertFalse(ArpOperation.UNKNOWN.equals(null));
+	}
+
+	@Test
+	public final void hashCodeWithEqualIdArpOperationsReturnsEqualHashCodes() {
+		assertEquals(new ArpOperation((short) 0).hashCode(),
+				new ArpOperation((short) 0).hashCode());
+	}
+
+	@Test
+	public final void hashCodeWithDifferentIdArpOperationsReturnsDifferentHashCodes() {
+		assertNotEquals(new ArpOperation((short) 0).hashCode(),
+				new ArpOperation((short) 1).hashCode());
+	}
+
+	@Test
+	public final void sizeOfUnknownArpOperationReturnsTwo() {
+		assertEquals(2, ArpOperation.UNKNOWN.size());
 	}
 
 }

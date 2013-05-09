@@ -13,10 +13,10 @@ import at.fabianachammer.pdusend.type.EtherType;
 public class EtherTypeDecoderTest {
 
 	@Test
-	public final void testDecodeWithValidTwoByteIdOnEtherTypeDecoderWorks() {
+	public final void decodeWithZeroTwoByteIdReturnsUnknownEtherType() {
 		EtherTypeDecoder decoder = new EtherTypeDecoder();
-		final byte[] validTwoByteId = { 0, 1 };
-		EtherType expected = new EtherType((short) 1);
+		final byte[] validTwoByteId = { 0, 0 };
+		EtherType expected = EtherType.UNKNOWN;
 
 		EtherType actual = decoder.decode(validTwoByteId);
 
@@ -24,7 +24,7 @@ public class EtherTypeDecoderTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public final void testDecodeWithIllegalSizeByteArrayOnEtherTypeThrowsIllegalArgumentException() {
+	public final void decodeWithIllegalSizeByteArrayThrowsIllegalArgumentException() {
 		EtherTypeDecoder decoder = new EtherTypeDecoder();
 		final byte[] illegalSizeByteArray = new byte[3];
 
@@ -32,7 +32,7 @@ public class EtherTypeDecoderTest {
 	}
 
 	@Test(expected = NullPointerException.class)
-	public final void testDecodeWithNullOnEtherTypeThrowsNullPointerException() {
+	public final void decodeWithNullThrowsNullPointerException() {
 		EtherTypeDecoder decoder = new EtherTypeDecoder();
 
 		decoder.decode(null);
