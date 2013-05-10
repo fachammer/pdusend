@@ -3,10 +3,6 @@
  */
 package at.fabianachammer.pdusend.type;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-
 import at.fabianachammer.pdusend.type.decoder.ArpOperationDecoder;
 import at.fabianachammer.pdusend.type.decoder.DataUnitDecoder;
 import at.fabianachammer.pdusend.util.BitOperator;
@@ -82,28 +78,6 @@ public class ArpOperation extends DataUnit {
 	@Override
 	public final int size() {
 		return SIZE;
-	}
-
-	@Override
-	protected final <T extends DataUnit> boolean isEquals(final T obj) {
-		ArpOperation rhs = (ArpOperation) obj;
-		return new EqualsBuilder().append(getId(), rhs.getId())
-				.isEquals();
-	}
-
-	@Override
-	public final int hashCode() {
-		final int initial = 113;
-		final int multiplier = 15;
-
-		return new HashCodeBuilder(initial, multiplier).append(
-				getId()).hashCode();
-	}
-
-	@Override
-	public final String toString() {
-		return new ToStringBuilder(this).append("id", getId())
-				.toString();
 	}
 
 	/**

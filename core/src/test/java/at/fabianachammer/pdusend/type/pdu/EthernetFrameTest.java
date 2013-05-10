@@ -127,7 +127,7 @@ public class EthernetFrameTest {
 	public final void equalsWithDifferentEthernetFramesReturnsFalse() {
 		EthernetFrame ethernetFrame = new EthernetFrame();
 		EthernetFrame differentEthernetFrame = new EthernetFrame();
-		differentEthernetFrame.setEmbeddedData(new RawDataUnit());
+		differentEthernetFrame.setChecksum(new byte[4]);
 
 		assertFalse(ethernetFrame.equals(differentEthernetFrame));
 	}
@@ -152,7 +152,7 @@ public class EthernetFrameTest {
 	public final void hashCodeWithDifferentEthernetFramesReturnsDifferentHashCodes() {
 		EthernetFrame ethernetFrame = new EthernetFrame();
 		EthernetFrame differentEthernetFrame = new EthernetFrame();
-		differentEthernetFrame.setEmbeddedData(new RawDataUnit());
+		differentEthernetFrame.setChecksum(new byte[4]);
 
 		assertNotEquals(ethernetFrame, differentEthernetFrame);
 	}

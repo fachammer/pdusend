@@ -168,46 +168,6 @@ public class EthernetFrame extends EmbeddingProtocolDataUnit
 		return HardwareAddressType.ETHERNET;
 	}
 
-	@Override
-	protected final <T extends DataUnit> boolean isEquals(final T obj) {
-		EthernetFrame rhs = (EthernetFrame) obj;
-		return new EqualsBuilder()
-				.append(getDestinationMacAddress(),
-						rhs.getDestinationMacAddress())
-				.append(getSourceMacAddress(),
-						rhs.getSourceMacAddress())
-				.append(getEtherType(), rhs.getEtherType())
-				.append(getVlanTag(), rhs.getVlanTag())
-				.append(getEmbeddedData(), rhs.getEmbeddedData())
-				.append(getPadding(), rhs.getPadding())
-				.append(getChecksum(), rhs.getChecksum()).isEquals();
-	}
-
-	@Override
-	public final int hashCode() {
-		final int initial = 197;
-		final int multiplier = 209;
-		return new HashCodeBuilder(initial, multiplier)
-				.append(getDestinationMacAddress())
-				.append(getSourceMacAddress()).append(getEtherType())
-				.append(getVlanTag()).append(getEmbeddedData())
-				.append(getPadding()).append(getChecksum())
-				.hashCode();
-	}
-
-	@Override
-	public final String toString() {
-		return new ToStringBuilder(this)
-				.append("destinationMacAddress",
-						getDestinationMacAddress())
-				.append("sourceMacAddress", getSourceMacAddress())
-				.append("vlanTag", getVlanTag())
-				.append("etherType", getEtherType())
-				.append("embeddedData", getEmbeddedData())
-				.append("padding", getPadding())
-				.append("checksum", getChecksum()).toString();
-	}
-
 	/**
 	 * @return the destinationMacAddress
 	 */

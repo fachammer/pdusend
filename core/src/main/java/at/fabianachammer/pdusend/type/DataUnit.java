@@ -3,7 +3,14 @@
  */
 package at.fabianachammer.pdusend.type;
 
+import java.util.zip.CRC32;
+
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
 import at.fabianachammer.pdusend.type.decoder.DataUnitDecoder;
+import at.fabianachammer.pdusend.util.ArrayOperator;
 
 /**
  * Defines an interface for classes that can be sent as a whole from a network
@@ -34,18 +41,9 @@ public abstract class DataUnit {
 	 * 
 	 * @return size of the data unit in bytes
 	 */
-	public abstract int size();
-
-	/**
-	 * determines whether this object is equal to a given data unit.
-	 * 
-	 * @param <T>
-	 *            type of the object that gets compared
-	 * @param obj
-	 *            data unit to which equality is checked
-	 * @return true, if the data unit is equal, false otherwise
-	 */
-	protected abstract <T extends DataUnit> boolean isEquals(T obj);
+	public int size() {
+		return encode().length;
+	}
 
 	@Override
 	public boolean equals(final Object obj) {
@@ -54,15 +52,43 @@ public abstract class DataUnit {
 		}
 
 		if (obj.getClass() == this.getClass()) {
-			return isEquals(this.getClass().cast(obj));
+			return ArrayOperator.arrayEquals(encode(), this
+					.getClass().cast(obj).encode());
 		}
 
 		return false;
 	}
 
 	@Override
-	public abstract int hashCode();
-	
+	public int hashCode() {
+		CRC32 crc = new CRC32();
+		crc.update(this.getClass().getName().getBytes());
+		int initial = nextOddNumber((int) crc.getValue());
+		crc.update(this.getClass().getCanonicalName().getBytes());
+		int multiplier = nextOddNumber((int) crc.getValue());
+		return new HashCodeBuilder(initial, multiplier).append(
+				encode()).hashCode();
+	}
+
+	/**
+	 * Returns the next odd number of the given number, if the number is even.
+	 * Otherwise it returns the given number.
+	 * 
+	 * @param n
+	 *            number to be checked for oddity
+	 * @return n, if it is odd, n + 1 otherwise
+	 */
+	private int nextOddNumber(final int n) {
+		if (n % 2 == 0) {
+			return n + 1;
+		}
+
+		return n;
+	}
+
 	@Override
-	public abstract String toString();
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
+	}
 }

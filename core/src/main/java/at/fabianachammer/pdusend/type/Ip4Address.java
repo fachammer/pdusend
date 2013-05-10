@@ -3,10 +3,6 @@
  */
 package at.fabianachammer.pdusend.type;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-
 import at.fabianachammer.pdusend.type.decoder.DataUnitDecoder;
 import at.fabianachammer.pdusend.type.decoder.Ip4AddressDecoder;
 import at.fabianachammer.pdusend.util.BitOperator;
@@ -55,21 +51,6 @@ public class Ip4Address extends DataUnit {
 	@Override
 	public final int size() {
 		return SIZE;
-	}
-
-	@Override
-	protected final <T extends DataUnit> boolean isEquals(final T obj) {
-		Ip4Address rhs = (Ip4Address) obj;
-		return new EqualsBuilder().append(getValue(), rhs.getValue())
-				.isEquals();
-	}
-
-	@Override
-	public final int hashCode() {
-		final int intial = 3;
-		final int multiplier = 11;
-		return new HashCodeBuilder(intial, multiplier).append(
-				getValue()).hashCode();
 	}
 
 	@Override

@@ -8,9 +8,6 @@ import net.sf.oval.constraint.NotNull;
 import net.sf.oval.constraint.Size;
 import net.sf.oval.guard.Guarded;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import at.fabianachammer.pdusend.type.decoder.DataUnitDecoder;
 import at.fabianachammer.pdusend.type.decoder.MacAddressDecoder;
 import at.fabianachammer.pdusend.util.ByteConverter;
@@ -72,21 +69,6 @@ public class MacAddress extends DataUnit {
 	@Override
 	public final int size() {
 		return SIZE;
-	}
-
-	@Override
-	protected final <T extends DataUnit> boolean isEquals(final T obj) {
-		MacAddress rhs = (MacAddress) obj;
-		return new EqualsBuilder().append(getValue(), rhs.getValue())
-				.isEquals();
-	}
-
-	@Override
-	public final int hashCode() {
-		final int intial = 239;
-		final int multiplier = 63;
-		return new HashCodeBuilder(intial, multiplier).append(
-				getValue()).hashCode();
 	}
 
 	@Override

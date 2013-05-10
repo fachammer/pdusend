@@ -27,6 +27,21 @@ public final class BitOperator {
 	}
 
 	/**
+	 * Merges a low-half-byte number and a high-half-byte number to form a byte
+	 * number.
+	 * 
+	 * @param lowHalfByte
+	 *            low-half-byte to merge
+	 * @param highHalfByte
+	 *            high-half-byte to merge
+	 * @return merged byte number
+	 */
+	public static byte mergeByte(final byte lowHalfByte,
+			final byte highHalfByte) {
+		return (byte) ((lowHalfByte & MAX_HALF_BYTE) | ((highHalfByte & MAX_HALF_BYTE) << Byte.SIZE / 2));
+	}
+
+	/**
 	 * Merges a low-byte number and a high-byte number to form one 16 bit
 	 * number.
 	 * 
@@ -120,6 +135,30 @@ public final class BitOperator {
 	}
 
 	/**
+	 * splits a 32 bit value into an array with two shorts in Big Endian Order
+	 * (highest short first).
+	 * 
+	 * @param value
+	 *            value to be split
+	 * @return array with two short values in Big Endian Order
+	 */
+	public static short[] splitToShort(final int value) {
+		short[] values = new short[Integer.SIZE
+				/ Short.SIZE];
+
+		for (int i = 0; i < values.length; i++) {
+			int bitsSet = (-1) >>> (i * Short.SIZE);
+
+			short calcShort =
+					(short) ((value & bitsSet) >>> ((values.length
+							- i - 1) * Short.SIZE));
+			values[i] = calcShort;
+		}
+
+		return values;
+	}
+
+	/**
 	 * Splits an BitInteger value into chunks of bytes and puts them in an array
 	 * with the specified size. If the value needs more space than specified,
 	 * the give array size is ignored. The sign of the value is ignored and cut
@@ -189,5 +228,49 @@ public final class BitOperator {
 	public static boolean isSet(final int value, final int n) {
 		int bitShifted = 1 << n;
 		return (bitShifted & value) == bitShifted;
+	}
+
+	/**
+	 * Inverts every single bit of a given 16 bit value.
+	 * 
+	 * @param value
+	 *            value to be inverted
+	 * @return inverted 16 bit value
+	 */
+	public static short invert(final short value) {
+		return (short) (value
+				* ((short) -1) - 1);
+
+	}
+
+	/**
+	 * Sets a bit in a value to a specified state (true for one, false for
+	 * zero).
+	 * 
+	 * @param value
+	 *            value to be changed
+	 * @param index
+	 *            index of the bit to manipulate
+	 * @param set
+	 *            state to which the bit should be set (true: 1, false: 0)
+	 * @return value that changed the bit on the specified index to the
+	 *         specified state
+	 */
+	public static int setBit(final int value, final int index,
+			final boolean set) {
+		int bitToSet = 1 << index;
+		int sign = -1;
+
+		if (set) {
+			sign = 1;
+		}
+
+		if ((BitOperator.isSet(value, index) && set)
+				|| (!BitOperator.isSet(value, index) && !set)) {
+			return value;
+		} else {
+			return value
+					+ sign * bitToSet;
+		}
 	}
 }

@@ -3,10 +3,6 @@
  */
 package at.fabianachammer.pdusend.type.pdu;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
-import at.fabianachammer.pdusend.type.DataUnit;
 import at.fabianachammer.pdusend.type.decoder.DataUnitDecoder;
 import at.fabianachammer.pdusend.type.pdu.decoder.RawDataUnitDecoder;
 
@@ -63,21 +59,6 @@ public class RawDataUnit extends ProtocolDataUnit {
 	@Override
 	public final int size() {
 		return data.length;
-	}
-	
-	@Override
-	protected final <T extends DataUnit> boolean isEquals(final T obj) {
-		RawDataUnit rhs = (RawDataUnit) obj;
-		return new EqualsBuilder().append(getData(),
-				rhs.getData()).isEquals();
-	}
-
-	@Override
-	public final int hashCode() {
-		final int initial = 121;
-		final int multiplier = 135;
-		return new HashCodeBuilder(initial, multiplier).append(
-				getData()).hashCode();
 	}
 	
 	@Override

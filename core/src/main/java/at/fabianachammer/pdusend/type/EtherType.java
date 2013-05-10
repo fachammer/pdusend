@@ -1,14 +1,10 @@
 package at.fabianachammer.pdusend.type;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
-
 import at.fabianachammer.pdusend.type.decoder.DataUnitDecoder;
 import at.fabianachammer.pdusend.type.decoder.EtherTypeDecoder;
 import at.fabianachammer.pdusend.type.pdu.ProtocolDataUnit;
 import at.fabianachammer.pdusend.type.pdu.decoder.ArpPacketDecoder;
+import at.fabianachammer.pdusend.type.pdu.decoder.Ip4PacketDecoder;
 import at.fabianachammer.pdusend.type.pdu.decoder.RawDataUnitDecoder;
 import at.fabianachammer.pdusend.util.BitOperator;
 
@@ -33,9 +29,15 @@ public class EtherType extends DataUnit implements ProtocolIdentifier {
 			new ArpPacketDecoder());
 
 	/**
+	 * Internet Protocol version 4.
+	 */
+	public static final EtherType IPV4 = new EtherType((short) 0x800,
+			new Ip4PacketDecoder());
+
+	/**
 	 * array with ossible EtherTypes.
 	 */
-	public static final EtherType[] VALUES = { UNKNOWN, ARP };
+	public static final EtherType[] VALUES = { UNKNOWN, ARP, IPV4 };
 
 	/**
 	 * size of EtherTypes in bytes.
@@ -111,30 +113,6 @@ public class EtherType extends DataUnit implements ProtocolIdentifier {
 	@Override
 	public final DataUnitDecoder<? extends ProtocolDataUnit> getProtocolDecoder() {
 		return protocolDecoder;
-	}
-
-	@Override
-	protected final <T extends DataUnit> boolean isEquals(final T obj) {
-		EtherType rhs = (EtherType) obj;
-		return new EqualsBuilder().append(getId(), rhs.getId())
-				.isEquals();
-	}
-
-	@Override
-	public final int hashCode() {
-		final int initial = 147;
-		final int multiplier = 23;
-		return new HashCodeBuilder(initial, multiplier).append(
-				getId()).hashCode();
-	}
-
-	@Override
-	public final String toString() {
-		return new ToStringBuilder(this,
-				ToStringStyle.SHORT_PREFIX_STYLE)
-				.append("id", getId())
-				.append("protocolDecoder", getProtocolDecoder())
-				.toString();
 	}
 
 	/**

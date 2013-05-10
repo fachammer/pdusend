@@ -3,15 +3,10 @@
  */
 package at.fabianachammer.pdusend.type.pdu;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-
 import net.sf.oval.constraint.AssertFieldConstraints;
 import net.sf.oval.constraint.NotNull;
 import net.sf.oval.guard.Guarded;
 import at.fabianachammer.pdusend.type.ArpOperation;
-import at.fabianachammer.pdusend.type.DataUnit;
 import at.fabianachammer.pdusend.type.EtherType;
 import at.fabianachammer.pdusend.type.HardwareAddressType;
 import at.fabianachammer.pdusend.type.Ip4Address;
@@ -134,57 +129,7 @@ public class ArpPacket extends ProtocolDataUnit implements
 	public final EtherType getEtherType() {
 		return EtherType.ARP;
 	}
-
-	@Override
-	protected final <T extends DataUnit> boolean isEquals(final T obj) {
-		ArpPacket rhs = (ArpPacket) obj;
-		return new EqualsBuilder()
-				.append(getHardwareType(), rhs.getHardwareType())
-				.append(getProtocolType(), rhs.getProtocolType())
-				.append(getOperation(), rhs.getOperation())
-				.append(getSenderHardwareAddress(),
-						rhs.getSenderHardwareAddress())
-				.append(getSenderProtocolAddress(),
-						rhs.getSenderProtocolAddress())
-				.append(getTargetHardwareAddress(),
-						rhs.getTargetHardwareAddress())
-				.append(getTargetProtocolAddress(),
-						rhs.getTargetProtocolAddress()).isEquals();
-	}
-
-	@Override
-	public final int hashCode() {
-		final int initial = 111;
-		final int multiplier = 19;
-		return new HashCodeBuilder(initial, multiplier)
-				.append(getHardwareType()).append(getProtocolType())
-				.append(getOperation())
-				.append(getSenderHardwareAddress())
-				.append(getSenderProtocolAddress())
-				.append(getTargetHardwareAddress())
-				.append(getTargetProtocolAddress()).hashCode();
-	}
-
-	@Override
-	public final String toString() {
-		return new ToStringBuilder(this)
-				.append("hardwareType", getHardwareType())
-				.append("protocolType", getProtocolType())
-				.append("operation", getOperation())
-				.append("hardwareAddressLength",
-						getHardwareAddressLength())
-				.append("protocolAddressLength",
-						getProtocolAddressLength())
-				.append("senderHardwareAddress",
-						getSenderHardwareAddress())
-				.append("senderProtocolAddress",
-						getSenderProtocolAddress())
-				.append("targetHardwareAddress",
-						getTargetHardwareAddress())
-				.append("targetProtocolAddress",
-						getTargetProtocolAddress()).toString();
-	}
-
+	
 	/**
 	 * @return the hardwareType
 	 */

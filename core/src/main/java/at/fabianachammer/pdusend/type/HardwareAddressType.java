@@ -3,10 +3,6 @@
  */
 package at.fabianachammer.pdusend.type;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-
 import at.fabianachammer.pdusend.type.decoder.DataUnitDecoder;
 import at.fabianachammer.pdusend.type.decoder.HardwareAddressTypeDecoder;
 import at.fabianachammer.pdusend.type.pdu.ProtocolDataUnit;
@@ -120,28 +116,6 @@ public class HardwareAddressType extends DataUnit implements
 	@Override
 	public final DataUnitDecoder<? extends ProtocolDataUnit> getProtocolDecoder() {
 		return protocolDecoder;
-	}
-
-	@Override
-	protected final <T extends DataUnit> boolean isEquals(final T obj) {
-		HardwareAddressType rhs = (HardwareAddressType) obj;
-		return new EqualsBuilder().append(getId(), rhs.getId())
-				.isEquals();
-	}
-
-	@Override
-	public final int hashCode() {
-		final int initial = 43;
-		final int multiplier = 7;
-		return new HashCodeBuilder(initial, multiplier).append(
-				getId()).hashCode();
-	}
-
-	@Override
-	public final String toString() {
-		return new ToStringBuilder(this).append("id", getId())
-				.append("protocolDecoder", getProtocolDecoder())
-				.toString();
 	}
 
 	/**

@@ -1,14 +1,9 @@
 package at.fabianachammer.pdusend.type.pdu;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-
 import net.sf.oval.constraint.AssertFieldConstraints;
 import net.sf.oval.constraint.Max;
 import net.sf.oval.constraint.Min;
 import net.sf.oval.guard.Guarded;
-import at.fabianachammer.pdusend.type.DataUnit;
 import at.fabianachammer.pdusend.type.TagProtocol;
 import at.fabianachammer.pdusend.type.decoder.DataUnitDecoder;
 import at.fabianachammer.pdusend.type.pdu.decoder.VlanTagDecoder;
@@ -106,39 +101,6 @@ public class VlanTag extends ProtocolDataUnit {
 	@Override
 	public final int size() {
 		return SIZE;
-	}
-
-	@Override
-	protected final <T extends DataUnit> boolean isEquals(final T obj) {
-		VlanTag rhs = (VlanTag) obj;
-		return new EqualsBuilder()
-				.append(getTagProtocol(), rhs.getTagProtocol())
-				.append(getPriorityCodePoint(),
-						rhs.getPriorityCodePoint())
-				.append(isCanonicalFormat(), rhs.isCanonicalFormat())
-				.append(getVlanIdentifier(), rhs.getVlanIdentifier())
-				.isEquals();
-	}
-
-	@Override
-	public final int hashCode() {
-		final int initial = 163;
-		final int multiplier = 105;
-		return new HashCodeBuilder(initial, multiplier)
-				.append(getTagProtocol())
-				.append(getPriorityCodePoint())
-				.append(isCanonicalFormat())
-				.append(getVlanIdentifier()).hashCode();
-	}
-
-	@Override
-	public final String toString() {
-		return new ToStringBuilder(this)
-				.append("tagProtocol", getTagProtocol())
-				.append("priorityCodePoint", getPriorityCodePoint())
-				.append("canonicalFormat", isCanonicalFormat())
-				.append("vlanIdentifier", getVlanIdentifier())
-				.toString();
 	}
 
 	/**

@@ -18,6 +18,17 @@ import at.fabianachammer.pdusend.util.BitOperator;
 public class BitOperatorTest {
 
 	@Test
+	public final void mergeToByteWithLowAndHighHalfByteOneReturnsByteWithEachFourthBitSet() {
+		final byte lowByte = 0x1;
+		final byte highByte = 0x1;
+		final byte expected = 0b00010001;
+
+		byte actual = BitOperator.mergeByte(lowByte, highByte);
+
+		assertEquals(expected, actual);
+	}
+
+	@Test
 	public final void mergeToShortWithLowAndHighByteOneReturnsShortWithEighthAndSixteenthBitSet() {
 		final byte lowByte = 0x01;
 		final byte highByte = (byte) 0x01;
@@ -67,7 +78,7 @@ public class BitOperatorTest {
 	@Test
 	public final void byteSplitWithOneReturnsByteArrayWithFirstElementEqualsZeroAndSecondElementEqualsOne() {
 		final byte value = (byte) 0x01;
-		final byte[] expected = { 0x0, 0x1 };
+		final byte[] expected = { 0, 1 };
 
 		byte[] actual = BitOperator.split(value);
 
@@ -78,10 +89,19 @@ public class BitOperatorTest {
 	public final void intToByteSplitWithEachEighthBitSetReturnsByteArrayWithAllFourElementsSetToOne() {
 		final int value = 0x01010101;
 
-		final byte[] expected =
-				{ (byte) 0x01, (byte) 0x01, (byte) 0x01, (byte) 0x01 };
+		final byte[] expected = { 1, 1, 1, 1 };
 
 		byte[] actual = BitOperator.split(value);
+
+		assertArrayEquals(expected, actual);
+	}
+
+	@Test
+	public final void intToShortSplitWithEachSixteenthBitSetReturnsShortArrayWithBothElementsSetToOne() {
+		int value = 0x00010001;
+		short[] expected = { 1, 1 };
+
+		short[] actual = BitOperator.splitToShort(value);
 
 		assertArrayEquals(expected, actual);
 	}
@@ -142,4 +162,51 @@ public class BitOperatorTest {
 
 		assertArrayEquals(expected, actual);
 	}
+	
+	@Test
+	public final void invertShortWithZeroBitsSetReturnsAllBitsSet(){
+		short input = 0;
+		short expected = (short) 0xffff;
+		
+		short actual = BitOperator.invert(input);
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public final void setBitWithOneAndZeroIndexAndFalseReturnsZero(){
+		int input = 1;
+		int index = 0;
+		boolean setToOne = false;
+		int expected = 0;
+		
+		int actual = BitOperator.setBit(input, index, setToOne);
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public final void setBitWithOneAndOneIndexAndFalseReturnsOne(){
+		int input = 1;
+		int index = 1;
+		boolean setToOne = false;
+		int expected = 1;
+		
+		int actual = BitOperator.setBit(input, index, setToOne);
+		
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public final void setBitWithOneAndOneIndexAndTrueReturnsThree(){
+		int input = 1;
+		int index = 1;
+		boolean setToOne = true;
+		int expected = 3;
+		
+		int actual = BitOperator.setBit(input, index, setToOne);
+		
+		assertEquals(expected, actual);
+	}
+	
 }

@@ -1,9 +1,5 @@
 package at.fabianachammer.pdusend.type;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-
 import at.fabianachammer.pdusend.type.decoder.DataUnitDecoder;
 import at.fabianachammer.pdusend.type.decoder.TagProtocolDecoder;
 import at.fabianachammer.pdusend.util.BitOperator;
@@ -74,28 +70,7 @@ public class TagProtocol extends DataUnit {
 	public final int size() {
 		return SIZE;
 	}
-
-	@Override
-	protected final <T extends DataUnit> boolean isEquals(final T obj) {
-		TagProtocol rhs = (TagProtocol) obj;
-		return new EqualsBuilder().append(getId(), rhs.getId())
-				.isEquals();
-	}
-
-	@Override
-	public final int hashCode() {
-		final int initial = 233;
-		final int multiplier = 181;
-		return new HashCodeBuilder(initial, multiplier).append(
-				getId()).hashCode();
-	}
-
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this).append("id", getId())
-				.toString();
-	}
-
+	
 	/**
 	 * @return the id
 	 */
