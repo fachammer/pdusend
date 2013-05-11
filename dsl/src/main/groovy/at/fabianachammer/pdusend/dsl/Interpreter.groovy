@@ -35,7 +35,9 @@ class Interpreter{
 		importCustomizer.addStarImport("at.fabianachammer.pdusend.type")
 		importCustomizer.addStaticStar("at.fabianachammer.pdusend.type.HardwareAddressType")
 		importCustomizer.addStaticStar("at.fabianachammer.pdusend.type.EtherType")
+		importCustomizer.addStaticStar("at.fabianachammer.pdusend.type.TransportProtocolIdentifier")
 		importCustomizer.addStaticStar("at.fabianachammer.pdusend.type.ArpOperation")
+		importCustomizer.addStaticStar("at.fabianachammer.pdusend.type.TagProtocol")
 
 		config.addCompilationCustomizers(importCustomizer)
 

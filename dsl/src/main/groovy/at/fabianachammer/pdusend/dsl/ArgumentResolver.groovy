@@ -2,6 +2,7 @@ package at.fabianachammer.pdusend.dsl
 
 import at.fabianachammer.pdusend.type.DataUnit
 import at.fabianachammer.pdusend.type.pdu.RawDataUnit
+import at.fabianachammer.pdusend.util.BitOperator
 
 /**
  * Class that resolves arguments of an pdu object.
@@ -34,14 +35,14 @@ class ArgumentResolver {
 	/**
 	 * resolves a method returning a pdu without any arguments or a closure.
 	 */
-	static final Closure resolveNoArguments = {Object key ->
+	final Closure resolveNoArguments = {Object key ->
 		objects.binding[key]()
 	}
 
 	/**
 	 * resolves the given map arguments of an method that returns a pdu.
 	 */
-	static final Closure resolveMapArguments = {Object key, Map map ->
+	final Closure resolveMapArguments = {Object key, Map map ->
 		def pdu = resolveNoArguments(key)
 
 		map.keySet().each{
@@ -94,11 +95,11 @@ class ArgumentResolver {
 	/**
 	 * resolves a closure for a method returning a pdu. The closure represents an embedded data unit.
 	 */
-	static final Closure resolveClosure = {Object key, Closure c ->
+	final Closure resolveClosure = {Object key, Closure c ->
 		def pdu = resolveNoArguments(key)
 
 		def dataResult = c()
-
+		
 		if(dataResult instanceof DataUnit){
 			pdu.embeddedData = dataResult
 		}
@@ -107,7 +108,7 @@ class ArgumentResolver {
 			pdu.embeddedData = new RawDataUnit(dataResult)
 		}
 
-		else if(allowedNumberTypes.any{it.class == dataResult.class}){
+		else if(allowedNumberTypes.any{it == dataResult.class}){
 			pdu.embeddedData = new RawDataUnit(BitOperator.split(dataResult))
 		}
 
@@ -122,7 +123,7 @@ class ArgumentResolver {
 	 * resolves the given map arguments and closure for a method returning a pdu.
 	 * The closure represents an embedded data unit
 	 */
-	static final Closure resolveClosureWithArguments = {Object key, Map map, Closure c ->
+	final Closure resolveClosureWithArguments = {Object key, Map map, Closure c ->
 		def pdu = resolveMapArguments key, map
 		def pduWithEmbeddedData = resolveClosure key, c
 

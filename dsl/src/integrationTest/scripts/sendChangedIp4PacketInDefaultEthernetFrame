@@ -1,0 +1,1 @@
+send ethernet(){ ip4(destinationAddress: 0xc0a80001) } on lo

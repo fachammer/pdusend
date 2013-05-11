@@ -14,6 +14,7 @@ import java.util.Map;
 class Methods {
 
 	private Objects objects
+	private ArgumentResolver ar
 
 	/**
 	 * binding of the pdusend pdu methods.
@@ -26,14 +27,15 @@ class Methods {
 	 */
 	Methods(Objects objects){
 		this.objects = objects
+		this.ar = new ArgumentResolver(objects)
 		objects.binding.keySet().each{ key ->
 			def methodName = "$key"-"Obj"
-			Methods.metaClass."$methodName" << ArgumentResolver.resolveNoArguments.curry(key)
-			Methods.metaClass."$methodName" << ArgumentResolver.resolveMapArguments.curry(key)
+			Methods.metaClass."$methodName" << ar.resolveNoArguments.curry(key)
+			Methods.metaClass."$methodName" << ar.resolveMapArguments.curry(key)
 
 			if(objects.binding[key]() instanceof EmbeddingProtocolDataUnit){
-				Methods.metaClass."$methodName" << ArgumentResolver.resolveClosure.curry(key)
-				Methods.metaClass."$methodName" << ArgumentResolver.resolveClosureWithArguments.curry(key)
+				Methods.metaClass."$methodName" << ar.resolveClosure.curry(key)
+				Methods.metaClass."$methodName" << ar.resolveClosureWithArguments.curry(key)
 			}
 			binding."$methodName" = Methods.&"$methodName"
 		}

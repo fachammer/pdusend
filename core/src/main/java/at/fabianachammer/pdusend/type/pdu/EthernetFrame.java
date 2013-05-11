@@ -78,13 +78,14 @@ public class EthernetFrame extends EmbeddingProtocolDataUnit
 	 * EtherType. Describes the protocol for which this Ethernet frame is the
 	 * carrier.
 	 */
-	private EtherType etherType = null;
+	@NotNull
+	private EtherType etherType = EtherType.UNKNOWN;
 
 	/**
 	 * Describes the protocol data unit that encapsulates the data which the
 	 * Ethernet frame carries.
 	 */
-	private DataUnit data = null;
+	private DataUnit embeddedData = null;
 
 	/**
 	 * padding bytes of the Ethernet frame in case the frame is too small.
@@ -120,17 +121,10 @@ public class EthernetFrame extends EmbeddingProtocolDataUnit
 			bab.append(vlanTag.encode());
 		}
 
-		if (data != null
-				&& data instanceof NetworkProtocol) {
-			etherType = ((NetworkProtocol) data).getEtherType();
-		} else if (etherType == null) {
-			etherType = EtherType.UNKNOWN;
-		}
-
 		bab.append(etherType.encode());
 
-		if (data != null) {
-			bab.append(data.encode());
+		if (embeddedData != null) {
+			bab.append(embeddedData.encode());
 		}
 
 		if (padding == null) {
@@ -155,12 +149,16 @@ public class EthernetFrame extends EmbeddingProtocolDataUnit
 
 	@Override
 	public final DataUnit getEmbeddedData() {
-		return data;
+		return embeddedData;
 	}
 
 	@Override
 	public final void setEmbeddedData(final DataUnit dataUnit) {
-		this.data = dataUnit;
+		if (dataUnit != null
+				&& dataUnit instanceof NetworkProtocol) {
+			setEtherType(((NetworkProtocol) dataUnit).getEtherType());
+		}
+		this.embeddedData = dataUnit;
 	}
 
 	@Override
@@ -298,8 +296,8 @@ public class EthernetFrame extends EmbeddingProtocolDataUnit
 			currentFrameSize += VlanTag.SIZE;
 		}
 
-		if (data != null) {
-			currentFrameSize += data.encode().length;
+		if (embeddedData != null) {
+			currentFrameSize += embeddedData.encode().length;
 		}
 
 		ByteArrayBuilder bab = new ByteArrayBuilder();

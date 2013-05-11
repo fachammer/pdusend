@@ -1,11 +1,14 @@
 package at.fabianachammer.pdusend.type.pdu;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 import org.junit.Test;
 
+import at.fabianachammer.pdusend.type.DataUnit;
 import at.fabianachammer.pdusend.type.EtherType;
 import at.fabianachammer.pdusend.type.MacAddress;
 import at.fabianachammer.pdusend.type.TagProtocol;
+import at.fabianachammer.pdusend.type.decoder.DataUnitDecoder;
 import at.fabianachammer.pdusend.type.pdu.decoder.EthernetFrameDecoder;
 
 /**
@@ -173,5 +176,46 @@ public class EthernetFrameTest {
 	@Test
 	public final void getDecoderReturnsInstanceOfEthernetFrameDecoder() {
 		assertTrue(new EthernetFrame().getDecoder() instanceof EthernetFrameDecoder);
+	}
+
+	@Test
+	public final void setEmbeddedDataWithNetworkProtocolInstanceSetsEtherType() {
+		NetworkProtocolDataUnitFake fake =
+				new NetworkProtocolDataUnitFake();
+		EthernetFrame ef = new EthernetFrame();
+		EtherType expected = fake.getEtherType();
+
+		ef.setEmbeddedData(fake);
+
+		assertEquals(expected, ef.getEtherType());
+	}
+
+	/**
+	 * fake for having a class that implements both data unit and network
+	 * protocol.
+	 * 
+	 * @author fabian
+	 * 
+	 */
+	class NetworkProtocolDataUnitFake extends DataUnit implements
+			NetworkProtocol {
+
+		@Override
+		public EtherType getEtherType() {
+			return new EtherType((short) 1);
+		}
+
+		@Override
+		public DataUnitDecoder<? extends DataUnit> getDecoder() {
+			// TODO Auto-generated method stub
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public byte[] encode() {
+			// TODO Auto-generated method stub
+			throw new UnsupportedOperationException();
+		}
+
 	}
 }
