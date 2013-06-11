@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+	<xsd:include schemaLocation="dataUnit.xsd" />
+	<xsd:include schemaLocation="atomicDataUnit.xsd" />
+	<xsd:include schemaLocation="functionDataUnit.xsd" />
+
+	<xsd:element name="compositeDataUnit" type="compositeDataUnit" />
+
+	<xsd:complexType name="compositeDataUnit">
+		<xsd:complexContent>
+			<xsd:extension base="dataUnit">
+				<xsd:group ref="compositeDataUnitElements" />
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:group name="compositeDataUnitElements">
+		<xsd:sequence>
+			<xsd:group ref="dataUnitChoice" minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:group>
+
+	<xsd:group name="dataUnitChoice">
+		<xsd:choice>
+			<xsd:element name="atomicDataUnit" type="optionalAtomicDataUnit" />
+			<xsd:element name="functionDataUnit" type="functionDataUnit" />
+			<xsd:element name="compositeDataUnit" type="optionalCompositeDataUnit" />
+		</xsd:choice>
+	</xsd:group>
+
+	<xsd:complexType name="optionalAtomicDataUnit">
+		<xsd:complexContent>
+			<xsd:extension base="atomicDataUnit">
+				<xsd:attribute name="optional" type="xsd:boolean" />
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="optionalCompositeDataUnit">
+		<xsd:complexContent>
+			<xsd:extension base="compositeDataUnit">
+				<xsd:attribute name="optional" type="xsd:boolean" />
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+</xsd:schema>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+	<xsd:include schemaLocation="dataUnit.xsd" />
+
+	<xsd:element name="atomicDataUnit" type="atomicDataUnit" />
+
+	<xsd:complexType name="atomicDataUnit">
+		<xsd:complexContent>
+			<xsd:extension base="dataUnit">
+				<xsd:group ref="atomicDataUnitElements" />
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:group name="atomicDataUnitElements">
+		<xsd:sequence>
+			<xsd:group ref="lengthElements" />
+			<xsd:element name="values" type="atomicValueList"
+				minOccurs="0" />
+		</xsd:sequence>
+	</xsd:group>
+	
+	<xsd:group name="lengthElements">
+		<xsd:choice>
+			<xsd:element name="lengthInBytes" type="xsd:positiveInteger" />
+			<xsd:element name="lengthInBits" type="xsd:positiveInteger" />
+		</xsd:choice>
+	</xsd:group>
+
+	<xsd:complexType name="atomicValueList">
+		<xsd:sequence maxOccurs="unbounded">
+			<xsd:element name="value" type="atomicValue" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="atomicValue">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:hexBinary">
+				<xsd:attribute name="id" type="xsd:string" />
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+</xsd:schema>

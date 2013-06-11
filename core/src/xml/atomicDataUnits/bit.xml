@@ -1,0 +1,13 @@
+<atomicDataUnit id="bit">
+	<lengthInBits>1</lengthInBits>
+	<values>
+		<value id="zero">0</value>
+		<value id="one">1</value>
+		<value id="false">0</value>
+		<value id="true">1</value>
+		<value id="no">0</value>
+		<value id="yes">1</value>
+		<value id="off">0</value>
+		<value id="on">1</value>
+	</values>
+</atomicDataUnit>

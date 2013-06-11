@@ -1,0 +1,9 @@
+<protocolDataUnit id="ethernetFrame">
+	<macAddress id="destinationMacAddress" />
+	<macAddress id="sourceMacAddress" />
+	<etherType id="etherType" />
+	<vlanTag id="vlanTag" optional="true" />
+	<dataUnit id="embeddedData" />
+	<padding />
+	<crc32 />
+</protocolDataUnit>

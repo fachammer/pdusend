@@ -1,0 +1,10 @@
+<protocolDataUnit id="vlanTag">
+	<tagProtocol id="tagProtocol" />
+	<constrainedDataUnit id="priorityCodePoint">
+		<bitSize>3</bitSize>
+	</constrainedDataUnit>
+	<bit id="canonicalFormat" />
+	<constrainedDataUnit id="vlanId">
+		<bitSize>12</bitSize>
+	</constrainedDataUnit>
+</protocolDataUnit>
