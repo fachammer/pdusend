@@ -1,0 +1,7 @@
+<atomicDataUnit id="macAddress">
+	<lengthInBytes>6</lengthInBytes>
+	<values>
+		<value id="broadcast">ffffffffffff</value>
+		<value id="zero"></value>
+	</values>
+</atomicDataUnit>

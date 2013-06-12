@@ -4,7 +4,7 @@ usesMockito = true
 configurations{ integrationTestCompile.extendsFrom testCompile }
 
 dependencies{
-	compile project(":core")
+	compile project(":sender"), project(":core")
 	integrationTestCompile project(":dsl")
 }
 

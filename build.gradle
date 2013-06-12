@@ -4,14 +4,15 @@ apply plugin: "application"
 ext.JVM_PROJECTS = [
 	project(":core"),
 	project(":dsl"),
-	project(":ui")
+	project(":ui"),
+	project(":sender")
 ]
 
-def final JAVA_PLUGIN_PROJECTS = [project(":core")]
+def final JAVA_PLUGIN_PROJECTS = [project(":sender")]
 
 def final C_PROJECTS = [project(":native")]
-def final ASPECTJ_PROJECTS = [project(":core")]
 def final GROOVY_PROJECTS = [
+	project(":core"),
 	project(":dsl"),
 	project(":ui")
 ]
@@ -23,14 +24,6 @@ JAVA_PLUGIN_PROJECTS.each{ it.apply plugin: "java" }
 
 C_PROJECTS.each{ it.apply plugin: "cpp-lib" }
 
-ASPECTJ_PROJECTS.each{
-	it.configurations{
-		ajc
-		aspectPath
-		inpath
-	}
-}
-
 GROOVY_PROJECTS.each{ it.apply plugin: "groovy" }
 
 // Property Evaluation
@@ -39,65 +32,11 @@ subprojects{
 		proj.ext.usesJunit = false
 		proj.ext.usesMockito = false
 		proj.ext.usesOval = false
-		if(ASPECTJ_PROJECTS.contains(proj)){
-			proj.tasks.add("compileAspects"){
-				doLast{
-					ant.taskdef(
-							resource: "org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties",
-							classpath: configurations.ajc.asPath)
-					ant.iajc(
-							classpath: sourceSets.main.compileClasspath.asPath,
-							destDir: sourceSets.main.output.classesDir.absolutePath,
-							source: project.convention.plugins.java.sourceCompatibility,
-							target: project.convention.plugins.java.targetCompatibility,
-							sourceRootCopyFilter: '**/*.java',
-							aspectPath: configurations.aspectPath.asPath,
-							fork: true,
-							forkclasspath: project.configurations.ajc.asPath,
-							showWeaveInfo: true,
-							verbose: true) {
-								inpath {
-									pathelement(location: configurations.aspectPath.asPath)
-									pathelement(location: sourceSets.main.output.classesDir)
-								}
-							}
-
-				}
-			}
 		}
-	}
 
 	afterEvaluate{ proj ->
 		if(proj.usesJunit || proj.usesMockito || proj.usesOval){
 			proj.repositories{ mavenCentral() }
-		}
-
-		if(ASPECTJ_PROJECTS.contains(proj)){
-			proj.dependencies{
-				ajc "org.aspectj:aspectjrt:1.7.2", "org.aspectj:aspectjtools:1.7.2"
-				compile configurations.ajc
-			}
-			proj.eclipse{
-				classpath{
-					plusConfigurations += proj.configurations.ajc
-				}
-				project{
-					natures += [
-						"org.eclipse.ajdt.ui.ajnature"
-					]
-
-					buildCommand "org.eclipse.ajdt.core.ajbuilder"
-				}
-			}
-
-			if(GROOVY_PROJECTS.contains(proj)){
-				proj.tasks.compileAspects.dependsOn(proj.tasks.compileGroovy)
-			}
-			else{
-				proj.tasks.compileAspects.dependsOn(proj.tasks.compileJava)
-			}
-
-			proj.tasks.test.dependsOn(proj.tasks.compileAspects)
 		}
 
 		if(C_PROJECTS.contains(proj)){

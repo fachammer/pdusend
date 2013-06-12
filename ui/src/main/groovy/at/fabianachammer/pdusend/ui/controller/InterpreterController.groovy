@@ -2,6 +2,7 @@ package at.fabianachammer.pdusend.ui.controller;
 
 import groovy.lang.GroovyCodeSource
 import at.fabianachammer.pdusend.dsl.Interpreter
+import at.fabianachammer.pdusend.dsl.InterpreterImpl
 import at.fabianachammer.pdusend.ui.view.InterpreterView
 import groovy.transform.PackageScope
 import net.sf.oval.Check
@@ -31,7 +32,7 @@ public abstract class InterpreterController implements Controller{
 	 * creates a new InterpreterController without any views.
 	 */
 	InterpreterController(){
-		interpreter = new Interpreter()
+		interpreter = new InterpreterImpl()
 		views = new ArrayList<InterpreterView>()
 	}
 

@@ -1,0 +1,26 @@
+usesJunit = true
+usesMockito = true
+usesOval = true
+
+configurations{
+	integrationTestCompile.extendsFrom testCompile
+	integrationTestRuntime.extendsFrom testRuntime
+}
+
+dependencies{ compile project(":core"), "commons-lang:commons-lang:2.6" }
+
+sourceSets{
+	main{ java{ srcDir "src/main/groovy" } }
+	integrationTest{
+		java.srcDirs "src/integration-test/java"
+		compileClasspath += main.output
+		runtimeClasspath += main.output
+	}
+}
+
+compileIntegrationTestJava.dependsOn(project(":native").tasks.assemble)
+build.dependsOn(compileIntegrationTestJava)
+test.dependsOn(project(":native").tasks.assemble)
+test{
+	systemProperty "java.library.path", project(":native").buildDir.path + "/binaries/"
+}
