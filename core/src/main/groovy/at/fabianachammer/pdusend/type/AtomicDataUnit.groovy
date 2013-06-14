@@ -7,14 +7,29 @@ package at.fabianachammer.pdusend.type
  */
 class AtomicDataUnit implements DataUnit {
 
+	private int sizeInBits
 	private byte[] data
-	
+
+	AtomicDataUnit(int sizeInBits){
+		this(sizeInBits, new byte[Math.ceil(sizeInBits / Byte.SIZE)])
+	}
+
 	AtomicDataUnit(byte... data){
+		this(data.length * Byte.SIZE, data)
+	}
+
+	AtomicDataUnit(int sizeInBits, byte... data){
+		this.sizeInBits = sizeInBits
 		this.data = data
 	}
 
 	@Override
 	byte[] encode() {
 		return data
+	}
+
+	@Override
+	public int sizeInBits() {
+		return sizeInBits
 	}
 }

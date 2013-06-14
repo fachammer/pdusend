@@ -19,16 +19,16 @@
 
 	<xsd:group name="atomicDataUnitElements">
 		<xsd:sequence>
-			<xsd:group ref="lengthElements" />
+			<xsd:group ref="sizeElements" />
 			<xsd:element name="values" type="atomicValueList"
 				minOccurs="0" />
 		</xsd:sequence>
 	</xsd:group>
 
-	<xsd:group name="lengthElements">
+	<xsd:group name="sizeElements">
 		<xsd:choice>
-			<xsd:element name="lengthInBytes" type="xsd:positiveInteger" />
-			<xsd:element name="lengthInBits" type="xsd:positiveInteger" />
+			<xsd:element name="sizeInBytes" type="xsd:positiveInteger" />
+			<xsd:element name="sizeInBytes" type="xsd:positiveInteger" />
 		</xsd:choice>
 	</xsd:group>
 

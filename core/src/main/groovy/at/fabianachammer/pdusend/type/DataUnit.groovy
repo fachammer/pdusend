@@ -12,4 +12,6 @@ interface DataUnit {
 	 * @return representation of the data unit in bytes to ensure it can be sent over the network
 	 */
 	byte[] encode()
+	
+	int sizeInBits()
 }

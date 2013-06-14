@@ -17,12 +17,18 @@ class FunctionDataUnit implements DataUnit {
 	@Override
 	byte[] encode() {
 		if(result == null){
-			result = assignValue()
+			result = calculateResult()
 		}
 		result
 	}
 
-	private assignValue(){
+	private byte[] calculateResult(){
 		function() ?: []
+	}
+
+	@Override
+	public int sizeInBits() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException();
 	}
 }
