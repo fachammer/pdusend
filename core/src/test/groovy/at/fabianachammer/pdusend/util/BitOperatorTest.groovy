@@ -28,42 +28,57 @@ class BitOperatorTest {
 	}
 
 	@Test
-	void setBitWithZeroAsValueAndZeroAsIndexReturnsOne(){
+	void setBitOnIndexWithZeroAsValueAndZeroAsIndexReturnsOne(){
 		assertEquals(1, BitOperator.setBitOnIndex(0, 0))
 	}
 
 	@Test
-	void setBitWithOneAsValueAndZeroAsIndexReturnsOne(){
+	void setBitOnIndexWithOneAsValueAndZeroAsIndexReturnsOne(){
 		assertEquals(1, BitOperator.setBitOnIndex(1, 0))
 	}
 
 	@Test
-	void setBitWithZeroAsValueAndOneAsIndexReturnsTwo(){
+	void setBitOnIndexWithZeroAsValueAndOneAsIndexReturnsTwo(){
 		assertEquals(2, BitOperator.setBitOnIndex(0, 1))
 	}
 
 	@Test
-	void setBitWithZeroAsValueAndThrityOneAsIndexReturnsIntegerMinimumValue(){
+	void setBitOnIndexWithZeroAsValueAndThrityOneAsIndexReturnsIntegerMinimumValue(){
 		assertEquals(Integer.MIN_VALUE, BitOperator.setBitOnIndex(0, 31))
 	}
 
 	@Test
-	void clearBitWithZeroAsValueAndZeroAsIndexReturnsZero(){
+	void clearBitOnIndexWithZeroAsValueAndZeroAsIndexReturnsZero(){
 		assertEquals(0, BitOperator.clearBitOnIndex(0, 0))
 	}
 
 	@Test
-	void clearBitWithOneAsValueAndZeroAsIndexReturnsZero(){
+	void clearBitOnIndexWithOneAsValueAndZeroAsIndexReturnsZero(){
 		assertEquals(0, BitOperator.clearBitOnIndex(1, 0))
 	}
 
 	@Test
-	void clearBitWithOneAsValueAndOneAsIndexReturnsOne(){
+	void clearBitOnIndexWithOneAsValueAndOneAsIndexReturnsOne(){
 		assertEquals(1, BitOperator.clearBitOnIndex(1, 1))
 	}
 
 	@Test
-	void clearBitWithMinusOneAsValueAndThrityOneAsIndexReturnsIntegerMaximumValue(){
+	void clearBitOnIndexWithMinusOneAsValueAndThrityOneAsIndexReturnsIntegerMaximumValue(){
 		assertEquals(Integer.MAX_VALUE, BitOperator.clearBitOnIndex(-1, 31))
+	}
+	
+	@Test
+	void bitCountFromNumberWithZeroReturnsOne(){
+		assertEquals(1, BitOperator.bitCountFromNumber(0))
+	}
+	
+	@Test
+	void bitCountFromNumberWithOneReturnsOne(){
+		assertEquals(1, BitOperator.bitCountFromNumber(1))
+	}
+	
+	@Test
+	void bitCountFromNumberWithTenReturnsFour(){
+		assertEquals(4, BitOperator.bitCountFromNumber(10))
 	}
 }

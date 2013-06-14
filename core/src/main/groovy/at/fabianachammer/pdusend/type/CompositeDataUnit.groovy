@@ -16,13 +16,14 @@ class CompositeDataUnit implements DataUnit {
 	private List<DataUnit> childDataUnits
 
 	private byte[] currentChildData
-	private int currentChildBitCounter
+	private int currentChildBitIndex
+	private int currentChildArrayIndex
 
 	private byte[] compositeData
-	private int compositeBitCounter
+	private int compositeBitIndex
+	private int compositeArrayIndex
 
 	CompositeDataUnit(){
-		compositeBitCounter = 0
 		childDataUnits = new ArrayList<DataUnit>()
 	}
 
@@ -33,18 +34,21 @@ class CompositeDataUnit implements DataUnit {
 
 	@Override
 	byte[] encode() {
-		initializeCompositeToNecessarySize()
+		initializeComposite()
+
 		populateComposite()
+		
 		return compositeData
 	}
-
-	private initializeCompositeToNecessarySize(){
-		int totalBitCount = sizeInBits()
-		int byteArraySize = getNecessaryByteArraySizeFromBitCount(totalBitCount)
-
-		compositeData = new byte[byteArraySize]
+	
+	private void initializeComposite(){
+		int totalCompositeBitCount = sizeInBits()
+		int compositeArraySize = getNecessaryByteArraySizeFromBitCount(totalCompositeBitCount)
+		compositeData = new byte[compositeArraySize]
+		compositeArrayIndex = compositeArraySize - 1
+		compositeBitIndex = 0
 	}
-
+	
 	@Override
 	int sizeInBits() {
 		childDataUnits*.sizeInBits().sum(0)
@@ -55,49 +59,73 @@ class CompositeDataUnit implements DataUnit {
 	}
 	
 	private void populateComposite(){
-		childDataUnits.each {
-			currentChildData = it.encode()
-			copyCurrentChildDataToComposite(it.sizeInBits())
+		childDataUnits.reverse().each {DataUnit child ->
+			copyChildToComposite(child)
 		}
 	}
-
-	private void copyCurrentChildDataToComposite(int childBitCount){
-		for(currentChildBitCounter = 0; currentChildBitCounter < childBitCount; incrementBitCounters()){
-			copyCurrentBitFromChildToComposite()
-		}
-	}
-
-	private void incrementBitCounters(){
-		currentChildBitCounter++
-		compositeBitCounter++
-	}
-
-	private void copyCurrentBitFromChildToComposite(){
-		if(isCurrentChildBitSet()){
-			setCurrentCompositeBit()
-		}
-	}
-
-	private boolean isCurrentChildBitSet(){
-		int childArrayIndex = getByteArrayIndexFromBitCounter(currentChildBitCounter)
-		int childBitIndex = getBitIndexFromBitCounter(currentChildBitCounter) 
+	
+	private void copyChildToComposite(DataUnit child){
+		currentChildData = child.encode()
+		currentChildArrayIndex = currentChildData.length - 1
+		int childBitCount = child.sizeInBits()
 		
+		copyCurrentChildDataToComposite(childBitCount)
+	}
+	
+	private void copyCurrentChildDataToComposite(int childBitCount){
+		int childBitCounter = currentChildBitIndex = 0
+		for(; childBitCounter < childBitCount; childBitCounter++){
+			copyCurrentChildBitToComposite()
+			incrementBitIndices()
+		}
+	}
+	
+	private void incrementBitIndices(){
+		currentChildBitIndex++
+		compositeBitIndex++
+	}
+	
+	private void copyCurrentChildBitToComposite(){		
+		updateIndices()
+		setCompositeBitIfNecessary()
+	}
+	
+	private void updateIndices(){
+		updateCurrentChildIndices()
+		updateCompositeIndices()
+	}
+	
+	private void updateCurrentChildIndices(){
+		if(doesBitIndexNeedToBeReset(currentChildBitIndex)){
+			currentChildBitIndex = 0
+			currentChildArrayIndex--
+		}
+	}
+	
+	private void updateCompositeIndices(){
+		if(doesBitIndexNeedToBeReset(compositeBitIndex)){
+			compositeBitIndex = 0
+			compositeArrayIndex--
+		}
+	}
+	
+	private boolean doesBitIndexNeedToBeReset(int bitIndex){
+		bitIndex / Byte.SIZE == 1
+	}
+	
+	private void setCompositeBitIfNecessary(){
+		if(isChildBitSetOnIndex(currentChildArrayIndex, currentChildBitIndex)){
+			setCompositeBitOnIndex(compositeArrayIndex, compositeBitIndex)
+		}
+	}
+	
+	private boolean isChildBitSetOnIndex(int childArrayIndex, int childBitIndex){
 		currentChildData[childArrayIndex].hasBitSetOnIndex(childBitIndex)
 	}
 	
-	private int getByteArrayIndexFromBitCounter(int bitCounter){
-		Math.floor(bitCounter / Byte.SIZE)
-	}
-
-	private int getBitIndexFromBitCounter(int bitCounter){
-		bitCounter % Byte.SIZE
-	}
-
-	private void setCurrentCompositeBit(){
-		int compositeArrayIndex = getByteArrayIndexFromBitCounter(compositeBitCounter)
-		int compositeBitIndex = getBitIndexFromBitCounter(compositeBitCounter)
-
-		compositeData[compositeArrayIndex] = compositeData[compositeArrayIndex].setBitOnIndex(compositeBitIndex)
+	private void setCompositeBitOnIndex(int compositeArrayIndex, int compositeBitIndex){
+		byte currentCompositeByte = compositeData[compositeArrayIndex]
+		compositeData[compositeArrayIndex] = currentCompositeByte.orBitOnIndex(compositeBitIndex)
 	}
 
 	void addDataUnit(DataUnit dataUnitToAdd){

@@ -14,7 +14,7 @@ final class BitOperator {
 	private BitOperator() {
 	}
 	
-	static boolean isBitSetOnIndex(Number value, Number index){
+	static boolean isBitSetOnIndex(Number value, int index){
 		((1 << index) | value) == value
 	}
 
@@ -26,18 +26,29 @@ final class BitOperator {
 	 *            value to be changed
 	 * @param index
 	 *            index of the bit to manipulate
-	 * @param set
-	 *            state to which the bit should be set (true: 1, false: 0)
 	 * @return value that changed the bit on the specified index to the
 	 *         specified state
 	 */
-	static int setBitOnIndex(Number value, Number index) {
+	static Number setBitOnIndex(Number value, int index) {
 		int setMask = (1 << index)
 		value | setMask
 	}
 
-	static int clearBitOnIndex(Number value, Number index){
-		int clearMask = (-1) ^ (1 << index)
+	static Number clearBitOnIndex(Number value, int index){
+		int clearMask = ~(1 << index)
 		value & clearMask
+	}
+	
+	static int bitCountFromNumber(Number value){
+		if(value == 0)
+			return 1
+			
+		int bitCount = 0
+		while(value != 0){
+			value = value >> 1
+			bitCount++
+		}
+		
+		return bitCount
 	}
 }

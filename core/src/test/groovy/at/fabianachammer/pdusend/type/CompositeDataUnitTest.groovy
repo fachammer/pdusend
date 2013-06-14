@@ -114,4 +114,20 @@ class CompositeDataUnitTest {
 
 		assertArrayEquals(expected, actual)
 	}
+
+	@Test
+	void encodeWithTwoAtomicDataUnitsWithFiveAsSizeInBitsAndAllFiveBitsSetReturnsByteArrayWithLengthTwoAndAllLastBitsSet(){
+		int sizeInBits = 5
+		byte fiveBitsSet = 31
+		DataUnit[] atomicDataUnits = [
+			new AtomicDataUnit(sizeInBits, fiveBitsSet),
+			new AtomicDataUnit(sizeInBits, fiveBitsSet)
+		]
+		DataUnit compositeDataUnit = new CompositeDataUnit(atomicDataUnits)
+		byte[] expected = [3, -1]
+		
+		byte[] actual = compositeDataUnit.encode()
+		
+		assertArrayEquals(expected, actual)
+	}
 }
