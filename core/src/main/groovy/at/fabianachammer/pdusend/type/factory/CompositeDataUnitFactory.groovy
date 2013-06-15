@@ -10,7 +10,14 @@ import at.fabianachammer.pdusend.type.DataUnit
 class CompositeDataUnitFactory implements DataUnitFactory {
 
 	static DataUnitFactory makeFromDataUnitFactories(DataUnitFactory... childDataUnitFactories){
+		if(childDataUnitFactories == null){
+			throwChildDataUnitFactoriesMustNotBeNullNullPointerException()
+		}
 		return new CompositeDataUnitFactory(childDataUnitFactories)
+	}
+	
+	private static void throwChildDataUnitFactoriesMustNotBeNullNullPointerException(){
+		throw new NullPointerException("child data unit factories must not be null")
 	}
 	
 	private List<DataUnitFactory> childDataUnitFactories

@@ -23,6 +23,11 @@ class CompositeDataUnitFactoryTest {
 		
 		assertTrue(dataUnitFacotry instanceof CompositeDataUnitFactory)
 	}
+	
+	@Test(expected = NullPointerException.class)
+	void makeFromDataUnitFactoriesWithNullThrowsNullPointerException(){
+		CompositeDataUnitFactory.makeFromDataUnitFactories(null)
+	}
 
 	@Test
 	void createDataUnitReturnsInstanceOfCompositeDataUnit(){
