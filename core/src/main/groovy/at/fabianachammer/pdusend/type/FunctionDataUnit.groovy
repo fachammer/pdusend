@@ -1,5 +1,8 @@
 package at.fabianachammer.pdusend.type;
 
+import java.util.logging.LogManager;
+import java.util.logging.Logger
+
 /**
  * data unit that performs a defined functionality upon encoding to create a byte array representation.
  * @author fabian
@@ -7,28 +10,47 @@ package at.fabianachammer.pdusend.type;
  */
 class FunctionDataUnit implements DataUnit {
 
+	private static final int SIZE_IN_BITS_UNSET_INDICATOR = -1
+	
 	private Closure<byte[]> function
-	private byte[] result
+	private byte[] encodedData
+	private int sizeInBits
 
-	FunctionDataUnit(Closure<byte[]> function) {
+	private FunctionDataUnit(Closure<byte[]> function) {
+		this(function, SIZE_IN_BITS_UNSET_INDICATOR)
+	}
+	
+	private FunctionDataUnit(Closure<byte[]> function, int sizeInBits){
 		this.function = function
+		this.sizeInBits = sizeInBits
+	}
+	
+	private int getEncodedDataLength(){
+		return encode().length
 	}
 
 	@Override
 	byte[] encode() {
-		if(result == null){
-			result = calculateResult()
+		if(encodedData == null){
+			encodedData = calculateEncodedData()
 		}
-		result
+		return encodedData
 	}
 
-	private byte[] calculateResult(){
+	private byte[] calculateEncodedData(){
 		function() ?: []
 	}
 
 	@Override
 	public int sizeInBits() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException();
+		if(isSizeInBitsUnset()){
+			sizeInBits = encode().length * Byte.SIZE
+		}
+		
+		return sizeInBits
+	}
+	
+	private boolean isSizeInBitsUnset(){
+		sizeInBits == SIZE_IN_BITS_UNSET_INDICATOR
 	}
 }

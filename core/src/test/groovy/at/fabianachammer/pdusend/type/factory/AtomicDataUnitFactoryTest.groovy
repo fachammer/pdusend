@@ -1,4 +1,4 @@
-package at.fabianachammer.pdusent.type.factory;
+package at.fabianachammer.pdusend.type.factory;
 
 import static org.junit.Assert.*;
 
@@ -23,12 +23,12 @@ class AtomicDataUnitFactoryTest {
 
 		assertTrue(dataUnitFactory instanceof AtomicDataUnitFactory)
 	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	void makeWithZeroAsDataUnitSizeInBitsThrowsIllegalArgumentException(){
 		AtomicDataUnitFactory.makeFromDataUnitSizeInBits(0)
 	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	void makeWithMinusOneAsDataUnitSizeInBitsThrowsIllegalArgumentExcepetion(){
 		AtomicDataUnitFactory.makeFromDataUnitSizeInBits(-1)
@@ -57,25 +57,25 @@ class AtomicDataUnitFactoryTest {
 	}
 
 	@Test
-	void addPredefinedValueBykeyAddsNewPropertyToAtomicDataUnitFactoryThatReturnsAtomicDataUnitWithThatPredefinedValue(){
+	void addPredefinedValueByKeyMakesPropertyAccessesOnTheFactoryWithTheGivenStringInAddPredefinedValueByKeyReturnTheSpecifiedValue(){
 		int dataUnitSizeInBits = 1
-		AtomicDataUnitFactory atomicDataUnitFactory = AtomicDataUnitFactory.makeFromDataUnitSizeInBits(dataUnitSizeInBits)		
+		AtomicDataUnitFactory atomicDataUnitFactory = AtomicDataUnitFactory.makeFromDataUnitSizeInBits(dataUnitSizeInBits)
 		atomicDataUnitFactory.addPredefinedValueByKey("on", 1 as byte)
 		DataUnit on = atomicDataUnitFactory.on
 		byte[] expected = [1]
-		
+
 		byte[] actual = on.encode()
-		
+
 		assertArrayEquals(expected, actual)
 	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	void addPredefinedValueByKeyWithIllegalSizeDataThrowsIllegalArgumentException(){
 		int dataUnitSizeInBits = 1
 		AtomicDataUnitFactory atomicDataUnitFactory = AtomicDataUnitFactory.makeFromDataUnitSizeInBits(dataUnitSizeInBits)
 		atomicDataUnitFactory.addPredefinedValueByKey("on", 2 as byte)
 	}
-	
+
 	@Test(expected = MissingPropertyException.class)
 	void accessingNonExistenPropertyOnAtomicDataUnitFactoryThrowsMissingPropertyException(){
 		AtomicDataUnitFactory atomicDataUnitFactory = AtomicDataUnitFactory.makeFromDataUnitSizeInBits(1)

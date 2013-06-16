@@ -42,4 +42,20 @@ class FunctionDataUnitTest {
 		
 		assertArrayEquals([] as byte[], actual)
 	}
+	
+	@Test
+	void sizeInBitsWithOneAsSizeInBitsReturnsOne(){
+		FunctionDataUnit functionDataUnit = new FunctionDataUnit({}, 1)
+		
+		assertEquals(1, functionDataUnit.sizeInBits())
+	}
+	
+	@Test
+	void sizeInBitsWithoutDefinedSizeInBitsReturnsEncodedDataLengthTimesEight(){
+		int encodedDataLength = 1
+		FunctionDataUnit functionDataUnit = new FunctionDataUnit({ return new byte[encodedDataLength]})
+		int expectedLength = encodedDataLength * 8
+		
+		assertEquals(expectedLength, functionDataUnit.sizeInBits())
+	}
 }

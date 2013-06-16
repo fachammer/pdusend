@@ -1,4 +1,4 @@
-package at.fabianachammer.pdusent.type.factory;
+package at.fabianachammer.pdusend.type.factory;
 
 import static org.junit.Assert.*;
 

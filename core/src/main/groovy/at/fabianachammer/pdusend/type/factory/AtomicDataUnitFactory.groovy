@@ -16,12 +16,12 @@ class AtomicDataUnitFactory implements DataUnitFactory {
 
 	static DataUnitFactory makeFromDataUnitSizeInBits(int dataUnitSizeInBits){
 		if(dataUnitSizeInBits < 1){
-			throwDataUnitSizeTooLowIllegalArgumentException()
+			throwDataUnitSizeTooLowException()
 		}
 		return new AtomicDataUnitFactory(dataUnitSizeInBits)
 	}
 
-	private static void throwDataUnitSizeTooLowIllegalArgumentException(){
+	private static void throwDataUnitSizeTooLowException(){
 		throw new IllegalArgumentException("data unit size in bits must be greater than 0")
 	}
 
@@ -62,14 +62,14 @@ class AtomicDataUnitFactory implements DataUnitFactory {
 		if(predefinedValuesHasKey(name)){
 			return predefinedValues[name]
 		}
-		throwPropertyMissingException(name)
+		throwMissingPropertyException(name)
 	}
 
 	private boolean predefinedValuesHasKey(String name){
 		return predefinedValues.containsKey(name)
 	}
 
-	private void throwPropertyMissingException(String name){
+	private void throwMissingPropertyException(String name){
 		throw new MissingPropertyException("property " + name +" doesn't exist and isn't a predefined value of this factory")
 	}
 }

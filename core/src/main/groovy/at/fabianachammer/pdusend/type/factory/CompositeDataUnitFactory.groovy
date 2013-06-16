@@ -11,12 +11,12 @@ class CompositeDataUnitFactory implements DataUnitFactory {
 
 	static DataUnitFactory makeFromDataUnitFactories(DataUnitFactory... childDataUnitFactories){
 		if(childDataUnitFactories == null){
-			throwChildDataUnitFactoriesMustNotBeNullNullPointerException()
+			throwChildDataUnitFactoriesMustNotBeNullException()
 		}
 		return new CompositeDataUnitFactory(childDataUnitFactories)
 	}
 	
-	private static void throwChildDataUnitFactoriesMustNotBeNullNullPointerException(){
+	private static void throwChildDataUnitFactoriesMustNotBeNullException(){
 		throw new NullPointerException("child data unit factories must not be null")
 	}
 	
