@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import at.fabianachammer.pdusend.type.DataUnit
 import at.fabianachammer.pdusend.type.FunctionDataUnit
 import at.fabianachammer.pdusend.util.validation.ValueNullException;
+import at.fabianachammer.pdusend.util.validation.ValueTooLowException;
 
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -47,6 +48,11 @@ class FunctionDataUnitFactoryTest {
 	@Test(expected = ValueNullException.class)
 	void makeFromClosureAndDataUnitSizeInBitsWithNullClosureThrowsValueNullException(){
 		FunctionDataUnitFactory.makeFromClosureAndDataUnitSizeInBits(null, 1)
+	}
+	
+	@Test(expected = ValueTooLowException.class)
+	void makeFromClosureAndDataUnitSizeInBitsWithIllegalSizeInBitsThrowsValueTooLowException(){
+		FunctionDataUnitFactory.makeFromClosureAndDataUnitSizeInBits({ }, 0)
 	}
 
 	@Test

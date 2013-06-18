@@ -23,7 +23,7 @@ class BitOperatorTest {
 	}
 	
 	@Test
-	void isSetWithZeroAsValueAndThirtyOneAsIndexReturnsFalse(){
+	void isBitSetOnIndexWithZeroAsValueAndThirtyOneAsIndexReturnsFalse(){
 		assertFalse(BitOperator.isBitSetOnIndex(0, 31))
 	}
 

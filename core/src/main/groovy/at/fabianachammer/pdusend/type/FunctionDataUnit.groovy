@@ -1,7 +1,5 @@
-package at.fabianachammer.pdusend.type;
+package at.fabianachammer.pdusend.type
 
-import java.util.logging.LogManager;
-import java.util.logging.Logger
 
 /**
  * data unit that performs a defined functionality upon encoding to create a byte array representation.
@@ -16,19 +14,15 @@ class FunctionDataUnit implements DataUnit {
 	private byte[] encodedData
 	private int sizeInBits
 
-	private FunctionDataUnit(Closure<byte[]> function) {
+	FunctionDataUnit(Closure<byte[]> function) {
 		this(function, SIZE_IN_BITS_UNSET_INDICATOR)
 	}
 	
-	private FunctionDataUnit(Closure<byte[]> function, int sizeInBits){
+	FunctionDataUnit(Closure<byte[]> function, int sizeInBits){
 		this.function = function
 		this.sizeInBits = sizeInBits
 	}
 	
-	private int getEncodedDataLength(){
-		return encode().length
-	}
-
 	@Override
 	byte[] encode() {
 		if(encodedData == null){
@@ -44,10 +38,14 @@ class FunctionDataUnit implements DataUnit {
 	@Override
 	public int sizeInBits() {
 		if(isSizeInBitsUnset()){
-			sizeInBits = encode().length * Byte.SIZE
+			setSizeInBitsAutomatically()
 		}
 		
 		return sizeInBits
+	}
+	
+	private void setSizeInBitsAutomatically(){
+		sizeInBits = encode().length * Byte.SIZE
 	}
 	
 	private boolean isSizeInBitsUnset(){

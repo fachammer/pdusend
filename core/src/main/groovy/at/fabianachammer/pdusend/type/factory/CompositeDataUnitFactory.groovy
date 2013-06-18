@@ -22,10 +22,6 @@ class CompositeDataUnitFactory implements DataUnitFactory {
 		Validator v = new Validator(childDataUnitFactories, "child data unit factories")
 		v.validateNotNull()
 	}
-	
-	private CompositeDataUnitFactory(){
-		childDataUnitFactories = []
-	}
 
 	private CompositeDataUnitFactory(DataUnitFactory... childDataUnitFactories){
 		this.childDataUnitFactories = childDataUnitFactories
@@ -35,8 +31,6 @@ class CompositeDataUnitFactory implements DataUnitFactory {
 	public DataUnit createDataUnit() {
 		DataUnit[] childDataUnits = childDataUnitFactories*.createDataUnit()
 
-		CompositeDataUnit compositeDataUnit = new CompositeDataUnit(childDataUnits)
-
-		return compositeDataUnit
+		return new CompositeDataUnit(childDataUnits)
 	}
 }

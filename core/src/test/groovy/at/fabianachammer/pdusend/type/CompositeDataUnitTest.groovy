@@ -64,30 +64,6 @@ class CompositeDataUnitTest {
 	}
 
 	@Test
-	void addingOneDataUnitOnEmptyCompositeDataUnitMakesEncodeReturnByteRepresentationOfThatDataUnit(){
-		DataUnit compositeDataUnit = new CompositeDataUnit()
-		byte[] atomicInput = [1]
-		byte[] expected = atomicInput
-		compositeDataUnit.addDataUnit(new AtomicDataUnit(atomicInput))
-
-		byte[] actual = compositeDataUnit.encode()
-
-		assertArrayEquals(expected, actual)
-	}
-
-	@Test
-	void removingOneDataUnitFromCompositeDataUnitWithOneDataUnitMakesEncodeReturnAnEmptyArray(){
-		DataUnit atomicDataUnit = new AtomicDataUnit(1 as byte)
-		DataUnit compositeDataUnit = new CompositeDataUnit(atomicDataUnit)
-		compositeDataUnit.removeDataUnit(atomicDataUnit)
-		byte[] expected = []
-
-		byte[] actual = compositeDataUnit.encode()
-
-		assertArrayEquals(expected, actual)
-	}
-
-	@Test
 	void sizeInBitsWithTwoAtomicDataUnitsWithOneAsSizeInBitsReturnsTwo(){
 		DataUnit[] atomicDataUnits = [
 			new AtomicDataUnit(1),
@@ -99,6 +75,16 @@ class CompositeDataUnitTest {
 		int actualSize = compositeDataUnit.sizeInBits()
 
 		assertEquals(expectedSize, actualSize)
+	}
+	
+	@Test
+	void sizeInBitsWithoutAnyDataUnitsReturnsZero(){
+		DataUnit compositeDataUnit = new CompositeDataUnit()
+		int expectedSizeInBits = 0
+		
+		int actualSizeInBits = compositeDataUnit.sizeInBits()
+		
+		assertEquals(expectedSizeInBits, actualSizeInBits)
 	}
 
 	@Test

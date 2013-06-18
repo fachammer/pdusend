@@ -41,9 +41,7 @@ class FunctionDataUnitFactory implements DataUnitFactory {
 
 	private static void validateDataUnitSizeInBits(int dataUnitSizeInBits){
 		Validator v = new Validator(dataUnitSizeInBits, "data unit size in bits")
-		v.validateGreaterThan(MIN_DATA_UNIT_SIZE_IN_BITS - 1)
-		
-		// TODO: change to validateGreaterThanOrEquals
+		v.validateGreaterThanOrEquals(MIN_DATA_UNIT_SIZE_IN_BITS)
 	}
 	
 	private FunctionDataUnitFactory(Closure<byte[]> function){

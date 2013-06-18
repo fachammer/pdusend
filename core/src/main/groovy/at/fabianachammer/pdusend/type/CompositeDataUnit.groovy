@@ -51,11 +51,12 @@ class CompositeDataUnit implements DataUnit {
 	
 	@Override
 	int sizeInBits() {
-		childDataUnits*.sizeInBits().sum(0)
+		childDataUnits*.sizeInBits().sum() ?: 0
 	}
 
 	private int getNecessaryByteArraySizeFromBitCount(int bitCount){
-		Math.ceil(bitCount / Byte.SIZE)
+		def byteCount = bitCount / Byte.SIZE
+		Math.ceil(byteCount)
 	}
 	
 	private void populateComposite(){
@@ -102,15 +103,15 @@ class CompositeDataUnit implements DataUnit {
 		}
 	}
 	
+	private boolean doesBitIndexNeedToBeReset(int bitIndex){
+		bitIndex / Byte.SIZE == 1
+	}
+	
 	private void updateCompositeIndices(){
 		if(doesBitIndexNeedToBeReset(compositeBitIndex)){
 			compositeBitIndex = 0
 			compositeArrayIndex--
 		}
-	}
-	
-	private boolean doesBitIndexNeedToBeReset(int bitIndex){
-		bitIndex / Byte.SIZE == 1
 	}
 	
 	private void setCompositeBitIfNecessary(){
@@ -126,13 +127,5 @@ class CompositeDataUnit implements DataUnit {
 	private void setCompositeBitOnIndex(int compositeArrayIndex, int compositeBitIndex){
 		byte currentCompositeByte = compositeData[compositeArrayIndex]
 		compositeData[compositeArrayIndex] = currentCompositeByte.orBitOnIndex(compositeBitIndex)
-	}
-
-	void addDataUnit(DataUnit dataUnitToAdd){
-		childDataUnits.add(dataUnitToAdd)
-	}
-
-	void removeDataUnit(DataUnit dataUnitToRemove){
-		childDataUnits.remove(dataUnitToRemove)
 	}
 }
