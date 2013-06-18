@@ -3,6 +3,7 @@ package at.fabianachammer.pdusend.type.factory
 import at.fabianachammer.pdusend.type.AtomicDataUnit
 import at.fabianachammer.pdusend.type.DataUnit
 import at.fabianachammer.pdusend.util.Extension
+import at.fabianachammer.pdusend.util.validation.Validator
 
 /**
  * @author fabian
@@ -10,23 +11,25 @@ import at.fabianachammer.pdusend.util.Extension
  */
 class AtomicDataUnitFactory implements DataUnitFactory {
 
+	private static int DATA_UNIT_SIZE_IN_BITS_MIN = 0
+	
+	private int dataUnitSizeInBits
+	private Map<String, AtomicDataUnit> predefinedValues
+	
 	static{
 		Extension.extend()
 	}
 
 	static DataUnitFactory makeFromDataUnitSizeInBits(int dataUnitSizeInBits){
-		if(dataUnitSizeInBits < 1){
-			throwDataUnitSizeTooLowException()
-		}
+		validateDataUnitSizeInBits(dataUnitSizeInBits)
+
 		return new AtomicDataUnitFactory(dataUnitSizeInBits)
 	}
-
-	private static void throwDataUnitSizeTooLowException(){
-		throw new IllegalArgumentException("data unit size in bits must be greater than 0")
+	
+	private static void validateDataUnitSizeInBits(int dataUnitSizeInBits){
+		Validator v = new Validator(dataUnitSizeInBits, "data unit size in bits")
+		v.validateGreaterThan(DATA_UNIT_SIZE_IN_BITS_MIN)
 	}
-
-	private int dataUnitSizeInBits
-	private Map<String, AtomicDataUnit> predefinedValues
 
 	private AtomicDataUnitFactory(int dataUnitsSizeInBits){
 		this.dataUnitSizeInBits = dataUnitsSizeInBits
@@ -39,23 +42,25 @@ class AtomicDataUnitFactory implements DataUnitFactory {
 	}
 
 	void addPredefinedValueByKey(String key, byte... value){
-		if(isValueBitCountHigherThanDataUnitSizeInBits(value)){
-			throwValueTooBigIllegalArgumentException()
-		}
+		validateAddPredefinedValueByKeyArguments(key, value)
+
 		predefinedValues[key] = new AtomicDataUnit(value)
 	}
-
-	private boolean isValueBitCountHigherThanDataUnitSizeInBits(byte[] value){
-		int valueBitCount = value*.bitCount().sum(0)
-		return valueBitCount > dataUnitSizeInBits
+	
+	private void validateAddPredefinedValueByKeyArguments(String key, byte[] value){
+		validateKey(key)
+		validatePredefinedValue(value)
 	}
-
-	private void throwValueTooBigIllegalArgumentException(){
-		throw new IllegalArgumentException(
-		"value must not be bigger than " +
-		2 ** dataUnitSizeInBits - 1 +
-		" (" + dataUnitSizeInBits +
-		" bits )")
+	
+	private void validateKey(String key){
+		Validator v = new Validator(key, "key")
+		v.validateNotNull()
+	}
+	
+	private void validatePredefinedValue(byte[] value){
+		int valueBitCount = value*.bitCount().sum(0)
+		Validator v = new Validator(valueBitCount, "value bit count")
+		v.validateLowerThanOrEquals(dataUnitSizeInBits)
 	}
 
 	AtomicDataUnit propertyMissing(String name){

@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import at.fabianachammer.pdusend.type.DataUnit
 import at.fabianachammer.pdusend.type.FunctionDataUnit
+import at.fabianachammer.pdusend.util.validation.ValueNullException;
+
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
@@ -20,8 +22,8 @@ class FunctionDataUnitFactoryTest {
 		assertTrue(dataUnitFactory instanceof FunctionDataUnitFactory)
 	}
 	
-	@Test(expected = NullPointerException.class)
-	void makeFromClosureWithNullThrowsNullPointerException(){
+	@Test(expected = ValueNullException.class)
+	void makeFromClosureWithNullThrowsValueNullException(){
 		FunctionDataUnitFactory.makeFromClosure(null)
 	}
 	
@@ -32,8 +34,18 @@ class FunctionDataUnitFactoryTest {
 		assertTrue(dataUnitFactory instanceof FunctionDataUnitFactory)
 	}
 	
-	@Test(expected = NullPointerException.class)
-	void makeFromClosureAndDataUnitSizeInBitsWithNullClosureThrowsNullPointerException(){
+	@Test
+	void makeFromClosureAndDataUnitSizeInBitsReturnsFunctionDataUnitFactoryThatCreatesDataUnitsWithGivenSizeInBits(){
+		int sizeInBits = 1
+		FunctionDataUnitFactory functionDataUnitFactory = FunctionDataUnitFactory.makeFromClosureAndDataUnitSizeInBits({}, sizeInBits)
+		DataUnit dataUnit = functionDataUnitFactory.createDataUnit()
+		int expected = sizeInBits
+		
+		assertEquals(expected, dataUnit.sizeInBits())
+	}
+	
+	@Test(expected = ValueNullException.class)
+	void makeFromClosureAndDataUnitSizeInBitsWithNullClosureThrowsValueNullException(){
 		FunctionDataUnitFactory.makeFromClosureAndDataUnitSizeInBits(null, 1)
 	}
 
@@ -55,14 +67,16 @@ class FunctionDataUnitFactoryTest {
 
 		assertArrayEquals(staticReturnValue, dataUnit.encode())
 	}
-
+	
 	@Test
-	void makeFromClosureAndSizeInBitsReturnsFunctionDataUnitFactoryThatCreatesDataUnitsWithGivenSizeInBits(){
-		int sizeInBits = 1
-		FunctionDataUnitFactory functionDataUnitFactory = FunctionDataUnitFactory.makeFromClosureAndDataUnitSizeInBits({}, sizeInBits)
-		DataUnit dataUnit = functionDataUnitFactory.createDataUnit()
-		int expected = sizeInBits
+	void createDataUnitWithSetClosureButUnsetDataUnitSizeInBitsReturnsFunctionDataUnitWithSizeInBitsOfEightTimesTheFunctionsValueArrayLength(){
+		Closure<byte[]> function = { return new byte[1] }
+		FunctionDataUnitFactory functionDataUnitFactory = FunctionDataUnitFactory.makeFromClosure(function)
+		FunctionDataUnit functionDataUnit = functionDataUnitFactory.createDataUnit()
+		int expectedSizeInBits = function().length * 8
 		
-		assertEquals(expected, dataUnit.sizeInBits())
+		int actualSizeInBits = functionDataUnit.sizeInBits()
+		
+		assertEquals(expectedSizeInBits, actualSizeInBits)
 	}
 }

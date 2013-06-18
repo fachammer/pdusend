@@ -6,8 +6,8 @@ import at.fabianachammer.pdusend.type.AtomicDataUnit
 import at.fabianachammer.pdusend.type.DataUnit
 import at.fabianachammer.pdusend.type.factory.AtomicDataUnitFactory
 import at.fabianachammer.pdusend.type.factory.DataUnitFactory
+import at.fabianachammer.pdusend.util.validation.*
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 /**
  * @author fabian
@@ -24,13 +24,13 @@ class AtomicDataUnitFactoryTest {
 		assertTrue(dataUnitFactory instanceof AtomicDataUnitFactory)
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	void makeWithZeroAsDataUnitSizeInBitsThrowsIllegalArgumentException(){
+	@Test(expected = ValueTooLowException.class)
+	void makeWithZeroAsDataUnitSizeInBitsThrowsValueTooLowException(){
 		AtomicDataUnitFactory.makeFromDataUnitSizeInBits(0)
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	void makeWithMinusOneAsDataUnitSizeInBitsThrowsIllegalArgumentExcepetion(){
+	@Test(expected = ValueTooLowException.class)
+	void makeWithMinusOneAsDataUnitSizeInBitsThrowsValueTooLowException(){
 		AtomicDataUnitFactory.makeFromDataUnitSizeInBits(-1)
 	}
 
@@ -60,17 +60,17 @@ class AtomicDataUnitFactoryTest {
 	void addPredefinedValueByKeyMakesPropertyAccessesOnTheFactoryWithTheGivenStringInAddPredefinedValueByKeyReturnTheSpecifiedValue(){
 		int dataUnitSizeInBits = 1
 		AtomicDataUnitFactory atomicDataUnitFactory = AtomicDataUnitFactory.makeFromDataUnitSizeInBits(dataUnitSizeInBits)
-		atomicDataUnitFactory.addPredefinedValueByKey("on", 1 as byte)
-		DataUnit on = atomicDataUnitFactory.on
+		atomicDataUnitFactory.addPredefinedValueByKey("one", 1 as byte)
+		DataUnit one = atomicDataUnitFactory.one
 		byte[] expected = [1]
 
-		byte[] actual = on.encode()
+		byte[] actual = one.encode()
 
 		assertArrayEquals(expected, actual)
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	void addPredefinedValueByKeyWithIllegalSizeDataThrowsIllegalArgumentException(){
+	@Test(expected = ValueTooGreatException.class)
+	void addPredefinedValueByKeyWithIllegalSizeDataThrowsValueTooGreatException(){
 		int dataUnitSizeInBits = 1
 		AtomicDataUnitFactory atomicDataUnitFactory = AtomicDataUnitFactory.makeFromDataUnitSizeInBits(dataUnitSizeInBits)
 		atomicDataUnitFactory.addPredefinedValueByKey("on", 2 as byte)

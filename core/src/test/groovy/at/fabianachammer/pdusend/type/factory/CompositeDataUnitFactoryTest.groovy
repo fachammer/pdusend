@@ -7,6 +7,8 @@ import at.fabianachammer.pdusend.type.DataUnit
 import at.fabianachammer.pdusend.type.factory.AtomicDataUnitFactory;
 import at.fabianachammer.pdusend.type.factory.DataUnitFactory
 import at.fabianachammer.pdusend.type.factory.CompositeDataUnitFactory
+import at.fabianachammer.pdusend.util.validation.ValueNullException;
+
 import org.junit.Test;
 
 /**
@@ -24,8 +26,8 @@ class CompositeDataUnitFactoryTest {
 		assertTrue(dataUnitFacotry instanceof CompositeDataUnitFactory)
 	}
 	
-	@Test(expected = NullPointerException.class)
-	void makeFromDataUnitFactoriesWithNullThrowsNullPointerException(){
+	@Test(expected = ValueNullException.class)
+	void makeFromDataUnitFactoriesWithNullThrowsValueNullException(){
 		CompositeDataUnitFactory.makeFromDataUnitFactories(null)
 	}
 
