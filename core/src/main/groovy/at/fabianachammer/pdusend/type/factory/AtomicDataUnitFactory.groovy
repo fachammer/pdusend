@@ -28,6 +28,7 @@ class AtomicDataUnitFactory implements DataUnitFactory {
 	
 	private static void validateDataUnitSizeInBits(int dataUnitSizeInBits){
 		Validator v = new Validator(dataUnitSizeInBits, "data unit size in bits")
+		
 		v.validateGreaterThan(DATA_UNIT_SIZE_IN_BITS_MIN)
 	}
 
@@ -54,12 +55,14 @@ class AtomicDataUnitFactory implements DataUnitFactory {
 	
 	private void validateKey(String key){
 		Validator v = new Validator(key, "key")
+		
 		v.validateNotNull()
 	}
 	
 	private void validatePredefinedValue(byte[] value){
 		int valueBitCount = value*.bitCount().sum(0)
 		Validator v = new Validator(valueBitCount, "value bit count")
+		
 		v.validateLowerThanOrEquals(dataUnitSizeInBits)
 	}
 
@@ -67,6 +70,7 @@ class AtomicDataUnitFactory implements DataUnitFactory {
 		if(predefinedValuesHasKey(name)){
 			return predefinedValues[name]
 		}
+		
 		throwMissingPropertyException(name)
 	}
 

@@ -14,9 +14,6 @@ final class Extension {
 		Number.metaClass.orBitOnIndex = {index ->
 			BitOperator.setBitOnIndex(delegate, index)
 		}
-		Number.metaClass.andNotBitOnIndex = {index ->
-			BitOperator.clearBitOnIndex(delegate, index)
-		}
 		Number.metaClass.bitCount = {
 			BitOperator.bitCountFromNumber(delegate)
 		}

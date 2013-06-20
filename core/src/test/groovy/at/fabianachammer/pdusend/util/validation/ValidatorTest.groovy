@@ -139,6 +139,12 @@ class ValidatorTest {
 		Validator v = new Validator(1, "value")
 		v.validateBetweenInclusive(0..1)
 	}
+	
+	@Test(expected = ValueNullException.class)
+	void validateBetweenInclusiveWithNullRangeThrowsValueNullException(){
+		Validator v = new Validator(0, "value")
+		v.validateBetweenInclusive(null)
+	}
 
 	@Test
 	void validateLowerThanOrEqualsWithValueLowerThanSpecifiedPasses(){

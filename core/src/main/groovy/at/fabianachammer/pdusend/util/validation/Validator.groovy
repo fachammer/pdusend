@@ -33,7 +33,7 @@ class Validator {
 		
 		throw new ValueNotNullException(exceptionMessage, valueName, value)
 	}
-
+	
 	void validateNotNull(){
 		if(value == null){
 			throwNullPointerException()
@@ -95,16 +95,19 @@ class Validator {
 	}
 
 	void validateBetweenInclusive(Range range){
+		validateRangeNotNull(range)
 		if(isValueOutOfRange(range)){
 			throwValueOutOfRangeException(range)
 		}
 	}
+	
+	private void validateRangeNotNull(Range range){
+		Validator v = new Validator(range, "range")
+		v.validateNotNull()
+	}
 
 	private boolean isValueOutOfRange(Range range){
-		def min = range.min()
-		def max = range.max()
-
-		value < min || value > max
+		return !range.contains(value)
 	}
 
 	private void throwValueOutOfRangeException(Range range){

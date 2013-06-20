@@ -17,17 +17,6 @@ class FunctionDataUnitFactory implements DataUnitFactory {
 	private int dataUnitSizeInBits
 	private boolean isDataUnitSizeInBitsSet
 
-	static FunctionDataUnitFactory makeFromClosure(Closure<byte[]> function){
-		validateClosure(function)
-
-		return new FunctionDataUnitFactory(function)
-	}
-
-	private static void validateClosure(Closure<byte[]> function){
-		Validator v = new Validator(function, "function")
-		v.validateNotNull()
-	}
-
 	static FunctionDataUnitFactory makeFromClosureAndDataUnitSizeInBits(Closure<byte[]> function, int dataUnitSizeInBits){
 		validateClosureAndDataUnitSizeInBits(function, dataUnitSizeInBits)
 
@@ -38,10 +27,21 @@ class FunctionDataUnitFactory implements DataUnitFactory {
 		validateClosure(function)
 		validateDataUnitSizeInBits(dataUnitSizeInBits)
 	}
+	
+	private static void validateClosure(Closure<byte[]> function){
+		Validator v = new Validator(function, "function")
+		v.validateNotNull()
+	}
 
 	private static void validateDataUnitSizeInBits(int dataUnitSizeInBits){
 		Validator v = new Validator(dataUnitSizeInBits, "data unit size in bits")
 		v.validateGreaterThanOrEquals(MIN_DATA_UNIT_SIZE_IN_BITS)
+	}
+	
+	static FunctionDataUnitFactory makeFromClosure(Closure<byte[]> function){
+		validateClosure(function)
+
+		return new FunctionDataUnitFactory(function)
 	}
 	
 	private FunctionDataUnitFactory(Closure<byte[]> function){

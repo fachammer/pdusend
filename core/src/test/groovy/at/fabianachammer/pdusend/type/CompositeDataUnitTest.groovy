@@ -110,7 +110,7 @@ class CompositeDataUnitTest {
 			new AtomicDataUnit(sizeInBits, fiveBitsSet)
 		]
 		DataUnit compositeDataUnit = new CompositeDataUnit(atomicDataUnits)
-		byte[] expected = [3, -1]
+		byte[] expected = [-1, 3]
 		
 		byte[] actual = compositeDataUnit.encode()
 		

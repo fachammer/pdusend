@@ -6,11 +6,11 @@ package at.fabianachammer.pdusend.util.validation
  */
 class ValidationException extends Exception {
 
-	String valueName
-	def value
+	final String valueName
+	final value
 	
 	ValidationException(String message, String valueName, value){
-		super(message)
+		super(message, null)
 		this.valueName = valueName
 		this.value = value
 	}

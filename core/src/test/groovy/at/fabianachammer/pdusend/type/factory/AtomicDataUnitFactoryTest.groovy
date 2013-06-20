@@ -16,7 +16,7 @@ import org.junit.Test;
 class AtomicDataUnitFactoryTest {
 
 	@Test
-	void makeWithDataUnitSizeInBitsReturnsInstanceOfAtomicDataUnitFactory(){
+	void makeFromDataUnitSizeInBitsReturnsInstanceOfAtomicDataUnitFactory(){
 		int dataUnitSizeInBits = 1
 
 		DataUnitFactory dataUnitFactory = AtomicDataUnitFactory.makeFromDataUnitSizeInBits(dataUnitSizeInBits)
