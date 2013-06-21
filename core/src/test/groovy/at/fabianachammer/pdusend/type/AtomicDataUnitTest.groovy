@@ -110,4 +110,30 @@ class AtomicDataUnitTest {
 		
 		assertArrayEquals(expectedData, actualData)
 	}
+	
+	@Test
+	void equalsWithAtomicDataUnitWithSameSizeInBitsAndSameDataReturnsTrue(){
+		AtomicDataUnit atomicDataUnit = new AtomicDataUnit(1, [0] as byte[])
+		AtomicDataUnit equalAtomicDataUnit = new AtomicDataUnit(1, [0] as byte[])
+		
+		assertTrue(atomicDataUnit.equals(equalAtomicDataUnit))
+	}
+	
+	@Test
+	void equalsWithAtomicDataUnitWithDifferentSizeInBitsAndSameDataReturnsFalse(){
+		AtomicDataUnit atomicDataUnit = new AtomicDataUnit(1, [0] as byte[])
+		AtomicDataUnit differentSizeInBitsAtomicDataUnit = new AtomicDataUnit(2, [0] as byte[])
+		
+		assertFalse(atomicDataUnit.equals(differentSizeInBitsAtomicDataUnit))
+	}
+	
+	@Test
+	void equalsWithAtomicDataUnitWithDifferentDataAndSameSizeInBitsReturnsFalse(){
+		AtomicDataUnit atomicDataUnit = new AtomicDataUnit(1, [0] as byte[])
+		AtomicDataUnit differentDataAtomicDataUnit = new AtomicDataUnit(1, [1] as byte[])
+		
+		assertFalse(atomicDataUnit.equals(differentDataAtomicDataUnit))
+	}
+	
+	// TODO: hashCode for AtomicDataUnit
 }

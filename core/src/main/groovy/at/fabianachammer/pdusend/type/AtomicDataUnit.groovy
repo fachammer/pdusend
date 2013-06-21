@@ -32,4 +32,9 @@ class AtomicDataUnit implements DataUnit {
 	public int sizeInBits() {
 		return sizeInBits
 	}
+	
+	@Override
+	boolean equals(AtomicDataUnit rhs) {
+		return sizeInBits == rhs.sizeInBits && data == rhs.data
+	}
 }

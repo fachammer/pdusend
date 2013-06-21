@@ -1,9 +1,9 @@
 package at.fabianachammer.pdusend.type.factory
 
-import groovy.util.logging.Log4j;
-import at.fabianachammer.pdusend.type.DataUnit;
+import at.fabianachammer.pdusend.type.DataUnit
 import at.fabianachammer.pdusend.type.FunctionDataUnit
 import at.fabianachammer.pdusend.util.validation.Validator
+
 
 /**
  * @author fabian

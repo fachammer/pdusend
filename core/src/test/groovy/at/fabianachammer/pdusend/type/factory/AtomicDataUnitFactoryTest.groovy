@@ -81,4 +81,61 @@ class AtomicDataUnitFactoryTest {
 		AtomicDataUnitFactory atomicDataUnitFactory = AtomicDataUnitFactory.makeFromDataUnitSizeInBits(1)
 		atomicDataUnitFactory.nonExistentProperty
 	}
+	
+	@Test
+	void equalsWithAtomicDataUnitFactoryWithEqualDataUnitSizeInBitsAndEqualPredefinedValuesReturnsTrue(){
+		AtomicDataUnitFactory factory = AtomicDataUnitFactory.makeFromDataUnitSizeInBits(1)
+		factory.addPredefinedValueByKey("key", [0] as byte[])
+		
+		AtomicDataUnitFactory factoryToCompare = AtomicDataUnitFactory.makeFromDataUnitSizeInBits(1)
+		factoryToCompare.addPredefinedValueByKey("key", [0] as byte[])
+		
+		assertTrue(factory.equals(factoryToCompare))
+	}
+	
+	@Test
+	void equalsWithAtomicDataUnitFactoryWithEqualDataUnitSizeInBitsAndDifferentPredefinedValuesReturnsFalse(){
+		AtomicDataUnitFactory factory = AtomicDataUnitFactory.makeFromDataUnitSizeInBits(1)
+		factory.addPredefinedValueByKey("key", [0] as byte[])
+		AtomicDataUnitFactory factoryToCompare = AtomicDataUnitFactory.makeFromDataUnitSizeInBits(1)
+		factoryToCompare.addPredefinedValueByKey("key", [1] as byte[])
+		
+		assertFalse(factory.equals(factoryToCompare))
+	}
+	
+	@Test
+	void equalsWithAtomicDataUnitFactoryWithEqualPredefinedValuesAndDifferentDataUnitSizeInBitsReturnsFalse(){
+		AtomicDataUnitFactory factory = AtomicDataUnitFactory.makeFromDataUnitSizeInBits(1)
+		AtomicDataUnitFactory differentDataUnitSizeInBitsFactory = AtomicDataUnitFactory.makeFromDataUnitSizeInBits(2)
+		
+		assertFalse(factory.equals(differentDataUnitSizeInBitsFactory))
+	}
+	
+	@Test
+	void equalsAsObjectWithEqualAtomicDataUnitFactoriesReturnsTrue(){
+		Object factory1 = AtomicDataUnitFactory.makeFromDataUnitSizeInBits(1)
+		Object factory2 = AtomicDataUnitFactory.makeFromDataUnitSizeInBits(1)
+		
+		assertTrue(factory1.equals(factory2))
+	}
+	
+	@Test
+	void equalsWithDifferentTypesReturnsFalse(){
+		AtomicDataUnitFactory factory = AtomicDataUnitFactory.makeFromDataUnitSizeInBits(1)
+		Object otherObject = new Object()
+		
+		assertFalse(factory.equals(otherObject))
+	}
+	
+	@Test
+	void equalsWithNullReturnsFalse(){
+		assertFalse(AtomicDataUnitFactory.makeFromDataUnitSizeInBits(1).equals(null))
+	}
+	
+	@Test
+	void assertEqualsWithTwoEqualAtomicDataUnitFactoriesPasses(){
+		assertEquals(AtomicDataUnitFactory.makeFromDataUnitSizeInBits(1), AtomicDataUnitFactory.makeFromDataUnitSizeInBits(1))
+	}
+	
+	// TODO: equals / hashCode in atomic data unit factory
 }

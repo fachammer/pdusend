@@ -20,7 +20,7 @@ class AtomicDataUnitFactory implements DataUnitFactory {
 		Extension.extend()
 	}
 
-	static DataUnitFactory makeFromDataUnitSizeInBits(int dataUnitSizeInBits){
+	static AtomicDataUnitFactory makeFromDataUnitSizeInBits(int dataUnitSizeInBits){
 		validateDataUnitSizeInBits(dataUnitSizeInBits)
 
 		return new AtomicDataUnitFactory(dataUnitSizeInBits)
@@ -80,5 +80,14 @@ class AtomicDataUnitFactory implements DataUnitFactory {
 
 	private void throwMissingPropertyException(String name){
 		throw new MissingPropertyException("property " + name +" doesn't exist and isn't a predefined value of this factory")
+	}
+	
+	@Override
+	boolean equals(Object obj) {
+		if(!(obj instanceof AtomicDataUnitFactory)){
+			return false
+		}
+		AtomicDataUnitFactory rhs = (AtomicDataUnitFactory) obj
+		return predefinedValues == rhs.predefinedValues && dataUnitSizeInBits == rhs.dataUnitSizeInBits
 	}
 }
