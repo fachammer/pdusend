@@ -42,7 +42,7 @@ class AtomicDataUnitFactory implements DataUnitFactory {
 		return new AtomicDataUnit(dataUnitSizeInBits)
 	}
 
-	void addPredefinedValueByKey(String key, byte... value){
+	void addPredefinedValueByKey(String key, byte[] value){
 		validateAddPredefinedValueByKeyArguments(key, value)
 
 		predefinedValues[key] = new AtomicDataUnit(value)

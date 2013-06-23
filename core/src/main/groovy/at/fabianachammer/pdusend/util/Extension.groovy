@@ -17,6 +17,9 @@ final class Extension {
 		Number.metaClass.bitCount = {
 			BitOperator.bitCountFromNumber(delegate)
 		}
+		Number.metaClass.toByteArray << {int sizeInBits ->
+			BitOperator.toByteArray(delegate, sizeInBits)
+		}
 	}
 
 	private Extension(){

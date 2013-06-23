@@ -139,7 +139,7 @@ class ValidatorTest {
 		Validator v = new Validator(1, "value")
 		v.validateBetweenInclusive(0..1)
 	}
-	
+
 	@Test(expected = ValueNullException.class)
 	void validateBetweenInclusiveWithNullRangeThrowsValueNullException(){
 		Validator v = new Validator(0, "value")
@@ -181,8 +181,63 @@ class ValidatorTest {
 	}
 
 	@Test
-	void validateGreaterThanorEqualsWithValueEqualToSpecifiedPasses(){
+	void validateGreaterThanOrEqualsWithValueEqualToSpecifiedPasses(){
 		Validator v = new Validator(0, "value")
 		v.validateGreaterThanOrEquals(0)
+	}
+
+	@Test
+	void validateInstanceOfWithClassEqualToSpecifiedPasses(){
+		Validator v = new Validator(new Object(), "value")
+		v.validateInstanceOf(Object.class)
+	}
+
+	@Test
+	void validateInstanceOfWithClassNotEqualToSpecifiedThrowsValuehasIllegalClassExceptionWithProperExceptionMessage(){
+		Validator v = new Validator(new Object(), "value")
+		String expectedExceptionMessage = "value must be an instance of String, but was an instance of Object"
+		assertExceptionWithGivenMessageIsThrownByClosure(ValueHasIllegalClassException.class, expectedExceptionMessage) {
+			v.validateInstanceOf(String.class)
+		}
+	}
+
+	@Test
+	void validateInstanceOfWithClassBeingSuperClassOfObjectBeingValidatedPasses(){
+		Validator v = new Validator("value", "value")
+		v.validateInstanceOf(Object.class)
+	}
+
+	@Test
+	void validateHasPropertyWithPropertyTheObjectHasPasses(){
+		Validator v = new Validator([property: "value"], "value")
+		v.validateHasProperty("property")
+	}
+
+	@Test
+	void validateHasPropertyWithPropertyTheObjectDoesntHaveThrowsMissingPropertyException(){
+		Validator v = new Validator([property: "value"], "value")
+		String expectedExceptionMessage = "value must have a property named nonExistentProperty, but hasn't"
+		assertExceptionWithGivenMessageIsThrownByClosure(ObjectMissesPropertyException.class, expectedExceptionMessage) { v.validateHasProperty("nonExistentProperty") }
+	}
+
+	@Test
+	void validateHasPropertyWithIntegerPropertyValuePasses(){
+		Validator v = new Validator(1, "value")
+		v.validateHasProperty("value")
+	}
+
+	@Test
+	void validateInstanceOneOfWithGivenInstanceInSpecifiedListPasses(){
+		Validator v = new Validator(new Object(), "value")
+		v.validateInstanceOneOf(Object.class, Number.class)
+	}
+
+	@Test
+	void validateIntanceOneOfWithGivenInstanceNotInSpecifiedListThrowsValueHasIllegalClassExceptionWithProperExceptionMessage(){
+		String expectedExceptionMessage = "value must be an instance of one of String, Integer, but was Object"
+		Validator v = new Validator(new Object(), "value")
+		assertExceptionWithGivenMessageIsThrownByClosure(ValueHasIllegalClassException.class, expectedExceptionMessage) {
+			v.validateInstanceOneOf(String.class, Integer.class)
+		}
 	}
 }
