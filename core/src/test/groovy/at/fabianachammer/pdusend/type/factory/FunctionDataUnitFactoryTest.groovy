@@ -1,12 +1,12 @@
 package at.fabianachammer.pdusend.type.factory;
 
 import static org.junit.Assert.*;
-
 import at.fabianachammer.pdusend.type.DataUnit
 import at.fabianachammer.pdusend.type.FunctionDataUnit
 import at.fabianachammer.pdusend.util.validation.ValueNullException;
 import at.fabianachammer.pdusend.util.validation.ValueTooLowException;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
@@ -15,10 +15,16 @@ import org.junit.rules.ExpectedException;
  *
  */
 class FunctionDataUnitFactoryTest {
+	
+	private final def emptyClosure = {}
+	
+	private def makeStaticReturnClosure(value){
+		return { value }
+	}
 
 	@Test
 	void makeFromClosureReturnsInstanceOfFunctionDataUnitFactory() {
-		DataUnitFactory dataUnitFactory = FunctionDataUnitFactory.makeFromClosure({})
+		DataUnitFactory dataUnitFactory = FunctionDataUnitFactory.makeFromClosure(emptyClosure)
 
 		assertTrue(dataUnitFactory instanceof FunctionDataUnitFactory)
 	}
@@ -30,7 +36,7 @@ class FunctionDataUnitFactoryTest {
 	
 	@Test
 	void makeFromClosureAndDataUnitSizeInBitsReturnsInstanceOfFunctionDataUnitFactory(){
-		DataUnitFactory dataUnitFactory = FunctionDataUnitFactory.makeFromClosureAndDataUnitSizeInBits({}, 1)
+		DataUnitFactory dataUnitFactory = FunctionDataUnitFactory.makeFromClosureAndDataUnitSizeInBits(emptyClosure, 1)
 
 		assertTrue(dataUnitFactory instanceof FunctionDataUnitFactory)
 	}
@@ -38,7 +44,7 @@ class FunctionDataUnitFactoryTest {
 	@Test
 	void makeFromClosureAndDataUnitSizeInBitsReturnsFunctionDataUnitFactoryThatCreatesDataUnitsWithGivenSizeInBits(){
 		int sizeInBits = 1
-		FunctionDataUnitFactory functionDataUnitFactory = FunctionDataUnitFactory.makeFromClosureAndDataUnitSizeInBits({}, sizeInBits)
+		FunctionDataUnitFactory functionDataUnitFactory = FunctionDataUnitFactory.makeFromClosureAndDataUnitSizeInBits(emptyClosure, sizeInBits)
 		DataUnit dataUnit = functionDataUnitFactory.createDataUnit()
 		int expected = sizeInBits
 		
@@ -52,12 +58,12 @@ class FunctionDataUnitFactoryTest {
 	
 	@Test(expected = ValueTooLowException.class)
 	void makeFromClosureAndDataUnitSizeInBitsWithIllegalSizeInBitsThrowsValueTooLowException(){
-		FunctionDataUnitFactory.makeFromClosureAndDataUnitSizeInBits({ }, 0)
+		FunctionDataUnitFactory.makeFromClosureAndDataUnitSizeInBits(emptyClosure, 0)
 	}
 
 	@Test
 	void createDataUnitReturnsInstanceOfFunctionDataUnit(){
-		FunctionDataUnitFactory functionDataUnitFactory = FunctionDataUnitFactory.makeFromClosure({})
+		FunctionDataUnitFactory functionDataUnitFactory = FunctionDataUnitFactory.makeFromClosure(emptyClosure)
 
 		DataUnit dataUnit = functionDataUnitFactory.createDataUnit()
 
@@ -67,7 +73,7 @@ class FunctionDataUnitFactoryTest {
 	@Test
 	void createDataUnitWithStaticReturnClosureMakesEncodeOnCreatedFunctionDataUnitReturnTheValueOfTheStaticReturnClosure() {
 		byte[] staticReturnValue = [0]
-		FunctionDataUnitFactory functionDataUnitFactory = FunctionDataUnitFactory.makeFromClosure({return staticReturnValue})
+		FunctionDataUnitFactory functionDataUnitFactory = FunctionDataUnitFactory.makeFromClosure(makeStaticReturnClosure(staticReturnValue))
 		byte[] expected = staticReturnValue
 		DataUnit dataUnit = functionDataUnitFactory.createDataUnit()
 
@@ -75,8 +81,8 @@ class FunctionDataUnitFactoryTest {
 	}
 	
 	@Test
-	void createDataUnitWithSetClosureButUnsetDataUnitSizeInBitsReturnsFunctionDataUnitWithSizeInBitsOfEightTimesTheFunctionsValueArrayLength(){
-		Closure<byte[]> function = { return new byte[1] }
+	void createDataUnitWithClosureReturnsFunctionDataUnitWithSizeInBitsOfEightTimesTheFunctionsValueArrayLength(){
+		Closure<byte[]> function = makeStaticReturnClosure(new byte[1])
 		FunctionDataUnitFactory functionDataUnitFactory = FunctionDataUnitFactory.makeFromClosure(function)
 		FunctionDataUnit functionDataUnit = functionDataUnitFactory.createDataUnit()
 		int expectedSizeInBits = function().length * 8

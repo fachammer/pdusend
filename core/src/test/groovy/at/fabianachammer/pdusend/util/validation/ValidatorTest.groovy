@@ -227,13 +227,13 @@ class ValidatorTest {
 	}
 
 	@Test
-	void validateInstanceOneOfWithGivenInstanceInSpecifiedListPasses(){
+	void validateInstanceOneOfWithInstanceInSpecifiedListPasses(){
 		Validator v = new Validator(new Object(), "value")
 		v.validateInstanceOneOf(Object.class, Number.class)
 	}
 
 	@Test
-	void validateIntanceOneOfWithGivenInstanceNotInSpecifiedListThrowsValueHasIllegalClassExceptionWithProperExceptionMessage(){
+	void validateIntanceOneOfWithValueOfNonSpecifiedClassThrowsValueHasIllegalClassExceptionWithProperExceptionMessage(){
 		String expectedExceptionMessage = "value must be an instance of one of String, Integer, but was Object"
 		Validator v = new Validator(new Object(), "value")
 		assertExceptionWithGivenMessageIsThrownByClosure(ValueHasIllegalClassException.class, expectedExceptionMessage) {
