@@ -140,7 +140,7 @@ startScripts{
 	}
 }
 
-defaultTasks "distZip", "distTar", "install"
+defaultTasks "installApp"
 
 [distZip, distTar, installApp].each {
 	it.doFirst{
