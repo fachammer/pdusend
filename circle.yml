@@ -1,0 +1,14 @@
+machine:
+  pre: 
+    - cp $JAVA_HOME/include/jni.h /usr/include/
+    - cp $JAVA_HOME/include/jni_md.h /usr/include/
+
+dependencies:
+  override:
+    - ./gradlew
+
+test:
+  override:
+    - ./gradlew test
+
+
