@@ -1,1 +1,0 @@
-send ethernet(){ ip4() } on lo

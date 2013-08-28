@@ -1,8 +1,8 @@
 package at.fabianachammer.pdusend.ui.controller;
 
 import groovy.lang.GroovyCodeSource
-import at.fabianachammer.pdusend.dsl.Interpreter
-import at.fabianachammer.pdusend.dsl.InterpreterImpl
+import at.fabianachammer.pdusend.dsl.interpreter.Interpreter;
+import at.fabianachammer.pdusend.dsl.interpreter.InterpreterImpl;
 import at.fabianachammer.pdusend.ui.view.InterpreterView
 import groovy.transform.PackageScope
 import net.sf.oval.Check

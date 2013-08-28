@@ -9,7 +9,7 @@ import org.junit.Test
 import org.junit.rules.ExpectedException;
 
 import at.fabianachammer.pdusend.ui.view.InterpreterView
-import at.fabianachammer.pdusend.dsl.InterpreterImpl
+import at.fabianachammer.pdusend.dsl.interpreter.InterpreterImpl;
 
 /**
  * @author fabian

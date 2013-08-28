@@ -1,6 +1,6 @@
 package at.fabianachammer.pdusend.ui.view
 
-import at.fabianachammer.pdusend.dsl.InterpreterException
+import at.fabianachammer.pdusend.dsl.interpreter.InterpreterException;
 
 /**
  * view that presents data from the interpreter on the command line.

@@ -1,4 +1,4 @@
-package at.fabianachammer.pdusend.dsl
+package at.fabianachammer.pdusend.dsl.interpreter
 
 /**
  * @author fabian

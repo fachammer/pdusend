@@ -122,7 +122,7 @@ def getAllArtifacts(){
 	jvmProjectArtifacts.each{ allArtifacts << it }
 	nonJvmProjectArtifacts.each{ allArtifacts << it }
 
-	allArtifacts
+	return allArtifacts
 }
 
 applicationName = "pdusend"
@@ -140,17 +140,17 @@ startScripts{
 	}
 }
 
-defaultTasks "distZip"
+defaultTasks "distZip", "distTar", "install"
 
-distZip {
-	doFirst{
+[distZip, distTar, installApp].each {
+	it.doFirst{
 		getAllArtifacts().each{
 			applicationDistribution.from(it.parent){ into "/lib" }
 		}
 
 	}
+	
+	it.dependsOn(subprojects*.assemble)
 }
-
-distZip.dependsOn(subprojects*.assemble)
 
 task wrapper(type: Wrapper){ gradleVersion = "1.5" }

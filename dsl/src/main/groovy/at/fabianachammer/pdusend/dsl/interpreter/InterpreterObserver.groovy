@@ -1,4 +1,4 @@
-package at.fabianachammer.pdusend.dsl;
+package at.fabianachammer.pdusend.dsl.interpreter;
 
 /**
  * Interface for observing actions on a pdusend dsl Interpreter.

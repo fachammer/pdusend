@@ -1,4 +1,4 @@
-package at.fabianachammer.pdusend.dsl;
+package at.fabianachammer.pdusend.dsl.interpreter;
 
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.classgen.GeneratorContext;

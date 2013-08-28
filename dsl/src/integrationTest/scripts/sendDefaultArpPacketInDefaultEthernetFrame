@@ -1,3 +1,0 @@
-send ethernet(){
-	arp()
-} on lo
