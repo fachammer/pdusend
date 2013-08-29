@@ -4,8 +4,8 @@ import static org.junit.Assert.*
 import static org.mockito.Mockito.*
 
 import org.junit.Test
-import at.fabianachammer.pdusend.sender.NetworkSender
-import at.fabianachammer.pdusend.type.AtomicDataUnit
+import at.fabianachammer.pdusend.core.sender.NetworkSender
+import at.fabianachammer.pdusend.core.type.AtomicDataUnit
 
 class DSLTest {
 

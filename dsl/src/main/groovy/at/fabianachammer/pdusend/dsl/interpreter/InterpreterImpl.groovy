@@ -25,8 +25,8 @@ class InterpreterImpl implements Interpreter{
 		observers = new ArrayList<InterpreterObserver>()
 		def config = new CompilerConfiguration()
 		def importCustomizer = new ImportCustomizer()
-		importCustomizer.addImport("at.fabianachammer.pdusend.NetworkSender")
-		importCustomizer.addStarImport("at.fabianachammer.pdusend.type")
+		importCustomizer.addImport("at.fabianachammer.pdusend.core.NetworkSender")
+		importCustomizer.addStarImport("at.fabianachammer.pdusend.core.type")
 
 		config.addCompilationCustomizers(importCustomizer)
 		

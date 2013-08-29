@@ -1,16 +1,22 @@
-package at.fabianachammer.pdusend.dsl
+package at.fabianachammer.pdusend.dsl;
 
-import at.fabianachammer.pdusend.sender.NetworkSender
-import at.fabianachammer.pdusend.type.AtomicDataUnit
-import at.fabianachammer.pdusend.type.DataUnit
+import at.fabianachammer.pdusend.core.sender.NetworkSender
+import at.fabianachammer.pdusend.core.type.DataUnit
 
+
+/**
+ * Domain Specific Langauge that provides methods for easily sending packets over a network interface.
+ * 
+ * @author fabian
+ *
+ */
 class DSL {
-	
-	NetworkSender sender
-	
+
+	private NetworkSender sender
+
 	DataUnit dataUnit
 	NetworkInterface networkInterface
-	
+
 	DSL(NetworkSender sender){
 		this.sender = sender
 	}
@@ -19,7 +25,7 @@ class DSL {
 		this.dataUnit = dataUnit
 		return this
 	}
-	
+
 	DSL on(NetworkInterface networkInterface){
 		this.networkInterface = networkInterface
 		sender.send(networkInterface, dataUnit)
