@@ -1,5 +1,9 @@
 package at.fabianachammer.pdusend.dsl.interpreter;
 
+import at.fabianachammer.pdusend.dsl.DSL
+import at.fabianachammer.pdusend.sender.NetworkSender;
+import at.fabianachammer.pdusend.type.DataUnit
+
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.classgen.GeneratorContext;
 import org.codehaus.groovy.control.CompilationFailedException;
@@ -15,19 +19,20 @@ import org.codehaus.groovy.control.customizers.ImportCustomizer
  */
 class InterpreterImpl implements Interpreter{
 
+	private NetworkSender sender
+	
 	GroovyShell shell
 	List<InterpreterObserver> observers
 
 	/**
 	 * creates a new interpreter for interpreting pdusend dsl scripts.
 	 */
-	InterpreterImpl(){
+	InterpreterImpl(sender){
+		this.sender = sender
 		observers = new ArrayList<InterpreterObserver>()
 		def config = new CompilerConfiguration()
 		def importCustomizer = new ImportCustomizer()
-		importCustomizer.addImport("at.fabianachammer.pdusend.core.NetworkSender")
-		importCustomizer.addStarImport("at.fabianachammer.pdusend.core.type")
-
+		importCustomizer.addStarImport("at.fabianachammer.pdusend.type")
 		config.addCompilationCustomizers(importCustomizer)
 		
 		shell = new GroovyShell(config)
@@ -39,7 +44,11 @@ class InterpreterImpl implements Interpreter{
 	 */
 	void interpret(GroovyCodeSource script){
 		try{
-			shell.evaluate(script)
+			def dslScript = shell.evaluate("{ it -> $script.scriptText}")
+			
+			DSL dsl = new DSL(sender)
+			dsl.with(dslScript)
+			
 			notifyObservers()
 		}
 		catch(Exception e){

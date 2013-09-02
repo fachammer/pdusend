@@ -1,26 +1,19 @@
-package at.fabianachammer.pdusend.dsl.dsld;
-// this is a DSLD file
-// start off creating a custom DSL Descriptor for your Groovy DSL
+package at.fabianachammer.pdusend.dsl.dsld
 
-// The following snippet adds the 'newProp' to all types that are a subtype of GroovyObjects
-// contribute(currentType(subType('groovy.lang.GroovyObject'))) {
-//   property name : 'newProp', type : String, provider : 'Sample DSL', doc : 'This is a sample.  You should see this in content assist for GroovyObjects: <pre>newProp</pre>'
-// }
-
-contribute(currentType()){
+contribute(currentType()) {
+	provider = 'pdusend'
 	method name: 'send', 
-	type: at.fabianachammer.pdusend.core.type.DataUnit,  
-	params: [dataUnit: byte[]],
-	noParens: true,
-	doc: 'Specifies the data unit which should be sent over the network',
-	provider: 'pdusend'
+		type:'at.fabianachammer.pdusend.dsl.DSL',
+		params: [dataUnit: 'at.fabianachammer.pdusend.type.DataUnit'],
+		noParens: true
+		
+	
 }
 
-contribute(currentType(DataUnit)){
+contribute(currentType('at.fabianachammer.pdusend.dsl.DSL')){
+	provider = 'pdusend'
 	method name: 'on',
-	type: void,
-	params: [networkInterface: String],
-	noParens: true,
-	doc: 'Specifies the network interface on which the data unit should be sent',
-	provider: 'pdusend'
+		type: void,
+		params: [networkInterface: 'java.net.NetworkInterface'],
+		noParens: true
 }

@@ -1,7 +1,7 @@
 package at.fabianachammer.pdusend.dsl;
 
-import at.fabianachammer.pdusend.core.sender.NetworkSender
-import at.fabianachammer.pdusend.core.type.DataUnit
+import at.fabianachammer.pdusend.sender.NetworkSender
+import at.fabianachammer.pdusend.type.DataUnit
 
 
 /**

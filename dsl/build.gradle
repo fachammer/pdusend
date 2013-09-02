@@ -1,15 +1,9 @@
 usesJunit = true
 usesMockito = true
 
-configurations{ integrationTestCompile.extendsFrom testCompile }
-
 dependencies{
-	compile project(":sender"), project(":core")
-	integrationTestCompile project(":dsl")
-}
-
-sourceSets{
-	integrationTest{ compileClasspath += configurations.integrationTestCompile }
+	compile project(":api")
+	testCompile project(":internal")
 }
 
 test.dependsOn(project(":native").tasks.assemble)
@@ -17,5 +11,6 @@ test{
 	systemProperty "java.library.path", project(":native").buildDir.path + "/binaries/"
 }
 
-build.dependsOn(compileIntegrationTestGroovy)
-
+eclipse.classpath{
+	containers 'GROOVY_DSL_SUPPORT'
+}

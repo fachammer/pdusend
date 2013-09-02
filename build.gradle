@@ -1,30 +1,22 @@
 apply plugin: "eclipse"
 apply plugin: "application"
 
-ext.JVM_PROJECTS = [
-	project(":core"),
-	project(":dsl"),
-	project(":ui"),
-	project(":sender")
-]
-
-def final JAVA_PLUGIN_PROJECTS = [project(":sender")]
-
-def final C_PROJECTS = [project(":native")]
+def final C_PROJECTS = [project(':native')]
 def final GROOVY_PROJECTS = [
-	project(":core"),
-	project(":dsl"),
-	project(":ui")
+	project(':common'),
+	project(':api'),
+	project(':internal'),
+	project(':dsl'),
+	project(':ui')
 ]
 
-subprojects.each{ it.apply plugin: "eclipse" }
+ext.JVM_PROJECTS = GROOVY_PROJECTS
+
+subprojects.each{ it.apply plugin: 'eclipse' }
 
 // Plugins
-JAVA_PLUGIN_PROJECTS.each{ it.apply plugin: "java" }
-
-C_PROJECTS.each{ it.apply plugin: "cpp-lib" }
-
-GROOVY_PROJECTS.each{ it.apply plugin: "groovy" }
+C_PROJECTS.each{ it.apply plugin: 'cpp-lib' }
+GROOVY_PROJECTS.each{ it.apply plugin: 'groovy' }
 
 // Property Evaluation
 subprojects{
@@ -32,73 +24,57 @@ subprojects{
 		proj.ext.usesJunit = false
 		proj.ext.usesMockito = false
 		proj.ext.usesOval = false
-		}
+	}
 
 	afterEvaluate{ proj ->
-		if(proj.usesJunit || proj.usesMockito || proj.usesOval){
-			proj.repositories{ mavenCentral() }
-		}
+		proj.repositories{ mavenCentral() }
 
 		if(C_PROJECTS.contains(proj)){
 			proj.eclipse{
 				project{
 					natures += [
-						"org.eclipse.cdt.core.cnature",
-						"org.eclipse.cdt.managedbuilder.core.managedBuildNature",
-						"org.eclipse.cdt.managedbuilder.core.ScannerConfigNature"
+						'org.eclipse.cdt.core.cnature',
+						'org.eclipse.cdt.managedbuilder.core.managedBuildNature',
+						'org.eclipse.cdt.managedbuilder.core.ScannerConfigNature'
 					]
 
-					buildCommand "org.eclipse.cdt.managedbuilder.core.genmakebuilder"
-					buildCommand "org.eclipse.cdt.managedbuilder.core.ScannerConfigBuilder"
+					buildCommand 'org.eclipse.cdt.managedbuilder.core.genmakebuilder'
+					buildCommand 'org.eclipse.cdt.managedbuilder.core.ScannerConfigBuilder'
 				}
 			}
 		}
 
 		if(GROOVY_PROJECTS.contains(proj)){
 			proj.dependencies{
-				groovy "org.codehaus.groovy:groovy-all:2.1.2"
-				compile "org.codehaus.groovy:groovy-all:2.1.2"
+				groovy 'org.codehaus.groovy:groovy-all:2.1.2'
+				compile 'org.codehaus.groovy:groovy-all:2.1.2'
 			}
 			proj.eclipse{
 				project{
 					natures +=[
-						"org.eclipse.jdt.groovy.core.groovyNature"
+						'org.eclipse.jdt.groovy.core.groovyNature'
 					]
 				}
 			}
 		}
 
 		if(proj.usesJunit){
-			proj.dependencies{ testCompile "junit:junit:4.11" }
+			proj.dependencies{ testCompile 'junit:junit:4.11' }
 		}
 
 		if(proj.usesMockito){
-			proj.dependencies{ testCompile "org.mockito:mockito-all:1.9.5" }
-		}
-
-		if(JAVA_PLUGIN_PROJECTS.contains(proj)){
-			proj.tasks.test.forkEvery = 0
-			proj.convention.plugins.java.sourceCompatibility = 1.7
-			proj.convention.plugins.java.targetCompatibility = 1.7
-			proj.eclipse{
-				project{
-					natures "org.eclipse.jdt.core.javanature", "net.sf.eclipsecs.core.CheckstyleNature"
-
-					buildCommand "net.sf.eclipsecs.core.CheckstyleBuilder"
-					buildCommand "org.eclipse.jdt.core.javabuilder"
-				}
-			}
+			proj.dependencies{ testCompile 'org.mockito:mockito-all:1.9.5' }
 		}
 
 		if(proj.usesOval){
-			proj.dependencies{ compile "net.sf.oval:oval:1.81" }
+			proj.dependencies{ compile 'net.sf.oval:oval:1.81' }
 		}
 	}
 }
 
 allprojects{proj->
 	afterEvaluate{
-		proj.eclipse.project.natures "org.springsource.ide.eclipse.gradle.core.nature"
+		proj.eclipse.project.natures 'org.springsource.ide.eclipse.gradle.core.nature'
 	}
 }
 
@@ -115,7 +91,7 @@ task allEclipse{ dependsOn subprojects*.tasks.eclipse }
 def getAllArtifacts(){
 	def allArtifacts = []
 	def jvmProjectArtifacts = JVM_PROJECTS*.configurations.runtime.artifacts.files.files.sum()
-	def nonJvmProjectArtifacts = file(project(":native").buildDir.path + "/binaries/").listFiles()
+	def nonJvmProjectArtifacts = file(project(':native').buildDir.path + '/binaries/').listFiles()
 	def projectDependencies = JVM_PROJECTS*.configurations.runtime.resolvedConfiguration.resolvedArtifacts.file
 	def uniqueProjectDependencies = projectDependencies.sum().unique()
 	allArtifacts = uniqueProjectDependencies - jvmProjectArtifacts
@@ -125,8 +101,9 @@ def getAllArtifacts(){
 	return allArtifacts
 }
 
-applicationName = "pdusend"
-mainClassName = "at.fabianachammer.pdusend.pdusend"
+
+applicationName = 'pdusend'
+mainClassName = 'at.fabianachammer.pdusend.pdusend'
 
 startScripts{
 	doFirst{
@@ -134,18 +111,18 @@ startScripts{
 	}
 
 	doLast {
-		unixScript.text = unixScript.text.replace('DEFAULT_JVM_OPTS=""', 'DEFAULT_JVM_OPTS="-Djava.library.path=../lib/"')
+		unixScript.text = unixScript.text.replace('DEFAULT_JVM_OPTS=', 'DEFAULT_JVM_OPTS="-Djava.library.path=../lib/"')
 		unixScript.text = unixScript.text.replace('exec "$JAVACMD"', 'exec sudo "$JAVACMD"')
 		windowsScript.text = windowsScript.text.replace('DEFAULT_JVM_OPTS=', 'DEFAULT_JVM_OPTS="-Djava.library.path=../lib/"')
 	}
 }
 
-defaultTasks "installApp"
+defaultTasks 'installApp'
 
 [distZip, distTar, installApp].each {
 	it.doFirst{
 		getAllArtifacts().each{
-			applicationDistribution.from(it.parent){ into "/lib" }
+			applicationDistribution.from(it.parent){ into '/lib' }
 		}
 
 	}
@@ -153,4 +130,4 @@ defaultTasks "installApp"
 	it.dependsOn(subprojects*.assemble)
 }
 
-task wrapper(type: Wrapper){ gradleVersion = "1.5" }
+task wrapper(type: Wrapper){ gradleVersion = '1.5' }

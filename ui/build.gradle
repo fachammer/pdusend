@@ -2,7 +2,7 @@ usesMockito = true
 usesJunit = true
 
 dependencies{
-	compile project(":core"), project(":dsl"), project(":sender")
+	compile project(":api"), project(":dsl")
 }
 
 test{

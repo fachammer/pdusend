@@ -1,7 +1,0 @@
-<atomicDataUnit id="etherType">
-	<lengthInBytes>2</lengthInBytes>
-	<values>
-		<value id="arp">0806</value>
-		<value id="ipv4">0800</value>
-	</values>
-</atomicDataUnit>

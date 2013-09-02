@@ -5,9 +5,6 @@ import at.fabianachammer.pdusend.dsl.interpreter.Interpreter;
 import at.fabianachammer.pdusend.dsl.interpreter.InterpreterImpl;
 import at.fabianachammer.pdusend.ui.view.InterpreterView
 import groovy.transform.PackageScope
-import net.sf.oval.Check
-import net.sf.oval.ConstraintViolation
-import net.sf.oval.guard.Guard
 
 /**
  * abstract class for handling command-line arguments and returning a Groovy

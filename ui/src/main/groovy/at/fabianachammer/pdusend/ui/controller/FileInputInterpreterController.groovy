@@ -5,16 +5,12 @@ import java.io.File
 import at.fabianachammer.pdusend.ui.view.InterpreterView
 import at.fabianachammer.pdusend.ui.controller.validation.Validator
 import groovy.lang.GroovyCodeSource
-import net.sf.oval.constraint.Size
-import net.sf.oval.guard.Guarded
-import net.sf.oval.constraint.NotNull
 
 /**
  * controller class that handles input in form of a file path.
  * @author fabian
  * 
  */
-@Guarded
 class FileInputInterpreterController extends
 InterpreterController {
 

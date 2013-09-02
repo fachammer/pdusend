@@ -1,1 +1,1 @@
-include "native", "sender", "dsl", "ui", "core"
+include 'common',  'api', 'internal', 'native', 'dsl', 'ui'
