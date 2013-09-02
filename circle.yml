@@ -5,6 +5,6 @@ dependencies:
 
 test:
   override:
-    - ./gradlew clean test cobertura
+    - ./gradlew clean test
 
 
