@@ -1,5 +1,5 @@
-apply plugin: "eclipse"
-apply plugin: "application"
+apply plugin: 'eclipse'
+apply plugin: 'application'
 
 def final C_PROJECTS = [project(':native')]
 def final GROOVY_PROJECTS = [
@@ -130,4 +130,4 @@ defaultTasks 'installApp'
 	it.dependsOn(subprojects*.assemble)
 }
 
-task wrapper(type: Wrapper){ gradleVersion = '1.5' }
+task wrapper(type: Wrapper){ gradleVersion = '1.7' }
