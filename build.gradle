@@ -59,7 +59,19 @@ subprojects{
 		}
 
 		if(proj.usesJunit){
-			proj.dependencies{ testCompile 'junit:junit:4.11' }
+			proj.with{
+				buildscript {
+					apply from: 'https://github.com/valkolovos/gradle_cobertura/raw/master/repo/gradle_cobertura/gradle_cobertura/1.2.1/coberturainit.gradle'
+				}
+				
+				dependencies { 
+					testCompile 'junit:junit:4.11' 
+				}
+				
+				cobertura {
+					coverageSourceDirs = sourceSets.main.groovy.srcDirs
+				}
+			}
 		}
 
 		if(proj.usesMockito){
@@ -109,7 +121,7 @@ startScripts{
 	}
 
 	doLast {
-		unixScript.text = unixScript.text.replace('DEFAULT_JVM_OPTS=', 'DEFAULT_JVM_OPTS="-Djava.library.path=../lib/"')
+		unixScript.text = unixScript.text.replace('DEFAULT_JVM_OPTS=""', 'DEFAULT_JVM_OPTS="-Djava.library.path=../lib/"')
 		unixScript.text = unixScript.text.replace('exec "$JAVACMD"', 'exec sudo "$JAVACMD"')
 		windowsScript.text = windowsScript.text.replace('DEFAULT_JVM_OPTS=', 'DEFAULT_JVM_OPTS="-Djava.library.path=../lib/"')
 	}

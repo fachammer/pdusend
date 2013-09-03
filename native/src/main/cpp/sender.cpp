@@ -13,7 +13,7 @@
 #include <unistd.h>
 #include "sender.h"
 
-JNIEXPORT void JNICALL Java_at_fabianachammer_pdusend_NetworkSenderImpl_send(
+JNIEXPORT void JNICALL Java_at_fabianachammer_pdusend_sender_NetworkSenderImpl_send(
 		JNIEnv * env, jobject obj, jint interfaceId, jbyteArray data) {
 
 	int socketDomain = AF_PACKET;

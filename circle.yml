@@ -8,3 +8,5 @@ test:
     - ./gradlew test
   post:
     - ./gradlew cobertura
+    - ./gradlew distTar distZip installApp
+    - cp -r common/build/reports internal/build/reports dsl/build/reports ui/build/reports build/distributions $CIRCLE_ARTIFACTS

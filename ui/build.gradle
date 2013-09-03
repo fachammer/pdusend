@@ -2,9 +2,10 @@ usesMockito = true
 usesJunit = true
 
 dependencies{
-	compile project(":api"), project(":dsl")
+	compile project(':api'), project(':dsl')
+	testCompile project(':internal')
 }
 
 test{
-	systemProperty "java.library.path", project(":native").buildDir.path + "/binaries/"
+	systemProperty 'java.library.path', project(':native').buildDir.path + '/binaries/'
 }

@@ -1,5 +1,6 @@
 package at.fabianachammer.pdusend.dsl.interpreter;
 
+import at.fabianachammer.pdusend.Pdusend;
 import at.fabianachammer.pdusend.dsl.DSL
 import at.fabianachammer.pdusend.sender.NetworkSender;
 import at.fabianachammer.pdusend.type.DataUnit
@@ -28,7 +29,7 @@ class InterpreterImpl implements Interpreter{
 	 * creates a new interpreter for interpreting pdusend dsl scripts.
 	 */
 	InterpreterImpl(sender){
-		this.sender = sender
+		this.sender = Pdusend.createNetworkSenderFactory().createNetworkSender()
 		observers = new ArrayList<InterpreterObserver>()
 		def config = new CompilerConfiguration()
 		def importCustomizer = new ImportCustomizer()
@@ -45,6 +46,8 @@ class InterpreterImpl implements Interpreter{
 	void interpret(GroovyCodeSource script){
 		try{
 			def dslScript = shell.evaluate("{ it -> $script.scriptText}")
+			
+			println sender
 			
 			DSL dsl = new DSL(sender)
 			dsl.with(dslScript)
