@@ -1,0 +1,20 @@
+usesJunit = true
+usesMockito = true
+usesOval = true
+
+buildscript {
+    apply from: 'https://github.com/valkolovos/gradle_cobertura/raw/master/repo/gradle_cobertura/gradle_cobertura/1.2.1/coberturainit.gradle'
+}
+
+cobertura{
+	coverageSourceDirs = sourceSets.main.groovy.srcDirs
+}
+
+dependencies{
+	compile project(':common'), project(':api')
+}
+
+test.dependsOn(project(":native").tasks.assemble)
+test{
+	systemProperty "java.library.path", project(":native").buildDir.path + "/binaries/"
+}
