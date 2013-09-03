@@ -47,8 +47,6 @@ class InterpreterImpl implements Interpreter{
 		try{
 			def dslScript = shell.evaluate("{ it -> $script.scriptText}")
 			
-			println sender
-			
 			DSL dsl = new DSL(sender)
 			dsl.with(dslScript)
 			

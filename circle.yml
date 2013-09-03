@@ -5,8 +5,7 @@ dependencies:
 
 test:
   override:
-    - ./gradlew test
+    - ./gradlew test cobertura
   post:
-    - ./gradlew cobertura
     - ./gradlew distTar distZip installApp
-    - cp -r common/build/reports internal/build/reports dsl/build/reports ui/build/reports build/distributions $CIRCLE_ARTIFACTS
+    - cp -r --parents common/build/reports internal/build/reports dsl/build/reports ui/build/reports build/distributions $CIRCLE_ARTIFACTS
