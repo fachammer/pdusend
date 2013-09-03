@@ -3,8 +3,3 @@ dependencies:
     - cp $JAVA_HOME/include/jni.h native/src/main/headers
     - cp $JAVA_HOME/include/linux/jni_md.h native/src/main/headers
 
-test:
-  override:
-    - ./gradlew clean test
-
-
