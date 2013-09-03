@@ -82,8 +82,6 @@ task buildJVMProjects{ dependsOn JVM_PROJECTS*.tasks.build }
 
 task assembleAll{ dependsOn subprojects*.tasks.assemble }
 
-task cleanAll{ dependsOn subprojects*.tasks.clean }
-
 task cleanAllEclipse{ dependsOn subprojects*.tasks.cleanEclipse }
 
 task allEclipse{ dependsOn subprojects*.tasks.eclipse }
