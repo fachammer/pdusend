@@ -28,42 +28,42 @@ class BitOperatorTest {
 
 	@Test
 	void setBitOnIndexWithZeroAsValueAndZeroAsIndexReturnsOne(){
-		assertEquals(1, BitOperator.setBitOnIndex(0, 0))
+		assertEquals(1, BitOperator.newNumberWithBitSetOnIndex(0, 0))
 	}
 
 	@Test
 	void setBitOnIndexWithOneAsValueAndZeroAsIndexReturnsOne(){
-		assertEquals(1, BitOperator.setBitOnIndex(1, 0))
+		assertEquals(1, BitOperator.newNumberWithBitSetOnIndex(1, 0))
 	}
 
 	@Test
 	void setBitOnIndexWithZeroAsValueAndOneAsIndexReturnsTwo(){
-		assertEquals(2, BitOperator.setBitOnIndex(0, 1))
+		assertEquals(2, BitOperator.newNumberWithBitSetOnIndex(0, 1))
 	}
 
 	@Test
 	void setBitOnIndexWithZeroAsValueAndThrityOneAsIndexReturnsIntegerMinimumValue(){
-		assertEquals(Integer.MIN_VALUE, BitOperator.setBitOnIndex(0, 31))
+		assertEquals(Integer.MIN_VALUE, BitOperator.newNumberWithBitSetOnIndex(0, 31))
 	}
 
 	@Test
 	void clearBitOnIndexWithZeroAsValueAndZeroAsIndexReturnsZero(){
-		assertEquals(0, BitOperator.clearBitOnIndex(0, 0))
+		assertEquals(0, BitOperator.newNumberWithBitClearedOnIndex(0, 0))
 	}
 
 	@Test
 	void clearBitOnIndexWithOneAsValueAndZeroAsIndexReturnsZero(){
-		assertEquals(0, BitOperator.clearBitOnIndex(1, 0))
+		assertEquals(0, BitOperator.newNumberWithBitClearedOnIndex(1, 0))
 	}
 
 	@Test
 	void clearBitOnIndexWithOneAsValueAndOneAsIndexReturnsOne(){
-		assertEquals(1, BitOperator.clearBitOnIndex(1, 1))
+		assertEquals(1, BitOperator.newNumberWithBitClearedOnIndex(1, 1))
 	}
 
 	@Test
 	void clearBitOnIndexWithMinusOneAsValueAndThrityOneAsIndexReturnsIntegerMaximumValue(){
-		assertEquals(Integer.MAX_VALUE, BitOperator.clearBitOnIndex(-1, 31))
+		assertEquals(Integer.MAX_VALUE, BitOperator.newNumberWithBitClearedOnIndex(-1, 31))
 	}
 
 	@Test

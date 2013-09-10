@@ -1,16 +1,11 @@
-package at.fabianachammer.pdusend.dsl.interpreter;
+package at.fabianachammer.pdusend.dsl.interpreter
 
-import at.fabianachammer.pdusend.Pdusend;
+import at.fabianachammer.pdusend.Pdusend
 import at.fabianachammer.pdusend.dsl.DSL
-import at.fabianachammer.pdusend.sender.NetworkSender;
+import at.fabianachammer.pdusend.sender.NetworkSender
 import at.fabianachammer.pdusend.type.DataUnit
 
-import org.codehaus.groovy.ast.ClassNode;
-import org.codehaus.groovy.classgen.GeneratorContext;
-import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilerConfiguration
-import org.codehaus.groovy.control.SourceUnit;
-import org.codehaus.groovy.control.CompilationUnit.PrimaryClassNodeOperation
 import org.codehaus.groovy.control.customizers.ImportCustomizer
 
 /**
@@ -88,7 +83,3 @@ class InterpreterImpl implements Interpreter{
 		observers.each{ it.onInterpreterException(e) }
 	}
 }
-
-
-
-

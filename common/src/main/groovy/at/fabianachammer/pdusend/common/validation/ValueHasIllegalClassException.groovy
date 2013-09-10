@@ -1,6 +1,7 @@
 package at.fabianachammer.pdusend.common.validation
 
 /**
+ * {@link ValidationException} that occurs if an object has an illegal class.
  * @author fabian
  *
  */

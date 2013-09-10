@@ -6,6 +6,8 @@ package at.fabianachammer.pdusend.ui.controller.validation
  *
  */
 class Validator {
+	
+	// TODO: remove this validator and use validator from common instead.
 
 	private static final def PLACE_HOLDER_PREFIX = "@"
 	private static final def ARGUMENT = "$PLACE_HOLDER_PREFIX"+"argument"

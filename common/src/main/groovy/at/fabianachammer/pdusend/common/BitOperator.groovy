@@ -1,4 +1,4 @@
-package at.fabianachammer.pdusend.common;
+package at.fabianachammer.pdusend.common
 
 import at.fabianachammer.pdusend.common.validation.Validator
 
@@ -10,26 +10,48 @@ import at.fabianachammer.pdusend.common.validation.Validator
  */
 final class BitOperator {
 
+	/**
+	 * private constructor as it's an utitlity class
+	 */
 	private BitOperator() {
 	}
 
+	/**
+	 * @param value value to check on, if a bit is set
+	 * @param index index of the bit to be checked
+	 * @return true if the bit was 1, false otherwise
+	 */
 	static boolean isBitSetOnIndex(Number value, int index){
-		setBitOnIndex(value, index) == value
+		newNumberWithBitSetOnIndex(value, index) == value
 	}
 
-	static Number setBitOnIndex(Number value, int index) {
+	/**
+	 * @param template bit mask on which to operate the setting of the bit (doesn't change the template)
+	 * @param index index to set the bit on
+	 * @return new number with same value as the template, but with the bit set on the given index
+	 */
+	static Number newNumberWithBitSetOnIndex(Number template, int index) {
 		int bitToSet = 1 << index
 
-		value | bitToSet
+		template | bitToSet
 	}
 
-	static Number clearBitOnIndex(Number value, int index){
+	/**
+	 * @param template bit mask on which to operate the clearing of the bit (doesn't change the template)
+	 * @param index index to clear the bit on
+	 * @return new number with same value as the template, but with the bit cleared on the given index
+	 */
+	static Number newNumberWithBitClearedOnIndex(Number template, int index){
 		int bitToClear = 1 << index
 		int clearMask = ~bitToClear
 
-		value & clearMask
+		template & clearMask
 	}
 
+	/**
+	 * @param value number to get the bit count of
+	 * @return number of bits needed to represent the given value, or 1 if the value is non-zero
+	 */
 	static int bitCountFromNumber(Number value){
 		if(value != 0)
 			return calculateBitCountIfNotEqualsZero(value)
@@ -37,6 +59,10 @@ final class BitOperator {
 		return 1
 	}
 
+	/**
+	 * @param value non-zero number to get the bit count of
+	 * @return number of bits needed for representing the non-zero number
+	 */
 	private static int calculateBitCountIfNotEqualsZero(Number value){
 		int bitCount = 0
 		int sizeFromType = getSizeInBitsFromType(value.class)
@@ -49,69 +75,99 @@ final class BitOperator {
 		return bitCount
 	}
 
+	/**
+	 * @param numberClass class of subtype of number from which to get the size in bits
+	 * @return amounts of bits used to store the given number type
+	 */
 	private static int getSizeInBitsFromType(Class numberClass){
 		switch(numberClass){
-			case Byte.class:
+			case Byte:
 				return Byte.SIZE
 				break
-			case Short.class:
+			case Short:
 				return Short.SIZE
 				break
-			case Integer.class:
+			case Integer:
 				return Integer.SIZE
 				break
-			case Long.class:
+			case Long:
 				return Long.SIZE
 				break
-			default: 
+			default:
 				throw new UnsupportedOperationException("cannot get size of $numberClass")
 		}
 	}
 
-	static byte[] toByteArray(BigInteger value, int sizeInBits){
-		validateSizeInBits(sizeInBits)
-		int arraySize = Math.ceil(sizeInBits / Byte.SIZE)
+	/**
+	 * @param value number to get the byte representation of
+	 * @param minSizeInBits positive minimum size in bits the whole array should have
+	 * @return byte representation of the number in Big Endian order
+	 */
+	static byte[] toByteArray(BigInteger value, int minSizeInBits){
+		validateSizeInBits(minSizeInBits)
+		int arraySize = Math.ceil(minSizeInBits / Byte.SIZE)
 		List result = []
-		byte[] values = toByteArray(value);
+		byte[] values = toByteArray(value)
 
 		int dataLength = arraySize - values.length
 		if(dataLength > 0)
 			result << zeros(dataLength)
-		
+
 		result << values
 
-		return result.flatten();
+		return result.flatten()
 	}
-	
+
+	/**
+	 * validates the given size in bits for the toByteArray method.
+	 * @param sizeInBits size in bits to validate
+	 */
 	private static void validateSizeInBits(int sizeInBits){
 		Validator v = new Validator(sizeInBits, "sizeInBits")
 		v.validateGreaterThan(0)
 	}
 
+	/**
+	 * @param arrayLength length of the zeros byte array
+	 * @return byte array filled with zeros of the given array length
+	 */
 	private static byte[] zeros(int arrayLength){
 		return new byte[arrayLength]
 	}
 
+	/**
+	 * @param value number to get the byte representation of.
+	 * @return byte array representation of the given value in Big Endian order
+	 */
 	static byte[] toByteArray(BigInteger value) {
 		byte[] returnValue = value.toByteArray()
 
 		if (doesZeroSignBitNeedAnExtraByte(value)) {
-			return returnValue[1..returnValue.length - 1];
+			return returnValue[1..returnValue.length - 1]
 		}
 		return returnValue
 	}
 
+	/**
+	 * Returns whether the storage of the sign bit of this value would start a next byte block.
+	 * @param value number to check
+	 * @return true if the value needs an extra byte, false otherwise
+	 */
 	private static boolean doesZeroSignBitNeedAnExtraByte(BigInteger value){
-		int valueSizeInBits = getNecessaraySizeInBitsFromValue(value)
+		int valueSizeInBits = getNecessarySizeInBitsFromValue(value)
 		value.signum() == 1 && value.testBit(valueSizeInBits - 1)
 	}
 
-	private static int getNecessaraySizeInBitsFromValue(BigInteger value){
+	/**
+	 * @param value number to get the necessary size in bits from
+	 * @return amount of bytes needed to store the given value times 8
+	 */
+	private static int getNecessarySizeInBitsFromValue(BigInteger value){
 		int realSizeInBits = value.bitLength()
 		int lengthRemainder = realSizeInBits % Byte.SIZE
 
 		if (lengthRemainder != 0) {
-			realSizeInBits += Byte.SIZE- lengthRemainder
+			realSizeInBits += Byte.SIZE - lengthRemainder
 		}
 
 		return realSizeInBits

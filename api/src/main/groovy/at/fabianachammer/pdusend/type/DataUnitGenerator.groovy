@@ -1,11 +1,15 @@
 package at.fabianachammer.pdusend.type
 
 /**
- * abstract factory for implementing the creation of data units.
+ * Factory for implementing the creation of data units.
  * @author fabian
  *
  */
 interface DataUnitGenerator {
-	
-	DataUnit generateDataUnit()
+
+	/**
+	 * @param value value from which the generator should create a DataUnit of
+	 * @return implementation of a DataUnit
+	 */
+	DataUnit generateDataUnit(value)
 }

@@ -1,6 +1,7 @@
 package at.fabianachammer.pdusend.common.validation
 
 /**
+ * {@link ValidationException} that occurs if the value of an object was greater than a given value.
  * @author fabian
  *
  */

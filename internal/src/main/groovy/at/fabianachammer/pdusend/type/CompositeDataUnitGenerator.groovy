@@ -1,36 +1,44 @@
+@Contracted
 package at.fabianachammer.pdusend.type
+
+import org.gcontracts.annotations.*
 
 import at.fabianachammer.pdusend.common.validation.Validator
 import at.fabianachammer.pdusend.type.DataUnit
 import at.fabianachammer.pdusend.type.DataUnitGenerator
+import at.fabianachammer.pdusend.type.AbstractDataUnitGenerator
 
 /**
  * @author fabian
  *
  */
-class CompositeDataUnitGenerator implements DataUnitGenerator {
+class CompositeDataUnitGenerator extends AbstractDataUnitGenerator {
 	
-	private DataUnitGenerator[] childDataUnitFactories
+	// TODO: adapt to new AbstractDataUnitGenerator with ID...
+	
+	private Map<String, DataUnitGenerator> generatorMap
 
-	static DataUnitGenerator makeFromDataUnitFactories(DataUnitGenerator... childDataUnitFactories){
-		validateChildDataUnitFactories(childDataUnitFactories)
-
-		return new CompositeDataUnitGenerator(childDataUnitFactories)
+	@Requires({ generatorMap != null })
+	private CompositeDataUnitGenerator(String id, Map<String, DataUnitGenerator> generatorMap){
+		super(id)
+		this.generatorMap = generatorMap
 	}
-
-	private static void validateChildDataUnitFactories(DataUnitGenerator[] childDataUnitFactories) {
-		Validator v = new Validator(childDataUnitFactories, "child data unit factories")
-		v.validateNotNull()
-	}
-
-	private CompositeDataUnitGenerator(DataUnitGenerator... childDataUnitFactories){
-		this.childDataUnitFactories = childDataUnitFactories
-	}
-
+	
+	@Ensures({result != null})
 	@Override
-	public DataUnit generateDataUnit() {
-		DataUnit[] childDataUnits = childDataUnitFactories*.generateDataUnit()
+	public DataUnit generateDataUnit(value) {
+		Map mapValue = value
+        def childDataUnits = [:]
+		
+		generatorMap.each{attribute, generator ->
+			if(mapValue.containsKey(attribute)){
+				childDataUnits[attribute] = generator.generateDataUnit(value[attribute])
+			}
+			else{
+				childDataUnits[attribute] = generator.getDefaultValue()
+			}
+		}
 
-		return new CompositeDataUnit(childDataUnits)
+		return new CompositeDataUnit(childDataUnits.values() as DataUnit[])
 	}
 }

@@ -1,5 +1,8 @@
 package at.fabianachammer.pdusend.type
 
+import org.gcontracts.annotations.Ensures;
+import org.gcontracts.annotations.Requires;
+
 import at.fabianachammer.pdusend.type.DataUnit
 
 /**
@@ -9,27 +12,32 @@ import at.fabianachammer.pdusend.type.DataUnit
  */
 class AtomicDataUnit implements DataUnit {
 
-	private int sizeInBits
-	private byte[] data
+	private final int sizeInBits
+	private final byte[] data
 
+	@Requires({ sizeInBits >= 0 })
 	AtomicDataUnit(int sizeInBits){
 		this(sizeInBits, new byte[Math.ceil(sizeInBits / Byte.SIZE)])
 	}
 
+	@Requires({ data != null })
 	AtomicDataUnit(byte... data){
 		this(data.length * Byte.SIZE, data)
 	}
 
+	@Requires( { sizeInBits >= 0 && data != null })
 	AtomicDataUnit(int sizeInBits, byte... data){
 		this.sizeInBits = sizeInBits
 		this.data = data
 	}
 
+	@Ensures({ result == data})
 	@Override
 	byte[] encode() {
 		return data
 	}
 
+	@Ensures({ result == sizeInBits })
 	@Override
 	public int sizeInBits() {
 		return sizeInBits

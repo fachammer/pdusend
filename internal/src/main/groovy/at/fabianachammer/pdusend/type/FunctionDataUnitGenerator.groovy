@@ -1,62 +1,40 @@
 package at.fabianachammer.pdusend.type
 
+import org.gcontracts.annotations.Requires;
+
 import at.fabianachammer.pdusend.common.validation.Validator
 import at.fabianachammer.pdusend.type.DataUnit
 import at.fabianachammer.pdusend.type.DataUnitGenerator
+import at.fabianachammer.pdusend.type.AbstractDataUnitGenerator
 
 
 /**
+ * DataUnitGenerator for generating FunctionDataUnits
  * @author fabian
  *
  */
-class FunctionDataUnitGenerator implements DataUnitGenerator {
-
-	private static final int MIN_DATA_UNIT_SIZE_IN_BITS = 1
-
+class FunctionDataUnitGenerator extends AbstractDataUnitGenerator {
+	
 	private Closure<byte[]> function
 	private int dataUnitSizeInBits
 	private boolean isDataUnitSizeInBitsSet
 
-	static FunctionDataUnitGenerator makeFromClosureAndDataUnitSizeInBits(Closure<byte[]> function, int dataUnitSizeInBits){
-		validateClosureAndDataUnitSizeInBits(function, dataUnitSizeInBits)
-
-		return new FunctionDataUnitGenerator(function, dataUnitSizeInBits)
-	}
-
-	private static void validateClosureAndDataUnitSizeInBits(Closure<byte[]> function, int dataUnitSizeInBits){
-		validateClosure(function)
-		validateDataUnitSizeInBits(dataUnitSizeInBits)
-	}
-	
-	private static void validateClosure(Closure<byte[]> function){
-		Validator v = new Validator(function, "function")
-		v.validateNotNull()
-	}
-
-	private static void validateDataUnitSizeInBits(int dataUnitSizeInBits){
-		Validator v = new Validator(dataUnitSizeInBits, "data unit size in bits")
-		v.validateGreaterThanOrEquals(MIN_DATA_UNIT_SIZE_IN_BITS)
-	}
-	
-	static FunctionDataUnitGenerator makeFromClosure(Closure<byte[]> function){
-		validateClosure(function)
-
-		return new FunctionDataUnitGenerator(function)
-	}
-	
-	private FunctionDataUnitGenerator(Closure<byte[]> function){
+	@Requires({ function != null })
+	FunctionDataUnitGenerator(String id, Closure<byte[]> function){
+		super(id)
 		this.function = function
 		this.isDataUnitSizeInBitsSet = false
 	}
 
-	private FunctionDataUnitGenerator(Closure<byte[]> function, int dataUnitSizeInBits){
-		this(function)
+	@Requires({ function != null && dataUnitSizeInBits > 0 })
+	FunctionDataUnitGenerator(String id, Closure<byte[]> function, int dataUnitSizeInBits){
+		this(id, function)
 		this.dataUnitSizeInBits = dataUnitSizeInBits
 		this.isDataUnitSizeInBitsSet = true
 	}
 
 	@Override
-	DataUnit generateDataUnit() {
+	DataUnit generateDataUnit(value) {
 		if(isDataUnitSizeInBitsSet)
 			return new FunctionDataUnit(function, dataUnitSizeInBits)
 		else

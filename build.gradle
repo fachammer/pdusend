@@ -1,5 +1,8 @@
 apply plugin: 'eclipse'
 apply plugin: 'application'
+apply plugin: 'sonar-runner'
+
+// TODO: refactor build.gradle
 
 def final C_PROJECTS = [project(':native')]
 def final GROOVY_PROJECTS = [
@@ -45,15 +48,22 @@ subprojects{
 		}
 
 		if(GROOVY_PROJECTS.contains(proj)){
-			proj.dependencies{
-				groovy 'org.codehaus.groovy:groovy-all:2.1.2'
-				compile 'org.codehaus.groovy:groovy-all:2.1.2'
-			}
-			proj.eclipse{
-				project{
-					natures +=[
-						'org.eclipse.jdt.groovy.core.groovyNature'
-					]
+			proj.with{
+				dependencies{
+					groovy 'org.codehaus.groovy:groovy-all:2.1.2'
+					compile 'org.codehaus.groovy:groovy-all:2.1.2'
+				}
+				eclipse{
+					project{
+						natures +=[
+							'org.eclipse.jdt.groovy.core.groovyNature'
+						]
+					}
+				}
+				sonarRunner{
+					sonarProperties{
+						property 'sonar.language', 'grvy'
+					}
 				}
 			}
 		}
@@ -140,4 +150,17 @@ defaultTasks 'installApp'
 	it.dependsOn(subprojects*.assemble)
 }
 
+// TODO: update to current gradle version
+
 task wrapper(type: Wrapper){ gradleVersion = '1.5' }
+
+def sonarServer = '158.255.212.49'
+
+sonarRunner {
+	sonarProperties {
+		property 'sonar.host.url', "http://$sonarServer:8080/sonar"
+		property 'sonar.jdbc.url', "jdbc:mysql://$sonarServer/sonarqube"
+		property 'sonar.jdbc.user', 'sonarqube'
+		property 'sonar.jdbc.password', 'S0narQube!'
+	}
+}

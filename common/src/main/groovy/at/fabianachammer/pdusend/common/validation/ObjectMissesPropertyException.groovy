@@ -1,6 +1,7 @@
 package at.fabianachammer.pdusend.common.validation
 
 /**
+ * {@link ValidationException} that occurs if an object doesn't provide a given property
  * @author fabian
  *
  */

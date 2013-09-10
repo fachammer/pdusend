@@ -1,93 +1,52 @@
 package at.fabianachammer.pdusend.type
 
+import org.gcontracts.annotations.Requires;
+
+import at.fabianachammer.pdusend.common.BitOperator
 import at.fabianachammer.pdusend.common.Extension
 import at.fabianachammer.pdusend.common.validation.Validator
 import at.fabianachammer.pdusend.type.DataUnit
-import at.fabianachammer.pdusend.type.DataUnitGenerator
+import at.fabianachammer.pdusend.type.AbstractDataUnitGenerator
+
 
 /**
+ * Class that generates AtomicDataUnits based on an input.
  * @author fabian
  *
  */
-class AtomicDataUnitGenerator implements DataUnitGenerator {
+class AtomicDataUnitGenerator extends AbstractDataUnitGenerator {
 
-	private static int DATA_UNIT_SIZE_IN_BITS_MIN = 0
-	
+	/**
+	 * size of the data units that this generator will create in bits.
+	 */
 	private int dataUnitSizeInBits
-	private Map<String, AtomicDataUnit> predefinedValues
-	
+
 	static{
 		Extension.extend()
 	}
-
-	static AtomicDataUnitGenerator makeFromDataUnitSizeInBits(int dataUnitSizeInBits){
-		validateDataUnitSizeInBits(dataUnitSizeInBits)
-
-		return new AtomicDataUnitGenerator(dataUnitSizeInBits)
+	
+	@Requires({ dataUnitSizeInBits > 0 })
+	public AtomicDataUnitGenerator(String id, int dataUnitSizeInBits){
+		super(id)
+		this.dataUnitSizeInBits = dataUnitSizeInBits
 	}
 	
-	private static void validateDataUnitSizeInBits(int dataUnitSizeInBits){
-		Validator v = new Validator(dataUnitSizeInBits, "data unit size in bits")
-		
-		v.validateGreaterThan(DATA_UNIT_SIZE_IN_BITS_MIN)
-	}
-
-	private AtomicDataUnitGenerator(int dataUnitsSizeInBits){
-		this.dataUnitSizeInBits = dataUnitsSizeInBits
-		predefinedValues = [:]
-	}
-
+	@Requires({ value instanceof Number || value instanceof byte[] })
 	@Override
-	DataUnit generateDataUnit() {
-		return new AtomicDataUnit(dataUnitSizeInBits)
+	DataUnit generateDataUnit(value) {
+		byte[] atomicDataUnitData = getByteRepresentationFromValue(value)
+
+		return new AtomicDataUnit(dataUnitSizeInBits, atomicDataUnitData)
 	}
 
-	void addPredefinedValueByKey(String key, byte[] value){
-		validateAddPredefinedValueByKeyArguments(key, value)
-
-		predefinedValues[key] = new AtomicDataUnit(value)
-	}
-	
-	private void validateAddPredefinedValueByKeyArguments(String key, byte[] value){
-		validateKey(key)
-		validatePredefinedValue(value)
-	}
-	
-	private void validateKey(String key){
-		Validator v = new Validator(key, "key")
-		
-		v.validateNotNull()
-	}
-	
-	private void validatePredefinedValue(byte[] value){
-		int valueBitCount = value*.bitCount().sum(0)
-		Validator v = new Validator(valueBitCount, "value bit count")
-		
-		v.validateLowerThanOrEquals(dataUnitSizeInBits)
-	}
-
-	AtomicDataUnit propertyMissing(String name){
-		if(predefinedValuesHasKey(name)){
-			return predefinedValues[name]
+	private byte[] getByteRepresentationFromValue(value){
+		switch(value.class){
+			case Number:
+				return BitOperator.toByteArray(value, dataUnitSizeInBits)
+			case byte[]:
+				return value
+			default:
+				throw new AssertionError('should never execute as classes got validated before')
 		}
-		
-		throwMissingPropertyException(name)
-	}
-
-	private boolean predefinedValuesHasKey(String name){
-		return predefinedValues.containsKey(name)
-	}
-
-	private void throwMissingPropertyException(String name){
-		throw new MissingPropertyException("property " + name +" doesn't exist and isn't a predefined value of this factory")
-	}
-	
-	@Override
-	boolean equals(Object obj) {
-		if(!(obj instanceof AtomicDataUnitGenerator)){
-			return false
-		}
-		AtomicDataUnitGenerator rhs = (AtomicDataUnitGenerator) obj
-		return predefinedValues == rhs.predefinedValues && dataUnitSizeInBits == rhs.dataUnitSizeInBits
 	}
 }

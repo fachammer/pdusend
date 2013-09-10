@@ -1,6 +1,7 @@
 package at.fabianachammer.pdusend.common.validation
 
 /**
+ * {@link ValidationException} that occurs if the value of an object is outside a given range.
  * @author fabian
  *
  */

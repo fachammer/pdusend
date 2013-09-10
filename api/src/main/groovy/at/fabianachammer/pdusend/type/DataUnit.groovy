@@ -2,7 +2,7 @@ package at.fabianachammer.pdusend.type
 
 
 /**
- * unit of data that can be sent over the network
+ * Unit of data that can be sent over a network.
  * 
  * @author fabian
  *

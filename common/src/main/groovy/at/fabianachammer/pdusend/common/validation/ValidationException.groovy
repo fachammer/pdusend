@@ -1,6 +1,7 @@
 package at.fabianachammer.pdusend.common.validation
 
 /**
+ * Base exception that occurs when the validation of an object fails.
  * @author fabian
  *
  */

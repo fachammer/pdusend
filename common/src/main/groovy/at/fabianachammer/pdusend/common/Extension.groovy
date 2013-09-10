@@ -12,7 +12,7 @@ final class Extension {
 			BitOperator.isBitSetOnIndex(delegate, index)
 		}
 		Number.metaClass.orBitOnIndex = {index ->
-			BitOperator.setBitOnIndex(delegate, index)
+			BitOperator.newNumberWithBitSetOnIndex(delegate, index)
 		}
 		Number.metaClass.bitCount = {
 			BitOperator.bitCountFromNumber(delegate)
@@ -22,7 +22,9 @@ final class Extension {
 		}
 	}
 
+	/**
+	 * private constructor as this is an utility class.
+	 */
 	private Extension(){
-
 	}
 }

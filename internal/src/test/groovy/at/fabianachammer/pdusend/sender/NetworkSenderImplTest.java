@@ -8,6 +8,7 @@ import java.net.SocketException;
 import org.junit.Before;
 import org.junit.Test;
 
+import at.fabianachammer.pdusend.common.validation.ValueNullException;
 import at.fabianachammer.pdusend.sender.NetworkSender;
 import at.fabianachammer.pdusend.type.DataUnit;
 import at.fabianachammer.pdusend.sender.NetworkSenderImpl;
@@ -16,7 +17,7 @@ import at.fabianachammer.pdusend.sender.NetworkSenderImpl;
  * @author fabian
  * 
  */
-public class SenderTest {
+public class NetworkSenderImplTest {
 
 	private NetworkInterface loopback;
 
@@ -29,17 +30,17 @@ public class SenderTest {
 		}
 	}
 
-	@Test(expected = NullPointerException.class)
+	@Test(expected = ValueNullException.class)
 	public final void sendWithNullInterfaceThrowsNullPointerException() {
 		NetworkSender sender = new NetworkSenderImpl();
 
-		sender.send(null, mock(DataUnit.class));
+		sender.send(mock(DataUnit.class), null);
 	}
 
-	@Test(expected = NullPointerException.class)
+	@Test(expected = ValueNullException.class)
 	public final void sendWithNullDataUnitThrowsNullPointerException() {
 		NetworkSender sender = new NetworkSenderImpl();
 
-		sender.send(loopback, null);
+		sender.send(null, loopback);
 	}
 }

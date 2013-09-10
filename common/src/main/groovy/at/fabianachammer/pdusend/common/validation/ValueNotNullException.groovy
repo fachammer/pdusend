@@ -1,6 +1,7 @@
 package at.fabianachammer.pdusend.common.validation
 
 /**
+ * {@link ValidationException} that occurs when an object had a value when it should have been null.
  * @author fabian
  *
  */

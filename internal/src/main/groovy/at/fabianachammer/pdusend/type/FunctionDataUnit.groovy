@@ -1,5 +1,8 @@
 package at.fabianachammer.pdusend.type
 
+import org.gcontracts.annotations.Ensures;
+import org.gcontracts.annotations.Requires;
+
 import at.fabianachammer.pdusend.type.DataUnit
 
 /**
@@ -19,11 +22,13 @@ class FunctionDataUnit implements DataUnit {
 		this(function, SIZE_IN_BITS_UNSET_INDICATOR)
 	}
 	
+	@Requires({ sizeInBits >= -1 })
 	FunctionDataUnit(Closure<byte[]> function, int sizeInBits){
 		this.function = function
 		this.sizeInBits = sizeInBits
 	}
 	
+	@Ensures({ result != null })
 	@Override
 	byte[] encode() {
 		if(encodedData == null){
@@ -36,6 +41,7 @@ class FunctionDataUnit implements DataUnit {
 		function() ?: []
 	}
 
+	@Ensures({ result >= 0 })
 	@Override
 	public int sizeInBits() {
 		if(isSizeInBitsUnset()){

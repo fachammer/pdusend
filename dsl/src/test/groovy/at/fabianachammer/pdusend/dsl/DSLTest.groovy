@@ -32,6 +32,6 @@ class DSLTest {
 			send adu on loopback
 		}
 		
-		verify(mockSender).send(loopback, adu)
+		verify(mockSender).send(adu, loopback)
 	}
 }

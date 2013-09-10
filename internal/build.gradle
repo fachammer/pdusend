@@ -3,7 +3,7 @@ usesMockito = true
 usesOval = true
 
 dependencies{
-	compile project(':common'), project(':api')
+	compile project(':common'), project(':api'), 'org.gcontracts:gcontracts-core:1.2.12'
 }
 
 test.dependsOn(project(":native").tasks.assemble)

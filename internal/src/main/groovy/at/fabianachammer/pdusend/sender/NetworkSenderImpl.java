@@ -1,44 +1,38 @@
-/**
- * 
- */
 package at.fabianachammer.pdusend.sender;
 
 import java.net.NetworkInterface;
 
-
+import at.fabianachammer.pdusend.common.validation.Validator;
 import at.fabianachammer.pdusend.type.DataUnit;
-import net.sf.oval.constraint.NotNull;
-import net.sf.oval.guard.Guarded;
 
 /**
- * Class for sending arbitrary data.
+ * Implementation of the NetworkSender that sends data on a native raw socket
+ * via the JNI.
  * 
  * @author fabian
  * 
  */
-@Guarded
 public class NetworkSenderImpl implements NetworkSender {
 
-	/**
-	 * Specifies the path to the native library.
-	 */
+	// TODO: decide whether to use validator from common or use validation
+	// framework like OVal
+
 	private static final String LIB_PATH = "native";
 
+	/**
+	 * Loads the native library.
+	 */
 	static {
 		System.loadLibrary(LIB_PATH);
 	}
 
-	/**
-	 * Sends a data unit from a specified network interface.
-	 * 
-	 * @param networkInterface
-	 *            network interface to send the PDU from
-	 * @param data
-	 *            data unit to be sent
-	 */
-	public void send(
-			@NotNull final NetworkInterface networkInterface,
-			@NotNull final DataUnit data) {
+	@Override
+	public void send(final DataUnit data,
+			final NetworkInterface networkInterface) {
+		Validator dataValidator = new Validator(data, "data");
+		dataValidator.validateNotNull();
+		Validator networkInterfaceValidator = new Validator(networkInterface, "network interface");
+		networkInterfaceValidator.validateNotNull();
 		send(networkInterface.getIndex(), data.encode());
 	}
 
@@ -50,6 +44,5 @@ public class NetworkSenderImpl implements NetworkSender {
 	 * @param data
 	 *            data that should be sent
 	 */
-	private native void send(final int interfaceIndex,
-			final byte[] data);
+	private native void send(final int interfaceIndex, final byte[] data);
 }

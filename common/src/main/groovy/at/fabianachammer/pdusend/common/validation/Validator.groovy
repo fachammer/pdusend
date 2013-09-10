@@ -1,6 +1,7 @@
 package at.fabianachammer.pdusend.common.validation
 
 /**
+ * Represents an object that can validate a given object against different constraints.
  * @author fabian
  *
  */
