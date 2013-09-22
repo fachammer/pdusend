@@ -11,4 +11,4 @@ Feel free to download the repository and try out the application. If you have an
 
 Build status
 
-https://www.codeship.io/projects/bded4710-05e4-0131-9bc0-166adaf189c4/status
+![Build status](https://www.codeship.io/projects/bded4710-05e4-0131-9bc0-166adaf189c4/status)
