@@ -8,3 +8,7 @@ currently only supports Linux.
 to use the pdusend application follow the links in the [wiki](https://github.com/fablman/pdusend/wiki)
 
 Feel free to download the repository and try out the application. If you have any questions, suggestions for improvement or find any bugs, don't hesitate to contact me via email.
+
+Build status
+
+https://www.codeship.io/projects/bded4710-05e4-0131-9bc0-166adaf189c4/status
