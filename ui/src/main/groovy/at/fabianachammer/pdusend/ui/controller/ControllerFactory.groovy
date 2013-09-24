@@ -26,7 +26,8 @@ final class ControllerFactory {
 	 * @return InterpreterController that can handle the command-line input, or nu
 	 */
 	static Controller create(final String[] input) {
-		if(input == null || input.length == 0 || input[0].equalsIgnoreCase("-help")) {
+		// TODO: maybe command line parsing with apache commons
+		if(needsHelpController(input)) {
 			return new HelpController(new CommandLineHelpView())
 		}
 
@@ -35,5 +36,9 @@ final class ControllerFactory {
 		}
 
 		return new TextInputInterpreterController(new CommandLineInterpreterView())
+	}
+	
+	private static boolean needsHelpController(String[] input){
+		input == null || input.length == 0 || input[0].equalsIgnoreCase("-help")
 	}
 }

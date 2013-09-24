@@ -3,7 +3,6 @@ package at.fabianachammer.pdusend.type
 
 import org.gcontracts.annotations.*
 
-import at.fabianachammer.pdusend.common.validation.Validator
 import at.fabianachammer.pdusend.type.DataUnit
 import at.fabianachammer.pdusend.type.DataUnitGenerator
 import at.fabianachammer.pdusend.type.AbstractDataUnitGenerator

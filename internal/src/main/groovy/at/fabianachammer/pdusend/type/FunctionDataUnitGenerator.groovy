@@ -1,8 +1,7 @@
 package at.fabianachammer.pdusend.type
 
-import org.gcontracts.annotations.Requires;
+import org.gcontracts.annotations.Requires
 
-import at.fabianachammer.pdusend.common.validation.Validator
 import at.fabianachammer.pdusend.type.DataUnit
 import at.fabianachammer.pdusend.type.DataUnitGenerator
 import at.fabianachammer.pdusend.type.AbstractDataUnitGenerator
@@ -14,7 +13,7 @@ import at.fabianachammer.pdusend.type.AbstractDataUnitGenerator
  *
  */
 class FunctionDataUnitGenerator extends AbstractDataUnitGenerator {
-	
+
 	private Closure<byte[]> function
 	private int dataUnitSizeInBits
 	private boolean isDataUnitSizeInBitsSet
@@ -35,9 +34,11 @@ class FunctionDataUnitGenerator extends AbstractDataUnitGenerator {
 
 	@Override
 	DataUnit generateDataUnit(value) {
-		if(isDataUnitSizeInBitsSet)
+		if(isDataUnitSizeInBitsSet){
 			return new FunctionDataUnit(function, dataUnitSizeInBits)
-		else
+		}
+		else {
 			return new FunctionDataUnit(function)
+		}
 	}
 }

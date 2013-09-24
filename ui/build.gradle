@@ -1,5 +1,6 @@
 usesMockito = true
 usesJunit = true
+usesGcontracts = true
 
 dependencies{
 	compile project(':api'), project(':dsl')

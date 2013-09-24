@@ -1,8 +1,8 @@
-package at.fabianachammer.pdusend.ui.controller;
+package at.fabianachammer.pdusend.ui.controller
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.*
 
-import org.junit.Test;
+import org.junit.Test
 
 /**
  * @author fabian
@@ -10,20 +10,6 @@ import org.junit.Test;
  */
 class TextInputInterpreterControllerTest {
 
-	@Test(expected = NullPointerException.class)
-	void processInputWithNullThrowsNullPointerException() {
-		InterpreterController controller = new TextInputInterpreterController()
-		
-		controller.processInput(null)
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	void processInputWithZeroInputLengthThrowsIllegalArgumentException(){
-		InterpreterController controller = new TextInputInterpreterController()
-		
-		controller.processInput(new String[0])
-	}
-	
 	@Test
 	void processInputWithValidInputReturnsGroovyCodeSourceWithEqualScriptText(){
 		InterpreterController controller = new TextInputInterpreterController()

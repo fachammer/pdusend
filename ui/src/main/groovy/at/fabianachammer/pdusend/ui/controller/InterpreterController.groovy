@@ -1,10 +1,8 @@
-package at.fabianachammer.pdusend.ui.controller;
+package at.fabianachammer.pdusend.ui.controller
 
-import groovy.lang.GroovyCodeSource
-import at.fabianachammer.pdusend.dsl.interpreter.Interpreter;
-import at.fabianachammer.pdusend.dsl.interpreter.InterpreterImpl;
+import at.fabianachammer.pdusend.dsl.interpreter.Interpreter
+import at.fabianachammer.pdusend.dsl.interpreter.InterpreterImpl
 import at.fabianachammer.pdusend.ui.view.InterpreterView
-import groovy.transform.PackageScope
 
 /**
  * abstract class for handling command-line arguments and returning a Groovy

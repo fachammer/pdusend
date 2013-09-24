@@ -1,10 +1,8 @@
 package at.fabianachammer.pdusend.ui.controller
 
-import java.io.File
+import org.gcontracts.annotations.Requires
 
 import at.fabianachammer.pdusend.ui.view.InterpreterView
-import at.fabianachammer.pdusend.ui.controller.validation.Validator
-import groovy.lang.GroovyCodeSource
 
 /**
  * controller class that handles input in form of a file path.
@@ -28,9 +26,8 @@ InterpreterController {
 	}
 
 	@Override
+	@Requires({input != null && input.length >= MIN_SIZE})
 	protected GroovyCodeSource processInput(final String[] input) {
-		Validator.validateNotNull(input, "input")
-		Validator.validateGreaterThanEquals(MIN_SIZE, input.length, "input length")
 		File scriptFile = new File(input[1])
 		return new GroovyCodeSource(scriptFile)
 	}

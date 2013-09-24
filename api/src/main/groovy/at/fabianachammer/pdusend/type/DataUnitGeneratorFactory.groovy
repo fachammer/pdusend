@@ -1,7 +1,5 @@
 package at.fabianachammer.pdusend.type
 
-import java.util.Map;
-
 /**
  * Abstract Factory for DataUnitGenerators.
  * @author fabian

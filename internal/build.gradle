@@ -1,6 +1,6 @@
 usesJunit = true
 usesMockito = true
-usesOval = true
+usesGcontracts = true
 
 dependencies{
 	compile project(':common'), project(':api'), 'org.gcontracts:gcontracts-core:1.2.12'

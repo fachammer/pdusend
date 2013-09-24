@@ -4,7 +4,6 @@ import org.gcontracts.annotations.Requires;
 
 import at.fabianachammer.pdusend.common.BitOperator
 import at.fabianachammer.pdusend.common.Extension
-import at.fabianachammer.pdusend.common.validation.Validator
 import at.fabianachammer.pdusend.type.DataUnit
 import at.fabianachammer.pdusend.type.AbstractDataUnitGenerator
 

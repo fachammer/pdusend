@@ -1,8 +1,8 @@
 package at.fabianachammer.pdusend.ui.controller
 
-import groovy.lang.GroovyCodeSource
-import at.fabianachammer.pdusend.ui.controller.validation.Validator
-import at.fabianachammer.pdusend.ui.view.InterpreterView;
+import org.gcontracts.annotations.Requires
+
+import at.fabianachammer.pdusend.ui.view.InterpreterView
 
 /**
  * @author fabian
@@ -23,10 +23,8 @@ class TextInputInterpreterController extends InterpreterController {
 	}
 
 	@Override
+	@Requires({input != null && input.length >= MIN_SIZE})
 	protected GroovyCodeSource processInput(String... input) {
-		Validator.validateNotNull(input, "input")
-		Validator.validateGreaterThanEquals(MIN_SIZE, input.length, "input length")
-
 		StringBuilder sb = new StringBuilder()
 		input.each{
 			sb.append("$it ")

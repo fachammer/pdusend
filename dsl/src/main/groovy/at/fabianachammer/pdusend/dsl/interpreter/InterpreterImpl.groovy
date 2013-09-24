@@ -3,7 +3,6 @@ package at.fabianachammer.pdusend.dsl.interpreter
 import at.fabianachammer.pdusend.Pdusend
 import at.fabianachammer.pdusend.dsl.DSL
 import at.fabianachammer.pdusend.sender.NetworkSender
-import at.fabianachammer.pdusend.type.DataUnit
 
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.control.customizers.ImportCustomizer

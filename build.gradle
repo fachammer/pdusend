@@ -26,7 +26,7 @@ subprojects{
 	beforeEvaluate{ proj ->
 		proj.ext.usesJunit = false
 		proj.ext.usesMockito = false
-		proj.ext.usesOval = false
+		proj.ext.usesGcontracts = false
 	}
 
 	afterEvaluate{ proj ->
@@ -88,8 +88,8 @@ subprojects{
 			proj.dependencies{ testCompile 'org.mockito:mockito-all:1.9.5' }
 		}
 
-		if(proj.usesOval){
-			proj.dependencies{ compile 'net.sf.oval:oval:1.81' }
+		if(proj.usesGcontracts){
+			proj.dependencies{ compile 'org.gcontracts:gcontracts-core:1.2.12' }
 		}
 	}
 }
@@ -154,13 +154,14 @@ defaultTasks 'installApp'
 
 task wrapper(type: Wrapper){ gradleVersion = '1.5' }
 
-def sonarServer = '158.255.212.49'
+def sonarServer = '127.0.0.1'
 
 sonarRunner {
 	sonarProperties {
 		property 'sonar.host.url', "http://$sonarServer:8080/sonar"
-		property 'sonar.jdbc.url', "jdbc:mysql://$sonarServer/sonarqube"
-		property 'sonar.jdbc.user', 'sonarqube'
-		property 'sonar.jdbc.password', 'S0narQube!'
+		property 'sonar.jdbc.url', "jdbc:mysql://$sonarServer:3306/sonar"
+		property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
+        property "sonar.jdbc.username", 'sonar'
+        property "sonar.jdbc.password", 'S0nar!'
 	}
 }
