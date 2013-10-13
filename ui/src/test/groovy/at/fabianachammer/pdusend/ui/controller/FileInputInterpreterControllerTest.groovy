@@ -8,7 +8,7 @@ import org.junit.Before
 import org.junit.Test
 
 import at.fabianachammer.pdusend.ui.view.InterpreterView
-import at.fabianachammer.pdusend.dsl.interpreter.InterpreterImpl
+import at.fabianachammer.pdusend.dsl.interpreter.Interpreter
 
 class FileInputInterpreterControllerTest {
 
@@ -25,8 +25,7 @@ class FileInputInterpreterControllerTest {
 
 	@Test
 	void processInputWithValidFileReturnsGroovyCodeSourceWithScriptTextEqualToTheInputFile() {
-		InterpreterView viewDummy = mock(InterpreterView.class)
-		FileInputInterpreterController controller = new FileInputInterpreterController(viewDummy)
+		FileInputInterpreterController controller = new FileInputInterpreterController(mock(Interpreter), mock(InterpreterView))
 		String[] input = ["-f", validInputFilePath]
 		GroovyCodeSource expected = new GroovyCodeSource(validInput)
 
@@ -37,8 +36,7 @@ class FileInputInterpreterControllerTest {
 
 	@Test(expected = IOException.class)
 	void processInputWithInvalidFileThrowsIOException(){
-		InterpreterView viewDummy = mock(InterpreterView.class)
-		FileInputInterpreterController controller = new FileInputInterpreterController(viewDummy)
+		FileInputInterpreterController controller = new FileInputInterpreterController(mock(Interpreter), mock(InterpreterView))
 		String[] input = ["-f", invalidDirectoryPath]
 
 		controller.processInput(input)
