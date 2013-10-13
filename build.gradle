@@ -131,9 +131,9 @@ startScripts{
 	}
 
 	doLast {
-		unixScript.text = unixScript.text.replace('DEFAULT_JVM_OPTS=""', 'DEFAULT_JVM_OPTS="-Djava.library.path=../lib/"')
+		unixScript.text = unixScript.text.replace('DEFAULT_JVM_OPTS=""', 'DEFAULT_JVM_OPTS="-Djava.library.path=../lib/mainSharedLibrary"')
 		unixScript.text = unixScript.text.replace('exec "$JAVACMD"', 'exec sudo "$JAVACMD"')
-		windowsScript.text = windowsScript.text.replace('DEFAULT_JVM_OPTS=', 'DEFAULT_JVM_OPTS="-Djava.library.path=../lib/"')
+		windowsScript.text = windowsScript.text.replace('DEFAULT_JVM_OPTS=', 'DEFAULT_JVM_OPTS="-Djava.library.path=../lib/mainSharedLibrary"')
 	}
 }
 
@@ -152,7 +152,7 @@ defaultTasks 'installApp'
 
 // TODO: update to current gradle version
 
-task wrapper(type: Wrapper){ gradleVersion = '1.5' }
+task wrapper(type: Wrapper){ gradleVersion = '1.8' }
 
 def sonarServer = '127.0.0.1'
 

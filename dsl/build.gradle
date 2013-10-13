@@ -7,9 +7,6 @@ dependencies{
 }
 
 test.dependsOn(project(":native").tasks.assemble)
-test{
-	systemProperty "java.library.path", project(":native").buildDir.path + "/binaries/"
-}
 
 eclipse.classpath{
 	containers 'GROOVY_DSL_SUPPORT'

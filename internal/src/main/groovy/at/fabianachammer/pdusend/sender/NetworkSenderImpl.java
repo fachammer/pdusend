@@ -2,7 +2,6 @@ package at.fabianachammer.pdusend.sender;
 
 import java.net.NetworkInterface;
 
-import at.fabianachammer.pdusend.common.validation.Validator;
 import at.fabianachammer.pdusend.type.DataUnit;
 
 /**
@@ -13,9 +12,6 @@ import at.fabianachammer.pdusend.type.DataUnit;
  * 
  */
 public class NetworkSenderImpl implements NetworkSender {
-
-	// TODO: decide whether to use validator from common or use validation
-	// framework like OVal
 
 	private static final String LIB_PATH = "native";
 
@@ -29,11 +25,27 @@ public class NetworkSenderImpl implements NetworkSender {
 	@Override
 	public void send(final DataUnit data,
 			final NetworkInterface networkInterface) {
-		Validator dataValidator = new Validator(data, "data");
-		dataValidator.validateNotNull();
-		Validator networkInterfaceValidator = new Validator(networkInterface, "network interface");
-		networkInterfaceValidator.validateNotNull();
+		validateSendArguments(data, networkInterface);
+
 		send(networkInterface.getIndex(), data.encode());
+	}
+
+	private void validateSendArguments(final DataUnit data,
+			final NetworkInterface networkInterface) {
+		validateDataUnit(data);
+		validateNetworkInterface(networkInterface);
+	}
+	
+	private void validateDataUnit(final DataUnit data) {
+		if (data == null)
+			throw new NullPointerException("data must not be null.");
+	}
+
+	private void validateNetworkInterface(
+			final NetworkInterface networkInterface) {
+		if (networkInterface == null)
+			throw new NullPointerException(
+					"network interface must not be null.");
 	}
 
 	/**

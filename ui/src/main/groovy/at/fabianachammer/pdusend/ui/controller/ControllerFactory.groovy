@@ -1,5 +1,8 @@
 package at.fabianachammer.pdusend.ui.controller
 
+import at.fabianachammer.pdusend.Pdusend;
+import at.fabianachammer.pdusend.dsl.interpreter.Interpreter
+import at.fabianachammer.pdusend.dsl.interpreter.InterpreterImpl
 import at.fabianachammer.pdusend.ui.view.CommandLineHelpView
 import at.fabianachammer.pdusend.ui.view.CommandLineInterpreterView
 
@@ -11,6 +14,8 @@ import at.fabianachammer.pdusend.ui.view.CommandLineInterpreterView
  * 
  */
 final class ControllerFactory {
+
+	private static final Interpreter INTERPRETER_IMPL = new InterpreterImpl(Pdusend.createNetworkSenderFactory().createNetworkSender())
 
 	/**
 	 * private constructor because this is a utility class.
@@ -32,10 +37,10 @@ final class ControllerFactory {
 		}
 
 		if(input[0].equalsIgnoreCase("-f")){
-			return new FileInputInterpreterController(new CommandLineInterpreterView())
+			return new FileInputInterpreterController(INTERPRETER_IMPL, new CommandLineInterpreterView())
 		}
 
-		return new TextInputInterpreterController(new CommandLineInterpreterView())
+		return new TextInputInterpreterController(INTERPRETER_IMPL, new CommandLineInterpreterView())
 	}
 	
 	private static boolean needsHelpController(String[] input){

@@ -4,10 +4,6 @@ import static org.junit.Assert.*
 
 import org.junit.Test;
 
-import at.fabianachammer.pdusend.common.validation.ValueNullException
-import at.fabianachammer.pdusend.common.validation.ValueTooGreatException;
-import at.fabianachammer.pdusend.common.validation.ValueTooLowException
-
 /**
  * @author fabian
  *
@@ -59,23 +55,6 @@ class PerBitByteArrayBuilderTest {
 		byte[] actual = perBitByteArrayBuilder.toByteArray()
 		
 		assertArrayEquals(expected, actual)
-	}
-	
-	@Test(expected = ValueNullException.class)
-	void addBitsWithNullByteArrayThrowsValueNullException(){
-		PerBitByteArrayBuilder perBitByteArrayBuilder = new PerBitByteArrayBuilder()
-		
-		perBitByteArrayBuilder.addBits(null, 1)
-	}
-	
-	@Test(expected = ValueTooLowException.class)
-	void addBitsWithZeroAsSizeInBitsThrowsValueTooLowException(){
-		new PerBitByteArrayBuilder().addBits([0] as byte[], 0)
-	}
-	
-	@Test(expected = ValueTooGreatException.class)
-	void addBitsWithSizeInBitsGreaterThanByteArrayLengthTimesEightThrowsValueTooGreatException(){
-		new PerBitByteArrayBuilder().addBits([0] as byte[], 9)
 	}
 	
 	@Test

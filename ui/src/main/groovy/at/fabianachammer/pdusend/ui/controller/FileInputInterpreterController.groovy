@@ -2,6 +2,7 @@ package at.fabianachammer.pdusend.ui.controller
 
 import org.gcontracts.annotations.Requires
 
+import at.fabianachammer.pdusend.dsl.interpreter.Interpreter
 import at.fabianachammer.pdusend.ui.view.InterpreterView
 
 /**
@@ -17,12 +18,12 @@ InterpreterController {
 	 */
 	private static final int MIN_SIZE = 2
 
-	FileInputInterpreterController(){
-		super()
+	FileInputInterpreterController(Interpreter interpreter){
+		super(interpreter)
 	}
 
-	FileInputInterpreterController(InterpreterView view){
-		super(view)
+	FileInputInterpreterController(Interpreter interpreter, InterpreterView view){
+		super(interpreter, view)
 	}
 
 	@Override

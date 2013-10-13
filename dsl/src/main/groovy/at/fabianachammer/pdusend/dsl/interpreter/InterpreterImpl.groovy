@@ -22,8 +22,8 @@ class InterpreterImpl implements Interpreter{
 	/**
 	 * creates a new interpreter for interpreting pdusend dsl scripts.
 	 */
-	InterpreterImpl(sender){
-		this.sender = Pdusend.createNetworkSenderFactory().createNetworkSender()
+	InterpreterImpl(NetworkSender sender){
+		this.sender = sender
 		observers = new ArrayList<InterpreterObserver>()
 		def config = new CompilerConfiguration()
 		def importCustomizer = new ImportCustomizer()

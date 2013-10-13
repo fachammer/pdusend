@@ -1,16 +1,14 @@
-package at.fabianachammer.pdusend.type;
+package at.fabianachammer.pdusend.type
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.*
 import at.fabianachammer.pdusend.type.DataUnit
-import at.fabianachammer.pdusend.type.DataUnitGenerator;
+import at.fabianachammer.pdusend.type.DataUnitGenerator
 import at.fabianachammer.pdusend.type.FunctionDataUnit
-import at.fabianachammer.pdusend.type.FunctionDataUnitGenerator;
-import at.fabianachammer.pdusend.common.validation.ValueNullException;
-import at.fabianachammer.pdusend.common.validation.ValueTooLowException;
+import at.fabianachammer.pdusend.type.FunctionDataUnitGenerator
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.Before
+import org.junit.Test
+import org.junit.rules.ExpectedException
 
 /**
  * @author fabian
@@ -18,7 +16,7 @@ import org.junit.rules.ExpectedException;
  */
 class FunctionDataUnitGeneratorTest {
 	
-	private final def emptyClosure = {}
+	private static final def EMPTY_CLOSURE = {}
 	
 	private def makeStaticReturnClosure(value){
 		return { value }
@@ -27,7 +25,7 @@ class FunctionDataUnitGeneratorTest {
 	@Test
 	void makeFromClosureAndDataUnitSizeInBitsReturnsFunctionDataUnitFactoryThatCreatesDataUnitsWithGivenSizeInBits(){
 		int sizeInBits = 1
-		FunctionDataUnitGenerator functionDataUnitFactory = new FunctionDataUnitGenerator('someId', emptyClosure, sizeInBits)
+		FunctionDataUnitGenerator functionDataUnitFactory = new FunctionDataUnitGenerator('someId', EMPTY_CLOSURE, sizeInBits)
 		DataUnit dataUnit = functionDataUnitFactory.generateDataUnit()
 		int expected = sizeInBits
 		

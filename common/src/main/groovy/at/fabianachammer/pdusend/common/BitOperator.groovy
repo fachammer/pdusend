@@ -1,6 +1,6 @@
 package at.fabianachammer.pdusend.common
 
-import at.fabianachammer.pdusend.common.validation.Validator
+import org.gcontracts.annotations.Requires;
 
 /**
  * This class provides methods for operating with numbers on a bit basis.
@@ -103,8 +103,8 @@ final class BitOperator {
 	 * @param minSizeInBits positive minimum size in bits the whole array should have
 	 * @return byte representation of the number in Big Endian order
 	 */
+	@Requires({minSizeInBits > 0})
 	static byte[] toByteArray(BigInteger value, int minSizeInBits){
-		validateSizeInBits(minSizeInBits)
 		int arraySize = Math.ceil(minSizeInBits / Byte.SIZE)
 		List result = []
 		byte[] values = toByteArray(value)
@@ -116,15 +116,6 @@ final class BitOperator {
 		result << values
 
 		return result.flatten()
-	}
-
-	/**
-	 * validates the given size in bits for the toByteArray method.
-	 * @param sizeInBits size in bits to validate
-	 */
-	private static void validateSizeInBits(int sizeInBits){
-		Validator v = new Validator(sizeInBits, "sizeInBits")
-		v.validateGreaterThan(0)
 	}
 
 	/**

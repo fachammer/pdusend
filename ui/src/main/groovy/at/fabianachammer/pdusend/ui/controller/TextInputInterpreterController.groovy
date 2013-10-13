@@ -2,6 +2,7 @@ package at.fabianachammer.pdusend.ui.controller
 
 import org.gcontracts.annotations.Requires
 
+import at.fabianachammer.pdusend.dsl.interpreter.Interpreter
 import at.fabianachammer.pdusend.ui.view.InterpreterView
 
 /**
@@ -14,12 +15,12 @@ class TextInputInterpreterController extends InterpreterController {
 
 	private static final MIN_SIZE = 1
 	
-	TextInputInterpreterController(){
-		super()
+	TextInputInterpreterController(Interpreter interpreter){
+		super(interpreter)
 	}
 	
-	TextInputInterpreterController(InterpreterView view){
-		super(view)
+	TextInputInterpreterController(Interpreter interpreter, InterpreterView view){
+		super(interpreter, view)
 	}
 
 	@Override

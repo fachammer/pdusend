@@ -6,7 +6,6 @@ import at.fabianachammer.pdusend.type.CompositeDataUnit
 import at.fabianachammer.pdusend.type.CompositeDataUnitGenerator
 import at.fabianachammer.pdusend.type.DataUnit
 import at.fabianachammer.pdusend.type.DataUnitGenerator
-import at.fabianachammer.pdusend.common.validation.ValueNullException
 
 import org.gcontracts.PreconditionViolation
 import org.junit.Test

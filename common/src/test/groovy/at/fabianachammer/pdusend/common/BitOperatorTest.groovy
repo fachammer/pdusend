@@ -7,8 +7,6 @@ import static org.junit.Assert.assertArrayEquals
 
 import org.junit.Test
 
-import at.fabianachammer.pdusend.common.validation.ValueTooLowException
-
 class BitOperatorTest {
 
 	@Test
@@ -143,11 +141,6 @@ class BitOperatorTest {
 			0x99,
 			0x88,
 			0x77] as byte[], BitOperator.toByteArray(0xffeeddccbbaa998877, 72))
-	}
-
-	@Test(expected = ValueTooLowException.class)
-	void toByteArrayWithZeroAsSizeInBitsThrowsValueTooLowException(){
-		BitOperator.toByteArray(1, 0)
 	}
 
 	@Test

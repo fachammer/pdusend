@@ -1,7 +1,6 @@
 package at.fabianachammer.pdusend.common
 
-import at.fabianachammer.pdusend.common.validation.Validator
-
+import org.gcontracts.annotations.Requires
 
 /**
  * Class for building byte arrays on a bit basis.
@@ -30,35 +29,13 @@ class PerBitByteArrayBuilder {
 	 * @param bitsToAdd byte array that holds the bits to be added
 	 * @param sizeInBits positive value that defines how many bits to take from bitsToAdd 
 	 */
+	@Requires({bitsToAdd != null && sizeInBits > 0 && sizeInBits <= bitsToAdd.length * Byte.SIZE})
 	void addBits(byte[] bitsToAdd, int sizeInBits){
-		validateAddBitsArguments(bitsToAdd, sizeInBits)
-
 		addElementToDataIfEmpty()
 
 		for(int bitCounter = 0; bitCounter < sizeInBits; bitCounter++){
 			copyBitFromInputToData(bitsToAdd, bitCounter)
 		}
-	}
-
-	/**
-	 * Validates the arguments to the addBits method.
-	 * @param bitsToAdd
-	 * @param sizeInBits
-	 */
-	private void validateAddBitsArguments(byte[] bitsToAdd, int sizeInBits){
-		validateBitsToAdd(bitsToAdd)
-		validateSizeInBits(sizeInBits, bitsToAdd.length)
-	}
-
-	private void validateBitsToAdd(byte[] bitsToAdd){
-		Validator v = new Validator(bitsToAdd, "bits to add")
-		v.validateNotNull()
-	}
-
-	private void validateSizeInBits(int sizeInBits, int dataArrayLength){
-		Validator v = new Validator(sizeInBits, "size in bits")
-		v.validateGreaterThan(0)
-		v.validateLowerThanOrEquals(dataArrayLength * Byte.SIZE)
 	}
 
 	/**

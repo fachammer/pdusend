@@ -1,5 +1,6 @@
 package at.fabianachammer.pdusend.ui.controller
 
+import at.fabianachammer.pdusend.Pdusend;
 import at.fabianachammer.pdusend.dsl.interpreter.Interpreter
 import at.fabianachammer.pdusend.dsl.interpreter.InterpreterImpl
 import at.fabianachammer.pdusend.ui.view.InterpreterView
@@ -26,8 +27,8 @@ public abstract class InterpreterController implements Controller{
 	/**
 	 * creates a new InterpreterController without any views.
 	 */
-	InterpreterController(){
-		interpreter = new InterpreterImpl()
+	InterpreterController(final Interpreter interpreter){
+		this.interpreter = interpreter
 		views = new ArrayList<InterpreterView>()
 	}
 
@@ -35,8 +36,8 @@ public abstract class InterpreterController implements Controller{
 	 * creates a new InterpreterController with the specified view.
 	 * @param view view to add to the controller
 	 */
-	InterpreterController(final InterpreterView view){
-		this()
+	InterpreterController(final Interpreter interpreter, final InterpreterView view){
+		this(interpreter)
 		addView(view)
 	}
 

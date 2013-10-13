@@ -8,5 +8,5 @@ dependencies{
 
 test.dependsOn(project(":native").tasks.assemble)
 test{
-	systemProperty "java.library.path", project(":native").buildDir.path + "/binaries/"
+	systemProperty "java.library.path", project(":native").buildDir.path + "/binaries/mainSharedLibrary"
 }
