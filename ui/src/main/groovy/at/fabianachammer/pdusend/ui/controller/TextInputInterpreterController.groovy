@@ -1,5 +1,7 @@
 package at.fabianachammer.pdusend.ui.controller
 
+import groovy.transform.InheritConstructors;
+
 import org.gcontracts.annotations.Requires
 
 import at.fabianachammer.pdusend.dsl.interpreter.Interpreter
@@ -9,20 +11,13 @@ import at.fabianachammer.pdusend.ui.view.InterpreterView
  * @author fabian
  *
  */
+@InheritConstructors
 class TextInputInterpreterController extends InterpreterController {
 
 	private static final String SCRIPT_CLASS_NAME = "SendText"
 
 	private static final MIN_SIZE = 1
 	
-	TextInputInterpreterController(Interpreter interpreter){
-		super(interpreter)
-	}
-	
-	TextInputInterpreterController(Interpreter interpreter, InterpreterView view){
-		super(interpreter, view)
-	}
-
 	@Override
 	@Requires({input != null && input.length >= MIN_SIZE})
 	protected GroovyCodeSource processInput(String... input) {

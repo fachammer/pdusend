@@ -35,7 +35,7 @@ public class NetworkSenderImpl implements NetworkSender {
 		validateDataUnit(data);
 		validateNetworkInterface(networkInterface);
 	}
-	
+
 	private void validateDataUnit(final DataUnit data) {
 		if (data == null)
 			throw new NullPointerException("data must not be null.");
@@ -49,7 +49,8 @@ public class NetworkSenderImpl implements NetworkSender {
 	}
 
 	/**
-	 * Sends a data unit from a specific network interface.
+	 * Sends a data unit from a specific network interface. This call needs
+	 * appropriate permissions to send on a network interface.
 	 * 
 	 * @param interfaceIndex
 	 *            id of the network interface that should send the data

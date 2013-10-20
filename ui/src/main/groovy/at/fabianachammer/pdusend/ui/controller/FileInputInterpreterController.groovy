@@ -1,5 +1,7 @@
 package at.fabianachammer.pdusend.ui.controller
 
+import groovy.transform.InheritConstructors;
+
 import org.gcontracts.annotations.Requires
 
 import at.fabianachammer.pdusend.dsl.interpreter.Interpreter
@@ -10,6 +12,7 @@ import at.fabianachammer.pdusend.ui.view.InterpreterView
  * @author fabian
  * 
  */
+@InheritConstructors
 class FileInputInterpreterController extends
 InterpreterController {
 
@@ -17,14 +20,6 @@ InterpreterController {
 	 * minimum size of the argument input.
 	 */
 	private static final int MIN_SIZE = 2
-
-	FileInputInterpreterController(Interpreter interpreter){
-		super(interpreter)
-	}
-
-	FileInputInterpreterController(Interpreter interpreter, InterpreterView view){
-		super(interpreter, view)
-	}
 
 	@Override
 	@Requires({input != null && input.length >= MIN_SIZE})

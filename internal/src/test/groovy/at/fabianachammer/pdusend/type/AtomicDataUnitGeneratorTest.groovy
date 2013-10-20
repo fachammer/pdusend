@@ -7,14 +7,20 @@ import at.fabianachammer.pdusend.type.DataUnit
 import at.fabianachammer.pdusend.type.DataUnitGenerator
 import at.fabianachammer.pdusend.common.validation.*
 
-import org.junit.Test;
+import org.gcontracts.PreconditionViolation
+import org.junit.Test
 
 class AtomicDataUnitGeneratorTest {
+	
+	@Test(expected = PreconditionViolation)
+	void createWithDataUnitSizeInBitsLowerThanOneThrowsPreconditionViolation(){
+		new AtomicDataUnitGenerator(0)
+	}
 
 	@Test
 	void generateDataUnitWithBigIntegerReturnsInstanceOfAtomicDataUnitWithDataAndSizeInBitsSetRight(){
 		int dataUnitSizeInBits = 1
-		DataUnitGenerator atomicDataUnitGenerator = new AtomicDataUnitGenerator('someId', dataUnitSizeInBits)
+		DataUnitGenerator atomicDataUnitGenerator = new AtomicDataUnitGenerator(dataUnitSizeInBits)
 
 		DataUnit dataUnit = atomicDataUnitGenerator.generateDataUnit((BigInteger) 1)
 
@@ -24,14 +30,20 @@ class AtomicDataUnitGeneratorTest {
 	}
 	
 	@Test
-	void generateDataUnitWithByteArrayreturnsInstanceOfAtomicDataUnitWithDataAndSizeInBitsSetRight(){
+	void generateDataUnitWithByteArrayReturnsInstanceOfAtomicDataUnitWithDataAndSizeInBitsSetRight(){
 		int dataUnitSizeInBits = 1
-		DataUnitGenerator atomicDataUnitGenerator = new AtomicDataUnitGenerator('someId', dataUnitSizeInBits)
+		DataUnitGenerator atomicDataUnitGenerator = new AtomicDataUnitGenerator(dataUnitSizeInBits)
 
 		DataUnit dataUnit = atomicDataUnitGenerator.generateDataUnit([1] as byte[])
 
 		assertTrue(dataUnit instanceof AtomicDataUnit)
 		assertArrayEquals([1] as byte[], dataUnit.encode())
 		assertEquals(1, dataUnit.sizeInBits())
+	}
+	
+	@Test(expected = PreconditionViolation)
+	void generateDataUnitWithNonNumberAndNonByteArrayValueThrowsPreconditionViolation(){
+		DataUnitGenerator atomicDataUnitGenerator = new AtomicDataUnitGenerator(1)
+		atomicDataUnitGenerator.generateDataUnit(new Object())
 	}
 }

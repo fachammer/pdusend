@@ -1,6 +1,17 @@
+import com.sun.org.apache.xalan.internal.xsltc.compiler.ApplyImports;
+
 apply plugin: 'eclipse'
 apply plugin: 'application'
 apply plugin: 'sonar-runner'
+
+buildscript{
+	repositories{
+		mavenCentral()
+	}
+	dependencies {
+		classpath "net.saliman:gradle-cobertura-plugin:2.0.0"
+	}
+}
 
 // TODO: refactor build.gradle
 
@@ -49,10 +60,7 @@ subprojects{
 
 		if(GROOVY_PROJECTS.contains(proj)){
 			proj.with{
-				dependencies{
-					groovy 'org.codehaus.groovy:groovy-all:2.1.2'
-					compile 'org.codehaus.groovy:groovy-all:2.1.2'
-				}
+				dependencies{ compile 'org.codehaus.groovy:groovy-all:2.1.2' }
 				eclipse{
 					project{
 						natures +=[
@@ -61,24 +69,20 @@ subprojects{
 					}
 				}
 				sonarRunner{
-					sonarProperties{
-						property 'sonar.language', 'grvy'
-					}
+					sonarProperties{ property 'sonar.language', 'grvy' }
 				}
 			}
 		}
 
 		if(proj.usesJunit){
 			proj.with{
-				buildscript {
-					apply from: 'https://github.com/valkolovos/gradle_cobertura/raw/master/repo/gradle_cobertura/gradle_cobertura/1.2.1/coberturainit.gradle'
+				dependencies {
+					testCompile 'junit:junit:4.11'
 				}
 				
-				dependencies { 
-					testCompile 'junit:junit:4.11' 
-				}
+				apply plugin: 'cobertura'
 				
-				cobertura {
+				cobertura{
 					coverageSourceDirs = sourceSets.main.groovy.srcDirs
 				}
 			}
@@ -146,7 +150,7 @@ defaultTasks 'installApp'
 		}
 
 	}
-	
+
 	it.dependsOn(subprojects*.assemble)
 }
 
@@ -161,7 +165,7 @@ sonarRunner {
 		property 'sonar.host.url', "http://$sonarServer:8080/sonar"
 		property 'sonar.jdbc.url', "jdbc:mysql://$sonarServer:3306/sonar"
 		property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
-        property "sonar.jdbc.username", 'sonar'
-        property "sonar.jdbc.password", 'S0nar!'
+		property "sonar.jdbc.username", 'sonar'
+		property "sonar.jdbc.password", 'S0nar!'
 	}
 }

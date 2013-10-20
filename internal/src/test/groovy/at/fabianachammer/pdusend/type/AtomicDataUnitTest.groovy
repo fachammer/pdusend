@@ -1,11 +1,12 @@
-package at.fabianachammer.pdusend.type;
+package at.fabianachammer.pdusend.type
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.*
 
-import org.junit.Test;
+import org.gcontracts.PreconditionViolation;
+import org.junit.Test
 
-import at.fabianachammer.pdusend.type.AtomicDataUnit;
-import at.fabianachammer.pdusend.type.DataUnit;
+import at.fabianachammer.pdusend.type.AtomicDataUnit
+import at.fabianachammer.pdusend.type.DataUnit
 
 /**
  * @author fabian
@@ -13,6 +14,26 @@ import at.fabianachammer.pdusend.type.DataUnit;
  */
 class AtomicDataUnitTest {
 
+	@Test(expected = PreconditionViolation)
+	void createWithSizeInBitsSmallerThanZeroThrowsPreconditionViolation(){
+		new AtomicDataUnit(-1)
+	}
+	
+	@Test(expected = NullPointerException)
+	void createWithDataEqualsNullThrowsPreconditionViolation(){
+		new AtomicDataUnit(null)
+	}
+	
+	@Test(expected = PreconditionViolation)
+	void createWithSizeInBitsSmallerThanZeroAndDataValidThrowsPreconditionViolation(){
+		new AtomicDataUnit(-1, [1] as byte[])
+	}
+	
+	@Test(expected = PreconditionViolation)
+	void createWithSizeInBitsValidAndDataEqualsNullThrowsPreconditionViolation(){
+		new AtomicDataUnit(0, null)
+	}
+	
 	@Test
 	void encodeWithOneByteAsDataReturnsArrayWithOneByte() {
 		byte oneByte = 1
@@ -138,5 +159,41 @@ class AtomicDataUnitTest {
 		assertFalse(atomicDataUnit.equals(differentDataAtomicDataUnit))
 	}
 	
-	// TODO: hashCode for AtomicDataUnit
+	@Test
+	void equalsWithAtomicDataUnitWithDifferentDataAndDifferentSizeInBitsReturnsFalse(){
+		AtomicDataUnit atomicDataUnit = new AtomicDataUnit(1, [0] as byte[])
+		AtomicDataUnit differentAtomicDataUnit = new AtomicDataUnit(2, [1] as byte[])
+		
+		assertFalse(atomicDataUnit.equals(differentAtomicDataUnit))
+	}
+	
+	@Test
+	void equalsWithSameAtomicDataUnitReturnsTrue(){
+		AtomicDataUnit atomicDataUnit = new AtomicDataUnit([0] as byte[])
+		
+		assertTrue(atomicDataUnit.equals(atomicDataUnit))
+	}
+	
+	@Test
+	void equalsWithDifferentTypeObjectReturnsFalse(){
+		AtomicDataUnit atomicDataUnit = new AtomicDataUnit([0] as byte[])
+		
+		assertFalse(atomicDataUnit.equals(new Object()))
+	}
+	
+	@Test
+	void hashCodeWithEqualAtomicDataUnitsReturnsSameHashCode(){
+		AtomicDataUnit atomicDataUnit = new AtomicDataUnit(1, [0] as byte[])
+		AtomicDataUnit equalAtomicDataUnit = new AtomicDataUnit(1, [0] as byte[])
+		
+		assertEquals(atomicDataUnit.hashCode(), equalAtomicDataUnit.hashCode())
+	}
+	
+	@Test
+	void hashCodeWithDifferentAtomicDataUnitsReturnsDifferentHashCodes(){
+		AtomicDataUnit atomicDataUnit = new AtomicDataUnit(1, [0] as byte[])
+		AtomicDataUnit differentAtomicDataUnit = new AtomicDataUnit(2, [0] as byte[])
+		
+		assertNotEquals(atomicDataUnit.hashCode(), differentAtomicDataUnit.hashCode())
+	}
 }

@@ -1,11 +1,10 @@
 package at.fabianachammer.pdusend.type
 
-import org.gcontracts.annotations.Requires;
+import org.gcontracts.annotations.Requires
 
 import at.fabianachammer.pdusend.common.BitOperator
 import at.fabianachammer.pdusend.common.Extension
 import at.fabianachammer.pdusend.type.DataUnit
-import at.fabianachammer.pdusend.type.AbstractDataUnitGenerator
 
 
 /**
@@ -13,20 +12,17 @@ import at.fabianachammer.pdusend.type.AbstractDataUnitGenerator
  * @author fabian
  *
  */
-class AtomicDataUnitGenerator extends AbstractDataUnitGenerator {
+class AtomicDataUnitGenerator implements DataUnitGenerator {
 
 	/**
 	 * size of the data units that this generator will create in bits.
 	 */
-	private int dataUnitSizeInBits
+	private final int dataUnitSizeInBits
 
-	static{
-		Extension.extend()
-	}
-	
+	// id check in sub class because GContract implicitly joins require 
+	// statements of super and sub class  with an OR
 	@Requires({ dataUnitSizeInBits > 0 })
-	public AtomicDataUnitGenerator(String id, int dataUnitSizeInBits){
-		super(id)
+	AtomicDataUnitGenerator(int dataUnitSizeInBits){
 		this.dataUnitSizeInBits = dataUnitSizeInBits
 	}
 	

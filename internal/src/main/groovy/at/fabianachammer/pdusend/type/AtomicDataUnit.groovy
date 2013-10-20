@@ -1,7 +1,11 @@
 package at.fabianachammer.pdusend.type
 
-import org.gcontracts.annotations.Ensures;
-import org.gcontracts.annotations.Requires;
+import groovy.transform.EqualsAndHashCode
+import groovy.transform.ToString
+
+import org.codehaus.groovy.util.HashCodeHelper
+import org.gcontracts.annotations.Ensures
+import org.gcontracts.annotations.Requires
 
 import at.fabianachammer.pdusend.type.DataUnit
 
@@ -10,12 +14,13 @@ import at.fabianachammer.pdusend.type.DataUnit
  * @author fabian
  *
  */
+@ToString(includeNames = true)
 class AtomicDataUnit implements DataUnit {
 
 	private final int sizeInBits
 	private final byte[] data
 
-	@Requires({ sizeInBits >= 0 })
+	@Requires({ sizeInBits > 0 })
 	AtomicDataUnit(int sizeInBits){
 		this(sizeInBits, new byte[Math.ceil(sizeInBits / Byte.SIZE)])
 	}
@@ -25,7 +30,7 @@ class AtomicDataUnit implements DataUnit {
 		this(data.length * Byte.SIZE, data)
 	}
 
-	@Requires( { sizeInBits >= 0 && data != null })
+	@Requires( { sizeInBits > 0 && data != null })
 	AtomicDataUnit(int sizeInBits, byte... data){
 		this.sizeInBits = sizeInBits
 		this.data = data
@@ -44,7 +49,19 @@ class AtomicDataUnit implements DataUnit {
 	}
 	
 	@Override
-	boolean equals(AtomicDataUnit rhs) {
-		return sizeInBits == rhs.sizeInBits && data == rhs.data
+	public boolean equals(Object obj) {
+		if(obj.is(this)) return true
+		if(! (obj instanceof AtomicDataUnit)) return false
+		AtomicDataUnit rhs = (AtomicDataUnit) obj
+		return this.sizeInBits == rhs.sizeInBits && this.data == rhs.data
+	}
+	
+	@Override
+	public int hashCode() {
+		return HashCodeHelper.with {
+			int initialHash = initHash()
+			int sizeInBitsHash = updateHash(initialHash, sizeInBits)
+			updateHash(sizeInBitsHash, data)
+		}
 	}
 }

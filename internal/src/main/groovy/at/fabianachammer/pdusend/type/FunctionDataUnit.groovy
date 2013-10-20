@@ -14,7 +14,7 @@ class FunctionDataUnit implements DataUnit {
 
 	private static final int SIZE_IN_BITS_UNSET_INDICATOR = -1
 	
-	private Closure<byte[]> function
+	private final Closure<byte[]> function
 	private byte[] encodedData
 	private int sizeInBits
 

@@ -5,21 +5,18 @@ import org.gcontracts.annotations.*
 
 import at.fabianachammer.pdusend.type.DataUnit
 import at.fabianachammer.pdusend.type.DataUnitGenerator
-import at.fabianachammer.pdusend.type.AbstractDataUnitGenerator
 
 /**
  * @author fabian
  *
  */
-class CompositeDataUnitGenerator extends AbstractDataUnitGenerator {
+class CompositeDataUnitGenerator implements DataUnitGenerator {
 	
-	// TODO: adapt to new AbstractDataUnitGenerator with ID...
 	
 	private Map<String, DataUnitGenerator> generatorMap
 
 	@Requires({ generatorMap != null })
-	private CompositeDataUnitGenerator(String id, Map<String, DataUnitGenerator> generatorMap){
-		super(id)
+	private CompositeDataUnitGenerator(Map<String, DataUnitGenerator> generatorMap){
 		this.generatorMap = generatorMap
 	}
 	
@@ -33,11 +30,14 @@ class CompositeDataUnitGenerator extends AbstractDataUnitGenerator {
 			if(mapValue.containsKey(attribute)){
 				childDataUnits[attribute] = generator.generateDataUnit(value[attribute])
 			}
-			else{
-				childDataUnits[attribute] = generator.getDefaultValue()
-			}
 		}
 
-		return new CompositeDataUnit(childDataUnits.values() as DataUnit[])
+		CompositeDataUnit resultDataUnit = new CompositeDataUnit(childDataUnits.values() as DataUnit[])
+		
+		childDataUnits.each{key, data ->
+			resultDataUnit.metaClass."$key" = data
+		}
+		
+		return resultDataUnit
 	}
 }

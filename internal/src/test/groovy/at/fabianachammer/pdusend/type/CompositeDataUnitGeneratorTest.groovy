@@ -18,8 +18,8 @@ class CompositeDataUnitGeneratorTest {
 
 	@Test
 	void generateDataUnitWithTwoAtomicDataUnitChildsReturnsCompositeDataUnitWithConcatenatedBitsOfChildren(){
-		DataUnitGenerator[] childDataUnitGenerators = [new AtomicDataUnitGenerator('someId1', 1), new AtomicDataUnitGenerator('someId2', 2)]
-		DataUnitGenerator compositeDataUnitGenerator = new CompositeDataUnitGenerator('someOtherId', [childDataUnit1: childDataUnitGenerators[0], childDataUnit2: childDataUnitGenerators[1]])
+		DataUnitGenerator[] childDataUnitGenerators = [new AtomicDataUnitGenerator(1), new AtomicDataUnitGenerator(2)]
+		DataUnitGenerator compositeDataUnitGenerator = new CompositeDataUnitGenerator([childDataUnit1: childDataUnitGenerators[0], childDataUnit2: childDataUnitGenerators[1]])
 		
 		DataUnit dataUnit = compositeDataUnitGenerator.generateDataUnit([childDataUnit1: 0b1, childDataUnit2: 0b11])
 		
@@ -29,12 +29,33 @@ class CompositeDataUnitGeneratorTest {
 	
 	@Test
 	void generateDataUnitWithOneAtomicDataUnitGeneratorReturnsBitsOfThatAtomicDataUnit(){
-		DataUnitGenerator atomicDataUnitGenerator = new AtomicDataUnitGenerator('someId', 1)
-		DataUnitGenerator compositeDataUnitGenerator = new CompositeDataUnitGenerator('someOtherId', [atomicDataUnit: atomicDataUnitGenerator])
+		DataUnitGenerator atomicDataUnitGenerator = new AtomicDataUnitGenerator(1)
+		DataUnitGenerator compositeDataUnitGenerator = new CompositeDataUnitGenerator([atomicDataUnit: atomicDataUnitGenerator])
 		
 		DataUnit dataUnit = compositeDataUnitGenerator.generateDataUnit([atomicDataUnit: 0b1])
 		
 		assertEquals(1, dataUnit.sizeInBits())
 		assertArrayEquals([0b1] as byte[], dataUnit.encode())
+	}
+	
+	@Test
+	void generateDataUnitWithOneAtomicDataUnitReturnsDataUnitWithAttributeOfGivenAtomicDataUnitInGeneratorMap(){
+		DataUnitGenerator atomicDataUnitGenerator = new AtomicDataUnitGenerator(1)
+		DataUnitGenerator compositeDataUnitGenerator = new CompositeDataUnitGenerator([atomicDataUnit: atomicDataUnitGenerator])
+	
+		DataUnit dataUnit = compositeDataUnitGenerator.generateDataUnit([atomicDataUnit: 2])
+		
+		assertEquals(new AtomicDataUnit(1, [2] as byte[]), dataUnit.atomicDataUnit)
+	}
+	
+	@Test
+	void generateDataUnitWithTwoAtomicDataUnitsReturnsDataUnitWithTwoAttributesForTheTwoAtomicDataUnits(){
+		DataUnitGenerator[] childDataUnitGenerators = [new AtomicDataUnitGenerator(1), new AtomicDataUnitGenerator(2)]
+		DataUnitGenerator compositeDataUnitGenerator = new CompositeDataUnitGenerator([childDataUnit1: childDataUnitGenerators[0], childDataUnit2: childDataUnitGenerators[1]])
+		
+		DataUnit dataUnit = compositeDataUnitGenerator.generateDataUnit([childDataUnit1: 0, childDataUnit2: 3])
+		
+		assertEquals(new AtomicDataUnit(1, [0] as byte[]), dataUnit.childDataUnit1)
+		assertEquals(new AtomicDataUnit(2, [3] as byte[]), dataUnit.childDataUnit2)
 	}
 }

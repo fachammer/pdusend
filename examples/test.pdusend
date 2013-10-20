@@ -1,0 +1,3 @@
+DataUnit du = new AtomicDataUnit([42] as byte[])
+NetworkInterface lo = NetworkInterface.getByName('lo')
+send du on lo

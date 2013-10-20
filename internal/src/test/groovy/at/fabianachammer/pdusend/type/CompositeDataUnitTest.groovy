@@ -2,6 +2,7 @@ package at.fabianachammer.pdusend.type;
 
 import static org.junit.Assert.*;
 
+import org.gcontracts.PreconditionViolation;
 import org.junit.Test;
 
 import at.fabianachammer.pdusend.type.AtomicDataUnit;
@@ -13,6 +14,12 @@ import at.fabianachammer.pdusend.type.DataUnit;
  *
  */
 class CompositeDataUnitTest {
+	
+	@Test(expected = PreconditionViolation)
+	void createWithNullChildDataUnitsThrowsNullPointerException(){
+		DataUnit du = new CompositeDataUnit((DataUnit[])null)
+		println du
+	}
 
 	@Test
 	void encodeWithOneAtomicDataUnitAsInitializedDataReturnsEncodingOfAtomicDataUnit() {
@@ -120,4 +127,51 @@ class CompositeDataUnitTest {
 		
 		assertArrayEquals(expected, actual)
 	}
+	
+	@Test
+	void equalsWithEqualChildElementCompositeDataUnitsReturnsTrue(){
+		CompositeDataUnit compositeDataUnit = new CompositeDataUnit(new AtomicDataUnit([1] as byte[]))
+		CompositeDataUnit equalCompositeDataUnit = new CompositeDataUnit(new AtomicDataUnit([1] as byte[]))
+		
+		assertTrue(compositeDataUnit.equals(equalCompositeDataUnit))
+	}
+	
+	@Test
+	void equalsWithSameCompositeDataUnitReturnsTrue(){
+		CompositeDataUnit compositeDataUnit = new CompositeDataUnit(new AtomicDataUnit([1] as byte[]))
+		
+		assertTrue(compositeDataUnit.equals(compositeDataUnit))
+	}
+	
+	@Test
+	void equalsWithDifferentTypeReturnsFalse(){
+		CompositeDataUnit compositeDataUnit = new CompositeDataUnit(new AtomicDataUnit([1] as byte[]))
+		
+		assertFalse(compositeDataUnit.equals(new Object()))
+	}
+	
+	@Test
+	void equalsWithDifferentChildElementsCompositeDataUnitsReturnsFalse(){
+		CompositeDataUnit compositeDataUnit = new CompositeDataUnit(new AtomicDataUnit([1] as byte[]))
+		CompositeDataUnit differentCompositeDataUnit = new CompositeDataUnit(new AtomicDataUnit([1] as byte[]), new AtomicDataUnit([2] as byte[]))
+		
+		assertFalse(compositeDataUnit.equals(differentCompositeDataUnit))
+	}
+	
+	@Test
+	void hashCodeWithEqualCompositeDataUnitsReturnsEqualHashCodes(){
+		CompositeDataUnit compositeDataUnit = new CompositeDataUnit()
+		CompositeDataUnit equalCompositeDataUnit = new CompositeDataUnit()
+		
+		assertTrue(compositeDataUnit.hashCode() == equalCompositeDataUnit.hashCode())
+	}	
+	
+	@Test
+	void hashCodeWithDifferentCompositeDataUnitsReturnsDifferentHashCodes(){
+		CompositeDataUnit compositeDataUnit = new CompositeDataUnit()
+		CompositeDataUnit differentCompositeDataUnit = new CompositeDataUnit(new AtomicDataUnit([1] as byte[]))
+		
+		assertFalse(compositeDataUnit.hashCode() == differentCompositeDataUnit.hashCode())
+	}
+	// TODO: hash code and equals implementation in CompositeDataUnit
 }
